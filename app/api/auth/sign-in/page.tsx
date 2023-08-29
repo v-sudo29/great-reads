@@ -35,7 +35,6 @@ const SignIn = () => {
       return setError(res.error)
     }
     router.replace('/')
-    
   }
 
   return (
@@ -65,6 +64,7 @@ const SignIn = () => {
             name="password"
             value={password}
             onChange={handleChange}
+            autoComplete="on"
           />
         </div>
 

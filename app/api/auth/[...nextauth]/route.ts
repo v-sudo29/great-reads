@@ -32,24 +32,37 @@ const handler = NextAuth({
         const passwordMatch = await user.comparePassword(password)
         if (!passwordMatch) throw Error('email/password mismatch!')
 
+        // Set password field to empty string to prevent exposure
+        user.password = ''
         return user.toObject()
       },
     }),
   ],
   callbacks: {
-    jwt(params: any) {
+    async jwt(params: any) {
       if (params.user?.id) {
         params.token.id = params.user.id
       }
       // return final token
       return params.token
     },
-    session({ session, token }) {
+    async session({ session, token }) {
       if (session.user) {
         (session.user as { id: string}).id = token.id as string
       }
       return session
     },
+    // async signIn({ profile }) {
+    //   console.log(profile)
+    //   try {
+    //     // Connect to database
+    //     await startDb()
+
+    //     return true
+    //   } catch (error) {
+    //     return false
+    //   }
+    // }
   },
   secret: process.env.NEXTAUTH_SECRET
 })
