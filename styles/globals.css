@@ -2,7 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tailwin Styles */
+/* Tailwind Styles */
 .app {
   @apply h-screen flex flex-col border-red-600 border items-center
+}
+
+.text_field {
+  @apply flex flex-col h-8 p-2 w-full border border-slate-300 outline-slate-300 rounded-md
+  focus-within:outline-blue-400 focus-within:transition-all focus-within:duration-200
+}
+
+
+.text_field_label {
+  @apply text-sm font-medium
+}
+
+.sign_in_button {
+  @apply py-2 my-2 rounded-md text-sm font-medium
 }

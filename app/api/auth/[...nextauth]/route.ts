@@ -26,11 +26,11 @@ const handler = NextAuth({
 
         // Search up user's email in database
         const user = await UserModel.findOne({ email })
-        if (!user) throw Error('email/password mismatch!')
+        if (!user) throw Error('Incorrect email/password')
         
         // Compare passwords
         const passwordMatch = await user.comparePassword(password)
-        if (!passwordMatch) throw Error('email/password mismatch!')
+        if (!passwordMatch) throw Error('Incorrect email/password')
 
         // Set password field to empty string to prevent exposure
         user.password = ''
@@ -52,17 +52,17 @@ const handler = NextAuth({
       }
       return session
     },
-    // async signIn({ profile }) {
-    //   console.log(profile)
-    //   try {
-    //     // Connect to database
-    //     await startDb()
+    async signIn({ profile }) {
+      console.log(profile)
+      try {
+        // Connect to database
+        await startDb()
 
-    //     return true
-    //   } catch (error) {
-    //     return false
-    //   }
-    // }
+        return true
+      } catch (error) {
+        return false
+      }
+    }
   },
   secret: process.env.NEXTAUTH_SECRET
 })
