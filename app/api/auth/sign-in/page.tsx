@@ -1,48 +1,51 @@
 'use client'
 
-import Link from "next/link"
 import { ChangeEventHandler, FormEventHandler, useState } from "react"
+import { useRouter } from "next/navigation"
+import { signIn } from 'next-auth/react'
 
-const SignUp = () => {
+const SignIn = () => {
+  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [userInfo, setUserInfo] = useState({
-    name: '',
     email: '',
     password: ''
   })
-  const { name, email, password } = userInfo
-  
+
+  const { email, password } = userInfo
+  const router = useRouter()
+
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value } = target
-
-    setUserInfo({ ...userInfo, [name]: value })
+    setUserInfo({...userInfo, [name]: value})
   }
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     setLoading(true)
     e.preventDefault()
-    const res = await fetch('/api/auth/users', {
-      method: 'POST',
-      body: JSON.stringify(userInfo),
-    }).then(res => res.json()).catch(error => console.error(error))
-    console.log(res)
-    setLoading(false)
+
+    const res = await signIn('credentials', {
+      email,
+      password,
+      redirect: false
+    })
+
+    if (res?.error) {
+      setLoading(false)
+      return setError(res.error)
+    }
+    router.replace('/')
+    
   }
 
   return (
-    <div className='flex flex-col items-center shadow-md my-5'>
+    <div>
       <form className='p-5' onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
-            className="flex flex-col h-5 border border-slate-400 rounded-sm"
-            type="text" 
-            name="name" 
-            value={name}
-            onChange={handleChange}
-          />
-        </div>
-
+        {error.length > 0 ? (
+            <div>
+              <h1>{error}</h1>
+            </div>
+          ) : null}
         <div>
           <label htmlFor="email" >Email</label>
           <input
@@ -71,11 +74,11 @@ const SignUp = () => {
           disabled={loading}
           style={{ opacity: loading ? 0.5 : 1 }}
         >
-          Sign Up
+          Sign In
         </button>
       </form>
     </div>
   )
 }
 
-export default SignUp
+export default SignIn

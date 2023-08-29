@@ -7,7 +7,7 @@ interface Props {
   children: ReactNode
 }
 
-const Providers = (props: Props) => {
+const AuthProvider = (props: Props) => {
   return (
     <SessionProvider>
       {props.children}
@@ -15,4 +15,4 @@ const Providers = (props: Props) => {
   )
 }
 
-export default Providers
+export default AuthProvider
