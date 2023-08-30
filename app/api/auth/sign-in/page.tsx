@@ -1,9 +1,12 @@
 'use client'
-
 import { ChangeEventHandler, FormEventHandler, useState } from "react"
 import { useRouter } from "next/navigation"
-import { signIn } from 'next-auth/react'
-import { GoogleButton } from "@components/authButtons"
+import { signIn, useSession } from 'next-auth/react'
+import { GoogleButton } from "@components/sign-in/authButtons"
+import EmailInput from "@components/sign-in/EmailInput"
+import PasswordInput from "@components/sign-in/PasswordInput"
+import SignInButton from "@components/sign-in/SignInButton"
+import Separator from "@components/Separator"
 
 const SignIn = () => {
   const [error, setError] = useState('')
@@ -13,6 +16,7 @@ const SignIn = () => {
     password: ''
   })
 
+  const { data: session } = useSession()
   const { email, password } = userInfo
   const router = useRouter()
 
@@ -39,61 +43,33 @@ const SignIn = () => {
     router.replace('/')
   }
 
-  return (
-    <div className='w-1/3'>
+  // Show nothing if session is undefined
+  if (session === undefined) return <></>
+
+  // Redirect to home page if authenticated user tries to access login modal
+  if (session) router.replace('/')
+
+  // Show login form if user is not authenticated
+  if (session === null) return (
+    <div className='flex flex-col gap-4 p-6 w-1/3 shadow-xl rounded-md'>
       <form className='form' onSubmit={handleSubmit}>
         <div>
           <h1 className='text-2xl font-semibold'>Welcome back</h1>
           <span className='text-sm font-normal'>Please log into your account</span>
         </div>
-        {error.length > 0 ? (
-            <div className='text-red-500 font-sm'>
-              <h1>{error}</h1>
-            </div>
-          ) : null}
-        <div>
-          <label className='text_field_label' htmlFor="email" >Email</label>
-          <input
-            className="text_field"
-            type="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
-          <label className='text_field_label' htmlFor="password">Password</label>
-          <input
-            className="text_field"
-            type="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-            autoComplete="on"
-          />
-        </div>
-
-        <button
-          className="form_submit_button"
-          type="submit"
-          disabled={loading}
-          style={{ opacity: loading ? 0.5 : 1 }}
-        >
-          Sign In
-        </button>
-
-        <div 
-          className="flex text-center px-2 items-center 
-            before:flex-1 before:border-slate-300 before:border-b
-            after:flex-1 after:border-black-slate-300 after:border-b"
-          >
-          <span className='mx-2 text-sm text-slate-300'>OR</span>
-        </div>
-        <div>
-          <GoogleButton loading={loading}/>
-        </div>
+        {error.length > 0 && 
+          <div className='text-red-500 font-sm'>
+            <h1>{error}</h1>
+          </div>
+        }
+        <EmailInput email={email} handleChange={handleChange}/>
+        <PasswordInput password={password} handleChange={handleChange} />
+        <SignInButton loading={loading} />
       </form>
+      <Separator/>
+      <div>
+        <GoogleButton loading={loading}/>
+      </div>
     </div>
   )
 }

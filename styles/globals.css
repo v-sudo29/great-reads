@@ -17,9 +17,15 @@
 }
 
 .form {
-  @apply p-6 flex flex-col gap-4 w-full shadow-xl rounded-md
+  @apply flex flex-col gap-4 w-full rounded-md
 }
 
 .form_submit_button {
   @apply py-2 my-2 rounded-md text-sm font-medium bg-blue-950 text-white hover:bg-blue-1000 transition-all
+}
+
+.separator {
+  @apply flex text-center px-2 items-center 
+  before:flex-1 before:border-slate-300 before:border-b
+  after:flex-1 after:border-slate-300 after:border-b
 }
