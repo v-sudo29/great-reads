@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 export default function Nav() {
   const { data: session } = useSession()
   const router = useRouter()
-  console.log('session: ', session)
 
   return (
     <nav style={{ height: '5.5rem' }} className="flex w-screen items-center justify-between border border-red-600 p-5">

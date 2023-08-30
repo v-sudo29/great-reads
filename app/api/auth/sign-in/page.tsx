@@ -1,46 +1,43 @@
 'use client'
-import { ChangeEventHandler, FormEventHandler, useState } from "react"
+import { FormEventHandler, useState , useRef} from "react"
 import { useRouter } from "next/navigation"
 import { signIn, useSession } from 'next-auth/react'
-import { GoogleButton } from "@components/sign-in/authButtons"
-import EmailInput from "@components/sign-in/EmailInput"
-import PasswordInput from "@components/sign-in/PasswordInput"
-import SignInButton from "@components/sign-in/SignInButton"
-import Separator from "@components/Separator"
+import { GoogleButton } from "@components/form/authButtons"
+import EmailInput from "@components/form/EmailInput"
+import PasswordInput from "@components/form/PasswordInput"
+import SignInButton from "@components/form/SignInButton"
+import Separator from "@components/form/Separator"
 
 const SignIn = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [userInfo, setUserInfo] = useState({
-    email: '',
-    password: ''
-  })
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
 
   const { data: session } = useSession()
-  const { email, password } = userInfo
   const router = useRouter()
-
-  const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    const { name, value } = target
-    setUserInfo({...userInfo, [name]: value})
-  }
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     setLoading(true)
     e.preventDefault()
+    
+    if (emailRef.current && passwordRef.current) {
+      const email = emailRef.current.value
+      const password = passwordRef.current.value
 
-    const res = await signIn('credentials', {
-      email,
-      password,
-      redirect: false
-    })
-
-    if (res?.error) {
+      const res = await signIn('credentials', {
+        email,
+        password,
+        redirect: true
+      })
+  
+      if (res?.error) {
+        setLoading(false)
+        setError(res.error)
+      }
+      // If sign-in successful, redirect to home page
       setLoading(false)
-      return setError(res.error)
-    }
-    // If sign-in successful, redirect to home page
-    router.replace('/')
+    } 
   }
 
   // Show nothing if session is undefined
@@ -62,13 +59,13 @@ const SignIn = () => {
             <h1>{error}</h1>
           </div>
         }
-        <EmailInput email={email} handleChange={handleChange}/>
-        <PasswordInput password={password} handleChange={handleChange} />
+        <EmailInput emailRef={emailRef}/>
+        <PasswordInput passwordRef={passwordRef} />
         <SignInButton loading={loading} />
       </form>
       <Separator/>
       <div>
-        <GoogleButton loading={loading}/>
+        <GoogleButton loading={loading} text={'Sign in with Google'}/>
       </div>
     </div>
   )

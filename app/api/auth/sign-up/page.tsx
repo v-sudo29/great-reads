@@ -1,16 +1,21 @@
 'use client'
 
 import { ChangeEventHandler, FormEventHandler, useState } from "react"
+import { GoogleButton } from "@components/form/authButtons"
+import Separator from "@components/form/Separator"
+import { useRouter } from "next/navigation"
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
     password: ''
   })
   const { name, email, password } = userInfo
-  
+  const router = useRouter()
+
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value } = target
 
@@ -20,17 +25,35 @@ const SignUp = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     setLoading(true)
     e.preventDefault()
-    const res = await fetch('/api/auth/users', {
-      method: 'POST',
-      body: JSON.stringify(userInfo),
-    }).then(res => res.json()).catch(error => console.error(error))
-    console.log(res)
-    setLoading(false)
+
+    try {
+      const res = await fetch('/api/auth/users', {
+        method: 'POST',
+        body: JSON.stringify(userInfo),
+      })
+      const data = await res.json()
+
+      if (data.error) setError(data.error)
+      if (!data.error) setError('')
+      
+      // Redirect to login page
+      router.replace('/api/auth/sign-in')
+      
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <div className='w-1/3'>
+    <div className='flex flex-col gap-4 p-6 w-1/3 shadow-xl rounded-md'>
       <form className='form' onSubmit={handleSubmit}>
+        <div>
+          <h1 className='text-2xl font-semibold'>Sign Up</h1>
+          <span className='text-sm font-normal'>And discover your next favorite book</span>
+        </div>
+        {error.length > 0 && <p className='text-red-500 font-sm'>{error}</p>}
         <div>
           <label className="text_field_label" htmlFor="name">Name</label>
           <input
@@ -61,6 +84,7 @@ const SignUp = () => {
             name="password"
             value={password}
             onChange={handleChange}
+            autoComplete="off"
           />
         </div>
 
@@ -73,6 +97,8 @@ const SignUp = () => {
           Sign Up
         </button>
       </form>
+      <Separator/>
+      <GoogleButton loading={loading} text={'Sign up with Google'}/>
     </div>
   )
 }

@@ -18,8 +18,7 @@ const handler = NextAuth({
       name: 'Credentials',
       credentials: {},
       async authorize(credentials, req) {
-        console.log('credentials: ', credentials)
-        console.log('req: ', req)
+        
         // Destructure email and password from credentials
         const { email, password } = credentials as { email: string, password: string }
 
