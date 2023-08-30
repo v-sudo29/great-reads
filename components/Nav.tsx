@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 export default function Nav() {
   const { data: session } = useSession()
   const router = useRouter()
-
+  console.log(session)
   if (session && session.user) {
     return (
       <nav className="flex w-screen justify-between border border-red-600 p-5">

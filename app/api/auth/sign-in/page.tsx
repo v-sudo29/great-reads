@@ -41,7 +41,7 @@ const SignIn = () => {
 
   return (
     <div className='w-1/3'>
-      <form className='p-6 flex flex-col gap-4 w-full shadow-xl rounded-md' onSubmit={handleSubmit}>
+      <form className='form' onSubmit={handleSubmit}>
         <div>
           <h1 className='text-2xl font-semibold'>Welcome back</h1>
           <span className='text-sm font-normal'>Please log into your account</span>
@@ -75,7 +75,7 @@ const SignIn = () => {
         </div>
 
         <button
-          className="sign_in_button bg-blue-950 text-white hover:bg-blue-1000 transition-all"
+          className="form_submit_button"
           type="submit"
           disabled={loading}
           style={{ opacity: loading ? 0.5 : 1 }}

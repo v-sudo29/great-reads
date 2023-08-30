@@ -13,7 +13,7 @@ interface Methods {
 }
 
 const userSchema = new Schema<UserDocument, {}, Methods>({
-  email: { 
+  email: {
     type: String,
     required: true,
     unique: true
@@ -25,12 +25,14 @@ const userSchema = new Schema<UserDocument, {}, Methods>({
   },
   password: {
     type: String,
-    required: true }
+    required: true
+  }
 })
 
 // Hash the password before saving
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next()
+  if (!this.password) return next()
   try {
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt)
@@ -49,6 +51,6 @@ userSchema.methods.comparePassword = async function (password) {
   }
 }
 
-const UserModel = models.User || model('User', userSchema)
+const User = models.User || model('User', userSchema)
 
-export default UserModel as Model<UserDocument, {}, Methods>
+export default User as Model<UserDocument, {}, Methods>

@@ -2,7 +2,8 @@ import NextAuth from 'next-auth/next'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from "next-auth/providers/credentials"
 import startDb from '@lib/db'
-import UserModel from '@models/userModel'
+import User from '@models/userModel'
+import GoogleUser from '@models/googleUserModel'
 
 const handler = NextAuth({
   session: {
@@ -25,7 +26,7 @@ const handler = NextAuth({
         await startDb()
 
         // Search up user's email in database
-        const user = await UserModel.findOne({ email })
+        const user = await User.findOne({ email })
         if (!user) throw Error('Incorrect email/password')
         
         // Compare passwords
@@ -40,28 +41,42 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt(params: any) {
-      if (params.user?.id) {
-        params.token.id = params.user.id
+      if (params.user?._id) {
+        params.token.id = params.user._id
       }
       // return final token
       return params.token
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as { id: string}).id = token.id as string
+        (session.user as { id: string }).id = token.id as string
       }
       return session
     },
     async signIn({ profile }) {
-      console.log(profile)
+      if (!profile) return true
       try {
+        console.log(profile)
         // Connect to database
         await startDb()
+        
+        const userExists = await GoogleUser.findOne({ email: profile!.email })
 
+        if (!userExists) {
+          const user = await GoogleUser.create({
+            email: profile!.email,
+            name: profile!.name,
+          })
+        }
         return true
+        
       } catch (error) {
+        console.log(error)
         return false
       }
+    },
+    async redirect({ url, baseUrl }) {
+      return baseUrl
     }
   },
   secret: process.env.NEXTAUTH_SECRET

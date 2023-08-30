@@ -1,6 +1,5 @@
 'use client'
 
-import Link from "next/link"
 import { ChangeEventHandler, FormEventHandler, useState } from "react"
 
 const SignUp = () => {
@@ -30,12 +29,12 @@ const SignUp = () => {
   }
 
   return (
-    <div className='flex flex-col items-center shadow-md my-5'>
-      <form className='p-5' onSubmit={handleSubmit}>
+    <div className='w-1/3'>
+      <form className='form' onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Name</label>
+          <label className="text_field_label" htmlFor="name">Name</label>
           <input
-            className="flex flex-col h-5 border border-slate-400 rounded-sm"
+            className="text_field"
             type="text" 
             name="name" 
             value={name}
@@ -44,9 +43,9 @@ const SignUp = () => {
         </div>
 
         <div>
-          <label htmlFor="email" >Email</label>
+          <label className="text_field_label" htmlFor="email">Email</label>
           <input
-            className="flex flex-col h-5 border border-slate-400 rounded-sm"
+            className="text_field"
             type="email"
             name="email"
             value={email}
@@ -55,9 +54,9 @@ const SignUp = () => {
         </div>
 
         <div>
-          <label htmlFor="password">Password</label>
+          <label className="text_field_label" htmlFor="password">Password</label>
           <input
-            className="flex flex-col h-5 border border-slate-400 rounded-sm"
+            className="text_field"
             type="password"
             name="password"
             value={password}
@@ -66,7 +65,7 @@ const SignUp = () => {
         </div>
 
         <button
-          className="bg-sky-500 text-white px-2 py-1 my-2 rounded-md hover:bg-sky-700 transition-all"
+          className="form_submit_button"
           type="submit"
           disabled={loading}
           style={{ opacity: loading ? 0.5 : 1 }}
