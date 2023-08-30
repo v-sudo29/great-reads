@@ -1,6 +1,6 @@
 import '@styles/globals.css'
 import type { Metadata } from 'next'
-import Nav from '@components/Nav'
+import Nav from '@components/nav/Nav'
 import Footer from '@components/Footer'
 import AuthProvider from '@components/AuthProvider'
 
