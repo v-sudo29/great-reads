@@ -1,6 +1,7 @@
 'use client'
 import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 const NavLinks = () => {
   const router = useRouter()
@@ -10,7 +11,7 @@ const NavLinks = () => {
     <div className='flex gap-5'>
       {(session && session.user) && (
         <>
-          <p>{session.user.name}</p>
+          <Link href='/profile'>{session.user.name}</Link>
           <button onClick={() => signOut()}>
             Sign Out
           </button>
