@@ -35,6 +35,7 @@ const SignIn = () => {
       setLoading(false)
       return setError(res.error)
     }
+    // If sign-in successful, redirect to home page
     router.replace('/')
   }
 
@@ -46,7 +47,7 @@ const SignIn = () => {
           <span className='text-sm font-normal'>Please log into your account</span>
         </div>
         {error.length > 0 ? (
-            <div className='text-red-500'>
+            <div className='text-red-500 font-sm'>
               <h1>{error}</h1>
             </div>
           ) : null}
@@ -74,7 +75,7 @@ const SignIn = () => {
         </div>
 
         <button
-          className="sign_in_button bg-sky-500 text-white hover:bg-sky-700 transition-all"
+          className="sign_in_button bg-blue-950 text-white hover:bg-blue-1000 transition-all"
           type="submit"
           disabled={loading}
           style={{ opacity: loading ? 0.5 : 1 }}

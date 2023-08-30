@@ -13,9 +13,19 @@ interface Methods {
 }
 
 const userSchema = new Schema<UserDocument, {}, Methods>({
-  email: { type: String, required: true, unique: true },
-  name: { type: String, required: true, trim: true },
-  password: { type: String, required: true }
+  email: { 
+    type: String,
+    required: true,
+    unique: true
+  },
+  name: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  password: {
+    type: String,
+    required: true }
 })
 
 // Hash the password before saving
