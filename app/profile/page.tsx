@@ -29,7 +29,7 @@ const Profile = () => {
       <h1>This is {session.user ? `${session.user.name}'s` : 'my'} profile!</h1>
       <Image
         className='mt-5 border border-black'
-        src={`${session.user?.image}`}
+        src={session.user?.image ? `${session.user?.image}` : '/../default-profile-pic.svg'}
         priority={true}
         alt='Profile picture'
         width={100}
