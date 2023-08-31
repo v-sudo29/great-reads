@@ -33,7 +33,7 @@ const Feed = () => {
           style={{ height: '13rem', width: '10rem' }}
         >
           <Image
-            src={book.volumeInfo.imageLinks.thumbnail}
+            src={book.volumeInfo.imageLinks?.thumbnail ?? '/default-book.svg'}
             alt={book.volumeInfo.title + ' image cover'}
             fill={true}
             objectFit="cover"

@@ -125,7 +125,7 @@ export interface VolumeInfo {
 
 export interface ImageLinks {
   smallThumbnail: string;
-  thumbnail:      string;
+  thumbnail?:      string;
 }
 
 export interface IndustryIdentifier {
