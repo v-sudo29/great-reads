@@ -66,7 +66,7 @@ const authOptions: AuthOptions = {
 
         if (foundUser?._id) token.id = foundUser._id
       }
-      console.log('JWT CALLBACK: ', { user, token, session })
+
       // return final token
       return token
     },
@@ -79,7 +79,6 @@ const authOptions: AuthOptions = {
       return session
     }, 
     async signIn({ profile, user }) {
-      console.log('USER UNCHANGED: ', user)
       if (!profile) return true
       try {
         // Connect to database
@@ -104,7 +103,8 @@ const authOptions: AuthOptions = {
       }
     },
     async redirect({ url, baseUrl }) {
-      return baseUrl
+      if (url.includes('sign-in')) return baseUrl + '/feed'
+      else return baseUrl
     }
   },
   secret: process.env.NEXTAUTH_SECRET

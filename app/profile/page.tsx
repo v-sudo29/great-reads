@@ -6,7 +6,7 @@ import Image from "next/image"
 
 const Profile = () => {
   const updateNameRef = useRef<HTMLInputElement>(null)
-  const { data: session, update } = useSession()
+  const { data: session, update, status } = useSession()
   const router = useRouter()
   
   useEffect(() => {
@@ -14,7 +14,7 @@ const Profile = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  console.log(session?.user)
+  console.log(status)
 
   const handleUpdate = async () => {
     // Check if input value is not empty
