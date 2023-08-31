@@ -8,6 +8,12 @@ const nextConfig = {
         port: '',
         pathname: '/a/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'books.google.com',
+        port: '',
+        pathname: '/books/**',
+      },
     ],
   },
 }

@@ -4,7 +4,15 @@
 
 /* Tailwind Styles */
 .app {
-  @apply h-screen flex flex-col border-red-600 border items-center
+  @apply min-h-screen flex flex-col items-center
+}
+
+.page_heading {
+  @apply text-3xl font-medium m-2 text-center
+}
+
+.page_secondary_heading {
+  @apply text-2xl font-medium
 }
 
 .text_field {
@@ -24,8 +32,16 @@
   @apply py-2 my-2 rounded-md text-sm font-medium bg-blue-950 text-white hover:bg-blue-1000 transition-all
 }
 
+.general_button {
+  @apply px-5 py-2 rounded-full text-sm font-medium bg-gray-500 text-white hover:bg-gray-700 transition-all
+}
+
 .separator {
   @apply flex text-center px-2 items-center 
   before:flex-1 before:border-slate-300 before:border-b
   after:flex-1 after:border-slate-300 after:border-b
+}
+
+.result_card {
+  @apply flex flex-col items-center gap-2 p-5 shadow-md rounded-3xl
 }
