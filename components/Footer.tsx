@@ -1,5 +1,5 @@
 export default function Footer() {
   return (
-    <div>Footer</div>
+    <div style={{ display: 'none' }}>Footer</div>
   )
 }

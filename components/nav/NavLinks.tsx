@@ -6,7 +6,7 @@ import Link from "next/link"
 const NavLinks = () => {
   const router = useRouter()
   const { data: session } = useSession()
-  console.log(session)
+
   return (
     <div className='flex gap-5'>
       {(session && session.user) && (
