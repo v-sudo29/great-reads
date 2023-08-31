@@ -12,6 +12,8 @@ const Profile = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
+  console.log(session?.user)
+
   if (session === undefined) return <></>
   if (session) return (
     <div>This is my profile!</div>

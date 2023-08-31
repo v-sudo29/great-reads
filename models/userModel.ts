@@ -3,6 +3,8 @@ import { Document, Schema } from 'mongoose'
 import bcrypt from 'bcrypt'
 
 interface UserDocument extends Document {
+  id: string
+  _id: string
   email: string
   name: string
   password: string
@@ -13,6 +15,12 @@ interface Methods {
 }
 
 const userSchema = new Schema<UserDocument, {}, Methods>({
+  id: {
+    type: String
+  },
+  _id: {
+    type: String
+  },
   email: {
     type: String,
     required: true,
