@@ -13,6 +13,7 @@ const NavLinks = () => {
       {(session && session.user) && (
         <>
           <Link href='/feed'>Feed</Link>
+          <Link href='/lists'>Lists</Link>
           <div className='flex flex-col items-center'>
             <Link href='/profile'>
               <Image

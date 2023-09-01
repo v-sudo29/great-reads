@@ -14,8 +14,6 @@ const Profile = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  console.log(status)
-
   const handleUpdate = async () => {
     // Check if input value is not empty
     if (updateNameRef.current?.value && updateNameRef.current?.value.replace(/\s/g, '').length) {
@@ -25,8 +23,8 @@ const Profile = () => {
 
   if (session === undefined) return <></>
   if (session) return (
-    <div className='flex flex-col items-center'>
-      <h1>This is {session.user ? `${session.user.name}'s` : 'my'} profile!</h1>
+    <div className='flex flex-col items-center p-2'>
+      <h1 className='page_heading'><b>{session.user ? `${session.user.name}'s` : 'my'}</b> profile</h1>
       <Image
         className='mt-5 border border-black'
         src={session.user?.image ? `${session.user?.image}` : '/../default-profile-pic.svg'}
