@@ -8,6 +8,7 @@ interface UserDocument extends Document {
   email: string
   name: string
   password: string
+  lists: Array<string[]> | []
 }
 
 interface Methods {
@@ -16,10 +17,12 @@ interface Methods {
 
 const userSchema = new Schema<UserDocument, {}, Methods>({
   id: {
-    type: String
+    type: String,
+    required: false
   },
   _id: {
-    type: String
+    type: String,
+    required: false
   },
   email: {
     type: String,
@@ -33,6 +36,11 @@ const userSchema = new Schema<UserDocument, {}, Methods>({
   },
   password: {
     type: String,
+    required: true
+  },
+  lists: {
+    type: [String],
+    default: [],
     required: true
   }
 })

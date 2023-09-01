@@ -36,9 +36,13 @@ const authOptions: AuthOptions = {
         // Set password field to empty string to prevent exposure
         user.password = ''
         const transformedUser = user.toObject()
-        transformedUser.id = transformedUser._id
+        const userId = transformedUser._id
+        const returnedUser = {
+          ...transformedUser,
+          id: userId
+        }
 
-        return transformedUser
+        return returnedUser
       },
     }),
   ],

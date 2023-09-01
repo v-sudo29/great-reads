@@ -4,6 +4,7 @@ import { Document, Schema } from 'mongoose'
 interface GoogleUserDocument extends Document {
   email: string
   name: string
+  lists: Array<string[]> | []
 }
 
 interface Methods {
@@ -20,6 +21,11 @@ const googleUserSchema = new Schema<GoogleUserDocument, {}, Methods>({
     type: String,
     required: true,
     trim: true
+  },
+  lists: {
+    type: [String],
+    default: [],
+    required: true
   }
 })
 
