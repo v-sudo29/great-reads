@@ -8,7 +8,7 @@ interface UserDocument extends Document {
   email: string
   name: string
   password: string
-  lists: Array<string[]> | []
+  lists: Record<string, string[]> | {}
 }
 
 interface Methods {
@@ -16,14 +16,6 @@ interface Methods {
 }
 
 const userSchema = new Schema<UserDocument, {}, Methods>({
-  id: {
-    type: String,
-    required: false
-  },
-  _id: {
-    type: String,
-    required: false
-  },
   email: {
     type: String,
     required: true,
@@ -39,11 +31,11 @@ const userSchema = new Schema<UserDocument, {}, Methods>({
     required: true
   },
   lists: {
-    type: [String],
-    default: [],
+    type: Schema.Types.Mixed,
+    default: {},
     required: true
   }
-})
+}, { minimize: false })
 
 // Hash the password before saving
 userSchema.pre('save', async function (next) {

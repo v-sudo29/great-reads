@@ -7,12 +7,14 @@ interface NewUserRequest {
   name: string
   email: string
   password: string
+  lists: Record<string, string[]> | {}
 }
 
 interface NewUserResponse {
   id: string
   name: string
   email: string
+  lists: Record<string, string[]> | {}
 }
 
 type NewResponse = NextResponse<{user?: NewUserResponse; error?: string}>
@@ -29,13 +31,15 @@ export const POST = async (req: Request): Promise<NewResponse> => {
       { status: 422 }
     )
   }
-
+  
   const user = await User.create({...body })
+  console.log(user)
   return NextResponse.json({
     user: {
       id: user._id.toString(),
       email: user.email,
-      name: user.name
+      name: user.name,
+      lists: {}
     }
   })
 }

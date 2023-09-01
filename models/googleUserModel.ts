@@ -4,7 +4,7 @@ import { Document, Schema } from 'mongoose'
 interface GoogleUserDocument extends Document {
   email: string
   name: string
-  lists: Array<string[]> | []
+  lists: Record<string, string[]> | {}
 }
 
 interface Methods {
@@ -23,11 +23,11 @@ const googleUserSchema = new Schema<GoogleUserDocument, {}, Methods>({
     trim: true
   },
   lists: {
-    type: [String],
-    default: [],
+    type: Schema.Types.Mixed,
+    default: {},
     required: true
   }
-})
+}, { minimize: false })
 
 const GoogleUser = models.GoogleUser || model('GoogleUser', googleUserSchema)
 
