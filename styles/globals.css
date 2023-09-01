@@ -36,6 +36,14 @@
   @apply px-5 py-2 rounded-full text-sm font-medium bg-gray-500 text-white hover:bg-gray-700 transition-all
 }
 
+.add_button {
+  @apply px-5 py-2 rounded-full text-sm font-medium bg-green-500 text-white hover:bg-green-800 transition-all
+}
+
+.delete_button {
+  @apply px-5 py-2 rounded-full text-sm font-medium bg-red-400 text-white hover:bg-red-800 transition-all
+}
+
 .separator {
   @apply flex text-center px-2 items-center 
   before:flex-1 before:border-slate-300 before:border-b

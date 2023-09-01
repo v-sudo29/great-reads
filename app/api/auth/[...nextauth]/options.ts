@@ -54,7 +54,7 @@ const authOptions: AuthOptions = {
 
       console.log('JWT CALLBACK: ', { token, user, session })
 
-      // If user updates NAME on client, update token and database
+      // If user updates NAME, update token and database
       if (trigger === 'update' && session?.name) {
         token.name = session.name
 
@@ -66,7 +66,7 @@ const authOptions: AuthOptions = {
         if (credentialsUser) await User.findOneAndUpdate({ email: token.email }, { name: token.name })
       }
 
-      // If user updates LIST on client,
+      // If user updates LIST, update token and database
       if (trigger === 'update' && session?.lists) {
         token.lists = session.lists
 

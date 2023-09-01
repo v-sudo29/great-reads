@@ -21,7 +21,7 @@ const NavLinks = () => {
                 priority={true}
                 alt='Profile picture'
                 width={35}
-                height={0}
+                height={35}
               />
             </Link> 
           </div>
