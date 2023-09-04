@@ -20,7 +20,7 @@ const Lists = () => {
       if (alreadyExists) return setError('List name already exists')
       
       const newListObj = { [newListRef.current.value]: [] }
-      
+
       update({ 
         lists: Object.assign({}, session.user.lists, newListObj)
       })
@@ -35,9 +35,11 @@ const Lists = () => {
 
   const handleDeleteList = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setError('')
+    setSuccess(false)
     const buttonElement = e.target as HTMLButtonElement
-    const listName = buttonElement.classList.value.split(' ')[1]
-    
+    const headingElement = buttonElement.previousSibling as HTMLHeadingElement
+    const listName = headingElement.innerHTML
+
     // Remove targeted name from list names
     if (session) {
       const copyList = { ...session.user.lists }
@@ -71,7 +73,7 @@ const Lists = () => {
     <div>
       <h1 className='page_heading'>Lists</h1>
       <div className='flex flex-col gap-3 my-5'>
-        {error.length > 0 && <h1 className='text-red-500'>{error}</h1>}
+        {error !== '' && <h1 className='text-red-500'>{error}</h1>}
         {success && <h1 className='text-green-500'>{newListRef.current && newListRef.current.value} list has been created!</h1>}
         <label>Create list</label>
         <input ref={newListRef} className="text_field" type="text" placeholder='new list name'/>
