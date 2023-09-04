@@ -55,5 +55,5 @@
 }
 
 .overlay {
-  @apply z-10 fixed min-h-screen min-w-full bg-gray-800 opacity-40 transition-all
+  @apply z-10 top-0 left-0 fixed min-h-screen min-w-full bg-gray-800 opacity-40 transition-all
 }
