@@ -1,10 +1,11 @@
 import Image from 'next/image'
 import { Item } from '@/types/fetchTypes'
+import { IBook } from '@/types/bookType'
 
 interface IResultCard {
   book: Item,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-  setSelectedBook: React.Dispatch<React.SetStateAction<{}>>
+  setSelectedBook: React.Dispatch<React.SetStateAction<IBook | null>>
 }
 
 const ResultCard = ({ book, setShowModal, setSelectedBook } : IResultCard ) => {
@@ -14,7 +15,7 @@ const ResultCard = ({ book, setShowModal, setSelectedBook } : IResultCard ) => {
       bookId: book.id,
       title: book.volumeInfo.title,
       imageLinks: book.volumeInfo.imageLinks?.thumbnail ?? '/default-book.svg',
-      authors: book.volumeInfo.authors
+      authors: book.volumeInfo.authors ?? []
     })
   }
 

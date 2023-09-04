@@ -1,7 +1,9 @@
 'use client'
 import { useSession } from "next-auth/react"
 import { useRef, useState } from "react"
+import { IBook } from "@/types/bookType"
 import React from "react"
+import ListCard from "@components/lists/ListCard"
 
 const Lists = () => {
   const [error, setError] = useState('')
@@ -55,18 +57,37 @@ const Lists = () => {
 
   let lists: JSX.Element[] = []
 
-  // Create UI to display lists
+  // Create UI to display lists and books in lists
   if (session) {
     const allListNames = Object.keys(session.user.lists)
-    lists = allListNames.map((name, index) => 
-      <div
-        key={`${name}-${index}`}
-        className='flex gap-3 justify-between items-center shadow-lg p-3 rounded-md'
-      >
-        <h1 className='font-semibold'>{name}</h1>
-        <button onClick={(e) => handleDeleteList(e)} className={`delete_button ${name}`}>Delete</button>
-      </div>
+    lists = allListNames.map((listName, index) => {
+    const booksArr = (session.user.lists as Record<string, IBook[]>)[listName]
+
+    const booksJSX = booksArr.map((book, index) => 
+      <ListCard
+        key={`${book.bookId}-${listName}-${index}`}
+        book={book}
+        listName={listName}  
+      />
     )
+
+      return (
+        <div
+          key={`${name}-${index}`}
+          className='flex gap-3 justify-between items-center p-3 rounded-md'
+        >
+          <div className='flex flex-col gap-5'>
+            <div className='flex w-full justify-between'>
+              <h1 className='font-medium w-full self-center text-2xl'>{listName}</h1>
+              <button onClick={(e) => handleDeleteList(e)} className={`delete_button ${listName}`}>Delete</button>
+            </div>
+            <div className='flex gap-4'>
+              {booksJSX}
+            </div>
+          </div>
+        </div>
+      )
+    })
   }
 
   return (

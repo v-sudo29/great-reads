@@ -2,13 +2,15 @@
 
 import { FetchData, Item } from "@/types/fetchTypes"
 import { useRef, useState } from "react"
-import ResultCard from "@components/feed/ResultCard"
 import { useSession } from "next-auth/react"
+import { IBook } from "@/types/bookType"
+import ResultCard from "@components/feed/ResultCard"
+import React from "react"
 
 const Feed = () => {
   const [searchResults, setSearchResults] = useState<Item[] | null>(null)
   const [showModal, setShowModal] = useState(false)
-  const [selectedBook, setSelectedBook] = useState({})
+  const [selectedBook, setSelectedBook] = useState<IBook | null>(null)
   const searchRef = useRef<HTMLInputElement>(null)
 
   const { data: session, update } = useSession()
@@ -35,8 +37,8 @@ const Feed = () => {
     const buttonElement = e.target as HTMLButtonElement
     const listName = buttonElement.innerText
 
-    if (session) {
-      const currentLists = Object.assign({}, session.user.lists) as Record<string, Record<string, Record<string, string>>[]>
+    if (session && selectedBook) {
+      const currentLists = Object.assign({}, session.user.lists) as Record<string, IBook[]>
       currentLists[listName].push(selectedBook)
 
       update({
