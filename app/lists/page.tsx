@@ -16,8 +16,6 @@ const Lists = () => {
 
   const { data: session, update } = useSession()
 
-  console.log(session)
-
   const handleCreateList = async () => {
     if (session && newListRef.current?.value && newListRef.current?.value.replace(/\s/g, '').length) {
 
@@ -44,18 +42,16 @@ const Lists = () => {
     setError('')
     setSuccess(false)
     const buttonElement = e.target as HTMLButtonElement
-    const headingElement = buttonElement.previousSibling as HTMLHeadingElement
-    const listName = headingElement.innerHTML
+    const headingElement = buttonElement.parentElement?.previousSibling as HTMLHeadingElement
+    const listName = headingElement.innerText
 
     // Remove targeted name from list names
     if (session) {
-      const copyList = { ...session.user.lists }
+      const copyList = Object.assign({}, session.user.lists as Record<string, IBook[]>)
       delete copyList[listName]
 
       update({
-        lists: {
-          ...copyList
-        }
+        lists: Object.assign({}, copyList)
       })
     }
   }
