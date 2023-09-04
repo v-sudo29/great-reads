@@ -18,13 +18,13 @@ const Lists = () => {
       const listName = newListRef.current.value
       const alreadyExists = Object.keys(session.user.lists).includes(listName)
       if (alreadyExists) return setError('List name already exists')
-
+      
+      const newListObj = { [newListRef.current.value]: [] }
+      
       update({ 
-        lists: {
-          ...session.user.lists,
-          [newListRef.current.value]: []
-        }
+        lists: Object.assign({}, session.user.lists, newListObj)
       })
+
       setError('')
       setSuccess(true)
     } else {
