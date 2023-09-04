@@ -4,7 +4,7 @@ import { Document, Schema } from 'mongoose'
 interface GoogleUserDocument extends Document {
   email: string
   name: string
-  lists: Record<string, string[]> | {}
+  lists: Record<string, Record<string, Record<string, string>>[]> | {}
 }
 
 interface Methods {

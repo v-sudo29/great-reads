@@ -8,7 +8,7 @@ interface UserDocument extends Document {
   email: string
   name: string
   password: string
-  lists: Record<string, string[]> | {}
+  lists: Record<string, Record<string, Record<string, string>>[]> | {}
 }
 
 interface Methods {

@@ -1,13 +1,25 @@
 import Image from 'next/image'
 import { Item } from '@/types/fetchTypes'
 
-const ResultCard = ({ book, setShowModal } : { book: Item, setShowModal: React.Dispatch<React.SetStateAction<boolean>> }) => {
+interface IResultCard {
+  book: Item,
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setSelectedBook: React.Dispatch<React.SetStateAction<{}>>
+}
+
+const ResultCard = ({ book, setShowModal, setSelectedBook } : IResultCard ) => {
   const handleAddBook = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setShowModal(true)
+    setSelectedBook({
+      bookId: book.id,
+      title: book.volumeInfo.title,
+      imageLinks: book.volumeInfo.imageLinks?.thumbnail ?? '/default-book.svg',
+      authors: book.volumeInfo.authors
+    })
   }
 
   return (
-    <div key={book.id} className='result_card'>
+    <div key={book.id} className={`result_card ${book.id}`}>
       <h1 className='text-xl font-medium'>{book.volumeInfo.title}</h1>
       <div
         className='relative overflow-hidden rounded-lg'

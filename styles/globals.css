@@ -53,3 +53,7 @@
 .result_card {
   @apply flex flex-col items-center gap-2 p-5 shadow-md rounded-3xl
 }
+
+.overlay {
+  @apply z-10 fixed min-h-screen min-w-full bg-gray-800 opacity-40 transition-all
+}
