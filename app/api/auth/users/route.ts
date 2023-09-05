@@ -2,6 +2,7 @@ import startDb from "@lib/db"
 import User from "@models/userModel"
 import GoogleUser from "@models/googleUserModel"
 import { NextResponse } from "next/server"
+import { SchemaDefinitionProperty } from "mongoose"
 
 interface NewUserRequest {
   name: string
@@ -17,29 +18,49 @@ interface NewUserResponse {
   lists: Record<string, string[]> | {}
 }
 
-type NewResponse = NextResponse<{user?: NewUserResponse; error?: string}>
+interface UserResponse {
+  id: string
+  name: string
+  lists: Record<string, string[]> | {}
+  friends?: SchemaDefinitionProperty[] | []
+}
 
-export const POST = async (req: Request): Promise<NewResponse> => {
-  const body = (await req.json()) as NewUserRequest
+type NewResponse = NextResponse<{user?: NewUserResponse; error?: string; users: UserResponse[]}>
 
+export const GET = async (req: Request): Promise<NewResponse> => {
   await startDb()
-  const emailExists = await User.findOne({ email: body.email })
-  const googleEmailExists = await GoogleUser.findOne({ email: body.email })
-  if (emailExists || googleEmailExists) {
-    return NextResponse.json(
-      { error: 'Email is already in use' },
-      { status: 422 }
-    )
-  }
-  
-  const user = await User.create({...body })
-  console.log(user)
-  return NextResponse.json({
-    user: {
-      id: user._id.toString(),
-      email: user.email,
+  const allUsers = await User.find({})
+  const allGoogleUsers = await GoogleUser.find({})
+
+  const usersArr: UserResponse[] = []
+  const googleUsersArr: UserResponse[] = []
+
+  allUsers.forEach(user => {
+    usersArr.push({
+      id: user._id,
       name: user.name,
-      lists: {}
-    }
+      lists: user.lists,
+      friends: user.friends
+    })
+  })
+
+  allGoogleUsers.forEach(user => {
+    googleUsersArr.push({
+      id: user._id,
+      name: user.name,
+      lists: user.lists,
+      friends: user.friends
+    })
+  })
+
+
+  console.log('usersArr: ', usersArr)
+  console.log('googleUsersArr: ', googleUsersArr)
+
+  return NextResponse.json({
+    users: [
+      ...usersArr,
+      ...googleUsersArr
+    ]
   })
 }

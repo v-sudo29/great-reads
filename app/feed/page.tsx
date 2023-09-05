@@ -1,6 +1,6 @@
 'use client'
 
-import { FetchData, Item } from "@/types/fetchTypes"
+import { FetchData, Item } from "@types/googleApiTypes"
 import { useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 import { IBook } from "@/types/bookType"
@@ -94,6 +94,8 @@ const Feed = () => {
           }
         </div>
       </div>
+
+      {/* MODAL */}
       <div
         style={{ display: showModal ? 'block' : 'none' }}
         className='z-20 bg-white absolute mt-72 rounded-xl shadow-md border w-1/3 text-center px-20 py-10 transition-all'

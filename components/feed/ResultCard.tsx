@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Item } from '@/types/fetchTypes'
+import { Item } from '@types/googleApiTypes'
 import { IBook } from '@/types/bookType'
 
 interface IResultCard {

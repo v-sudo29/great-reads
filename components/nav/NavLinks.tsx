@@ -12,6 +12,7 @@ const NavLinks = () => {
     <div className='flex gap-5 justify-center items-center'>
       {(session && session.user) && (
         <>
+          <Link href='/friends'>Friends</Link>
           <Link href='/feed'>Feed</Link>
           <Link href='/lists'>Lists</Link>
           <div className='flex flex-col items-center'>

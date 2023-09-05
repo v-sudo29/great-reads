@@ -27,7 +27,7 @@ const SignUp = () => {
     e.preventDefault()
 
     try {
-      const res = await fetch('/api/auth/users', {
+      const res = await fetch('/api/auth/users/sign-up', {
         method: 'POST',
         body: JSON.stringify(userInfo),
       })

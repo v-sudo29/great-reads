@@ -1,10 +1,13 @@
-import { Model, models, model } from 'mongoose'
+import { Model, models, model, SchemaDefinitionProperty } from 'mongoose'
 import { Document, Schema } from 'mongoose'
 
 interface GoogleUserDocument extends Document {
+  id?: string
+  _id?: string
   email: string
   name: string
   lists: Record<string, Record<string, Record<string, string>>[]> | {}
+  friends: SchemaDefinitionProperty[] | []
 }
 
 interface Methods {
@@ -25,6 +28,11 @@ const googleUserSchema = new Schema<GoogleUserDocument, {}, Methods>({
   lists: {
     type: Schema.Types.Mixed,
     default: {},
+    required: true
+  },
+  friends: {
+    type: [Schema.ObjectId],
+    ref: 'User',
     required: true
   }
 }, { minimize: false })
