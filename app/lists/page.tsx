@@ -3,7 +3,9 @@ import { useSession } from "next-auth/react"
 import { useRef, useState } from "react"
 import { IBook } from "@/types/bookType"
 import React from "react"
+import ListBookCard from "@components/lists/ListBookCard"
 import ListCard from "@components/lists/ListCard"
+import UpdateListNameModal from "@components/lists/UpdateListNameModal"
 
 const Lists = () => {
   const [error, setError] = useState('')
@@ -88,7 +90,7 @@ const Lists = () => {
     const booksArr = (session.user.lists as Record<string, IBook[]>)[listName]
 
     const booksJSX = booksArr.map((book, index) => 
-      <ListCard
+      <ListBookCard
         key={`${book.bookId}-${listName}-${index}`}
         book={book}
         listName={listName}  
@@ -96,23 +98,13 @@ const Lists = () => {
     )
 
       return (
-        <div
+        <ListCard
           key={`${listName}-${index}`}
-          className='flex gap-3 justify-between items-center p-3 rounded-md'
-        >
-          <div className='flex flex-col gap-5'>
-            <div className='flex w-full justify-between'>
-              <h1 className='font-medium w-full self-center text-2xl'>{listName}</h1>
-              <div className='flex gap-2'>
-                <button onClick={(e) => handleClickEdit(e)} className='general_button'>Edit</button>
-                <button onClick={(e) => handleDeleteList(e)} className={`delete_button ${listName}`}>Delete</button>
-              </div>
-            </div>
-            <div className='flex gap-4'>
-              {booksJSX}
-            </div>
-          </div>
-        </div>
+          listName={listName}
+          handleClickEdit={handleClickEdit}
+          handleDeleteList={handleDeleteList}
+          booksJSX={booksJSX}
+        />
       )
     })
   }
@@ -140,33 +132,12 @@ const Lists = () => {
       {(session && Object.keys(session.user.lists).length === 0) && <div>You don&apos;t have any lists</div> }
       
       {/* UPDATE LIST NAME MODAL */}
-      <div
-        style={{
-          display: showModal ? 'block' : 'none',
-          top: '25%',
-          left: '33.33%'
-        }}
-        className='z-20 bg-white absolute rounded-xl shadow-md w-1/3 text-center px-20 py-10 transition-all'
-      >
-        <div className='flex justify-between w-full'>
-          <h1 className='page_secondary_heading'> Update list name</h1>
-          <button onClick={() => {
-            setShowModal(false)
-            if (updatedListNameRef) {
-              const input = updatedListNameRef.current
-              if (input) input.value = ''
-            }
-          }} className='general_button'>
-            X
-          </button>
-        </div>
-        <input
-          ref={updatedListNameRef}
-          className='text_field mt-4'
-          type='text' placeholder='new list name'
-        />
-        <button onClick={handleUpdateListName} className='general_button mt-4'>Update</button>
-      </div>
+      <UpdateListNameModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        updatedListNameRef={updatedListNameRef}
+        handleUpdateListName={handleUpdateListName}
+      />
 
       {/* OVERLAY */}
       <div style={{ display: showModal ? 'block' : 'none' }} className='overlay'></div>
