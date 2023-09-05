@@ -21,7 +21,7 @@ type NewResponse = NextResponse<{user?: NewUserResponse; error?: string}>
 
 export const POST = async (req: Request): Promise<NewResponse> => {
   const body = (await req.json()) as NewUserRequest
-
+  console.log(body)
   await startDb()
   const emailExists = await User.findOne({ email: body.email })
   const googleEmailExists = await GoogleUser.findOne({ email: body.email })

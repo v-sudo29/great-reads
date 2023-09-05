@@ -38,7 +38,6 @@ const userSchema = new Schema<UserDocument, {}, Methods>({
   },
   friends: {
     type: [Schema.ObjectId],
-    ref: 'User',
     required: true
   }
 }, { minimize: false })

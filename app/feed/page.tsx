@@ -1,6 +1,6 @@
 'use client'
 
-import { FetchData, Item } from "@types/googleApiTypes"
+import { FetchData, Item } from "@/types/googleApiTypes"
 import { useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 import { IBook } from "@/types/bookType"
@@ -14,7 +14,7 @@ const Feed = () => {
   const searchRef = useRef<HTMLInputElement>(null)
 
   const { data: session, update } = useSession()
-
+  console.log(session?.user)
   let resultsCards: JSX.Element[] | null = null
   let listButtons: JSX.Element[] | null = null
 
