@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { IOtherUser, IUser } from '@/types/userTypes'
+import CurrentFriendCard from '@components/friends/CurrentFriendCard'
+import PotentialFriendCard from '@components/friends/PotentialFriendCard'
 
 interface FetchUsersType {
   users: IOtherUser[]
@@ -66,6 +68,22 @@ const Friends = () => {
     }
   }
 
+  const removeFriend = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const buttonElement = e.target as HTMLButtonElement
+    const classesArr = buttonElement.classList.value.split(' ')
+    const index = classesArr.length - 1
+    const userId = classesArr[index]
+
+    if (session) {
+      const copyUser = Object.assign({}, session.user as IUser)
+      const newFriendsArr = copyUser.friends.filter(friendId => friendId !== userId)
+
+      update({
+        friends: [...newFriendsArr]
+      })
+    }
+  }
+
   // Fetch all users
   useEffect(() => {
     if (session) fetchUsers()
@@ -74,33 +92,29 @@ const Friends = () => {
 
   // Display current friends UI
   if (session &&  friendsData && friendsData.length > 0) {
-    friendCards = friendsData.map(friend => {
-      return (
-        <div
-          key={`${friend.id}-friend-card-of-${session.user.id}`}
-          className='flex justify-between h-10 w-80'
-        >
-          <h1>{friend.name}</h1>
-          <button className='delete_button'>Remove</button>
-        </div>
-      )
-    })
+    friendCards = friendsData.map(friend => 
+      <CurrentFriendCard 
+        key={`${friend.id}-friend-card-of-${session.user.id}`}
+        friend={friend}
+        removeFriend={removeFriend}
+      />
+    )
   }
 
   // Display potential friends UI to to user
   if (usersData && session) {
     potentialCards = usersData.map(user => {
-      if (user.id === session?.user.id) return null
-      {/* TODO: Check if user is already your friend */}
-      if (session?.user.friends.filter(friend => friend.id === user.id)) return null
-      return (
-        <div
-          key={`${user.id}-potential-friend`}
-          className='flex justify-between h-10 w-80'>
-          <h1>{user.name}</h1>
+      const matchedIdsArr = session.user.friends.filter(friend => friend.id !== user.id)
 
-          <button onClick={(e) => addFriend(e)} className={`general_button ${user.id}`}>Add friend</button>
-        </div>
+      if (user.id === session?.user.id) return null
+      if (matchedIdsArr.includes(user.id)) return null
+
+      return (
+        <PotentialFriendCard
+          key={`${user.id}-potential-friend`}
+          user={user}
+          addFriend={(e) => addFriend(e)}
+        />
       )
     })
   }
@@ -117,7 +131,8 @@ const Friends = () => {
       <div className='flex flex-col items-center mt-10'>
         <h1 className='page_secondary_heading mb-5'>Potential friends</h1>
         <div className='flex flex-col gap-4'>
-          {(potentialCards && potentialCards.filter(card => card !== null).length > 0) ? potentialCards : <p>You've befriended everyone!</p>}
+          {(potentialCards && potentialCards.filter(card => card !== null).length > 0) && potentialCards}
+          {(potentialCards && !(potentialCards.filter(card => card !== null).length > 0)) && <p>You've befriended everyone!</p>}
           {alreadyAdded && <p className='text-red-500'>Already added friend!</p>}
         </div>
       </div>

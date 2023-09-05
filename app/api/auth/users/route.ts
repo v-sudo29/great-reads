@@ -39,7 +39,7 @@ export const GET = async (req: Request): Promise<NewResponse> => {
         friends: user.friends
       })
     })
-  
+    
     return NextResponse.json({
       users: [
         ...usersArr,
