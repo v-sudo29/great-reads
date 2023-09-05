@@ -1,5 +1,6 @@
 import { Model, models, model, SchemaDefinitionProperty } from 'mongoose'
 import { Document, Schema } from 'mongoose'
+import { IBook } from '@/types/bookType'
 import bcrypt from 'bcrypt'
 
 interface UserDocument extends Document {
@@ -8,7 +9,7 @@ interface UserDocument extends Document {
   email: string
   name: string
   password: string
-  lists: Record<string, Record<string, Record<string, string>>[]> | {}
+  lists: Record<string, IBook[]> | {}
   friends: SchemaDefinitionProperty[] | []
 }
 

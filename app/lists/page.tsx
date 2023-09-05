@@ -12,7 +12,6 @@ const Lists = () => {
   const [success, setSuccess] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const newListRef = useRef<HTMLInputElement>(null)
-
   const currentListNameRef = useRef<string | null>(null)
   const updatedListNameRef = useRef<HTMLInputElement>(null)
 

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Item } from '@types/googleApiTypes'
+import { Item } from '@/types/googleApiTypes'
 import { IBook } from '@/types/bookType'
 
 interface IResultCard {
@@ -14,7 +14,7 @@ const ResultCard = ({ book, setShowModal, setSelectedBook } : IResultCard ) => {
     setSelectedBook({
       bookId: book.id,
       title: book.volumeInfo.title,
-      imageLinks: book.volumeInfo.imageLinks?.thumbnail ?? '/default-book.svg',
+      imageLink: book.volumeInfo.imageLinks?.thumbnail ?? '/default-book.svg',
       authors: book.volumeInfo.authors ?? []
     })
   }

@@ -44,7 +44,8 @@ const ListBookCard = ({ book, listName } : IListCard) => {
           style={{ height: '10rem', width: '7rem' }}
         >
           <Image
-            src={book.imageLinks}
+            priority={true}
+            src={book.imageLink}
             alt={book.title + ' image cover'}
             fill={true}
             sizes='30px'

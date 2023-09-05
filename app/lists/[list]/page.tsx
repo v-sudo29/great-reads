@@ -1,10 +1,13 @@
 import React from 'react'
+import AllBookCards from '@components/lists/list-detail/AllBookCards'
 
 const ListDetail = ({ params }: { params: { list: string } }) => {
-
   return (
     <div>
-      <h1>List: {params.list}</h1>
+      <h1 className='page_heading'>{params.list}</h1>
+      <AllBookCards 
+        params={params}
+      />
     </div>
     
   )
