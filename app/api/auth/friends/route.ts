@@ -24,18 +24,19 @@ export const POST = async (req: Request): Promise<NewResponse> => {
 
   try {
     const body = (await req.json()) as FriendsRequest
+    console.log(body)
 
     // Search for user in database
     await startDb()
 
-      // Find user and retrieve credential friends
+      // Find credentials user and retrieve credential friends
       const foundUser = await User.findById(body.id)
         .populate({
           path: 'friends',
           model: 'User'
         })
         .catch(error => console.log(error))
-      
+
       // Retrieve Google friends
       const foundUserAgain: typeof foundUser = await User.findById(body.id)
         .populate({
@@ -43,10 +44,26 @@ export const POST = async (req: Request): Promise<NewResponse> => {
           model: 'GoogleUser'
         })
         .catch(error => console.log(error))
+      
+      // Find Google user and retrieve Google friends
+      const googleUser = await GoogleUser.findById(body.id)
+      .populate({
+        path: 'friends',
+        model: 'User'
+      })
+      .catch(error => console.log(error))
+
+      // Retrieve Google friends
+      const googleUserAgain: typeof googleUser = await GoogleUser.findById(body.id)
+      .populate({
+        path: 'friends',
+        model: 'GoogleUser'
+      })
+      .catch(error => console.log(error))
 
     // Retrieve friends array from user
     const friendsArr: FriendsResponse[] = []
-
+    
     if (foundUser) {
       (foundUser.friends as FriendsResponse[]).forEach(friend => {
         friendsArr.push({
@@ -58,6 +75,25 @@ export const POST = async (req: Request): Promise<NewResponse> => {
     }
     if (foundUserAgain) {
       (foundUserAgain.friends as FriendsResponse[]).forEach(friend => {
+        friendsArr.push({
+          id: friend._id ?? '',
+          name: friend.name,
+          lists: friend.lists
+        })
+      })
+    }
+
+    if (googleUser) {
+      (googleUser.friends as FriendsResponse[]).forEach(friend => {
+        friendsArr.push({
+          id: friend._id ?? '',
+          name: friend.name,
+          lists: friend.lists
+        })
+      })
+    }
+    if (googleUserAgain) {
+      (googleUserAgain.friends as FriendsResponse[]).forEach(friend => {
         friendsArr.push({
           id: friend._id ?? '',
           name: friend.name,

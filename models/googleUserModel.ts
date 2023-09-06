@@ -1,12 +1,13 @@
 import { Model, models, model, SchemaDefinitionProperty } from 'mongoose'
 import { Document, Schema } from 'mongoose'
+import { IBook } from '@/types/bookType'
 
 interface GoogleUserDocument extends Document {
   id?: string
   _id?: string
   email: string
   name: string
-  lists: Record<string, Record<string, Record<string, string>>[]> | {}
+  lists: Record<string, IBook[]> | {}
   friends: SchemaDefinitionProperty[] | []
 }
 
@@ -32,7 +33,6 @@ const googleUserSchema = new Schema<GoogleUserDocument, {}, Methods>({
   },
   friends: {
     type: [Schema.ObjectId],
-    ref: 'User',
     required: true
   }
 }, { minimize: false })

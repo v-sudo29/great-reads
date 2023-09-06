@@ -88,10 +88,12 @@ const Friends = () => {
   useEffect(() => {
     if (session) fetchUsers()
     if (session) fetchFriends()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
+  console.log(friendsData)
   // Display current friends UI
-  if (session &&  friendsData && friendsData.length > 0) {
+  if (session && friendsData && friendsData.length > 0) {
     friendCards = friendsData.map(friend => 
       <CurrentFriendCard 
         key={`${friend.id}-friend-card-of-${session.user.id}`}
@@ -132,7 +134,7 @@ const Friends = () => {
         <h1 className='page_secondary_heading mb-5'>Potential friends</h1>
         <div className='flex flex-col gap-4'>
           {(potentialCards && potentialCards.filter(card => card !== null).length > 0) && potentialCards}
-          {(potentialCards && !(potentialCards.filter(card => card !== null).length > 0)) && <p>You've befriended everyone!</p>}
+          {(potentialCards && !(potentialCards.filter(card => card !== null).length > 0)) && <p>You have befriended everyone!</p>}
           {alreadyAdded && <p className='text-red-500'>Already added friend!</p>}
         </div>
       </div>
