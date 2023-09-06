@@ -25,6 +25,7 @@ export const POST = async (req: Request): Promise<NewResponse> => {
   await startDb()
   const emailExists = await User.findOne({ email: body.email })
   const googleEmailExists = await GoogleUser.findOne({ email: body.email })
+
   if (emailExists || googleEmailExists) {
     return NextResponse.json(
       { error: 'Email is already in use' },
@@ -33,7 +34,7 @@ export const POST = async (req: Request): Promise<NewResponse> => {
   }
   
   const user = await User.create({...body })
-  console.log('SIGN UP ROUTE: ',user)
+  console.log('SIGN UP ROUTE: ', user)
   return NextResponse.json({
     user: {
       id: user._id.toString(),
@@ -45,7 +46,7 @@ export const POST = async (req: Request): Promise<NewResponse> => {
         ['Want to Read']: []
       },
       friends: [],
-      image: ''
+      imageUrl: null
     }
   })
 }

@@ -41,8 +41,10 @@ const SignIn = () => {
     } 
   }
 
+  // If session exists, redirect user to their feed
   useEffect(() => {
     if (session) router.replace('/feed')
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
   // Show nothing if session is undefined

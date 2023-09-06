@@ -11,7 +11,7 @@ interface UserDocument extends Document {
   password: string
   lists: Record<string, IBook[]> | {}
   friends: SchemaDefinitionProperty[] | []
-  image: string
+  imageUrl: string | null
   error?: string
 }
 
@@ -47,8 +47,9 @@ const userSchema = new Schema<UserDocument, {}, Methods>({
     type: [Schema.ObjectId],
     required: true
   },
-  image: {
-    type: String
+  imageUrl: {
+    type: Schema.Types.Mixed,
+    default: null
   }
 }, { minimize: false })
 

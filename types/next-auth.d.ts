@@ -10,7 +10,7 @@ declare module "next-auth" {
       lists: Record<string, IBook[]> | {},
       friends: SchemaDefinitionProperty[] | [],
       id: string
-      image: string
+      imageUrl: string | null
     } & DefaultSession["user"]
   }
 
@@ -19,7 +19,7 @@ declare module "next-auth" {
     email: string
     lists: Record<string, IBook[]> | {},
     friends: SchemaDefinitionProperty[] | []
-    image: string
+    imageUrl: string | null
   }
 }
 
@@ -28,6 +28,6 @@ declare module "next-auth/jwt" {
     id: string
     lists: Record<string, IBook[]> | {},
     friends: SchemaDefinitionProperty[] | []
-    image: string
+    imageUrl: string | null
   } 
 }
