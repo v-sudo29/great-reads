@@ -44,7 +44,8 @@ export const POST = async (req: Request): Promise<NewResponse> => {
         ['Currently Reading']: [],
         ['Want to Read']: []
       },
-      friends: []
+      friends: [],
+      image: ''
     }
   })
 }

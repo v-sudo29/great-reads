@@ -1,5 +1,5 @@
 'use client'
-import { FormEventHandler, useState , useRef} from "react"
+import { FormEventHandler, useState , useRef, useEffect} from "react"
 import { useRouter } from "next/navigation"
 import { signIn, useSession } from 'next-auth/react'
 import { GoogleButton } from "@components/form/authButtons"
@@ -24,27 +24,29 @@ const SignIn = () => {
     if (emailRef.current && passwordRef.current) {
       const email = emailRef.current.value
       const password = passwordRef.current.value
-
+      
       const res = await signIn('credentials', {
         email,
         password,
-        redirect: true
+        redirect: false
       })
-  
+
       if (res?.error) {
         setLoading(false)
+        // Set error text if credentials don't match
         setError(res.error)
+      } else {
+        setLoading(false)
       }
-      // If sign-in successful, redirect to home page
-      setLoading(false)
     } 
   }
 
+  useEffect(() => {
+    if (session) router.replace('/feed')
+  }, [session])
+
   // Show nothing if session is undefined
   if (session === undefined) return <></>
-
-  // Redirect to home page if authenticated user tries to access login modal
-  if (session) router.replace('/')
 
   // Show login form if user is not authenticated
   if (session === null) return (

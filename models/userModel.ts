@@ -12,6 +12,7 @@ interface UserDocument extends Document {
   lists: Record<string, IBook[]> | {}
   friends: SchemaDefinitionProperty[] | []
   image: string
+  error?: string
 }
 
 interface Methods {

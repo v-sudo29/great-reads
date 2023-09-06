@@ -18,7 +18,7 @@ const authOptions: AuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {},
-      async authorize(credentials, req) {
+      async authorize(credentials, req): Promise<any> {
         
         // Destructure email and password from credentials
         const { email, password } = credentials as { email: string, password: string }
@@ -160,10 +160,10 @@ const authOptions: AuthOptions = {
         return false
       }
     },
-    async redirect({ url, baseUrl }) {
-      if (url.includes('sign-in')) return baseUrl + '/feed'
-      else return baseUrl
-    }
+    // async redirect({ url, baseUrl }) {
+    //   if (url.includes('sign-in')) return baseUrl + '/feed'
+    //   else return baseUrl
+    // }
   },
   secret: process.env.NEXTAUTH_SECRET
 }
