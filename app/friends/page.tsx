@@ -91,7 +91,6 @@ const Friends = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  console.log(friendsData)
   // Display current friends UI
   if (session && friendsData && friendsData.length > 0) {
     friendCards = friendsData.map(friend => 
