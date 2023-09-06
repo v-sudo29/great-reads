@@ -16,8 +16,12 @@ const ListCard = ({ listName, handleClickEdit, handleDeleteList, booksJSX } : IL
           <div className='flex w-full justify-between'>
             <h1 className='font-medium w-full self-center text-2xl'>{listName}</h1>
             <div className='flex gap-2'>
-              <button onClick={(e) => handleClickEdit(e)} className='general_button'>Edit</button>
-              <button onClick={(e) => handleDeleteList(e)} className={`delete_button ${listName}`}>Delete</button>
+              {(listName !== 'Read' && listName !== 'Currently Reading' && listName !== 'Want to Read') &&
+              <>
+                <button onClick={(e) => handleClickEdit(e)} className='general_button'>Edit</button>
+                <button onClick={(e) => handleDeleteList(e)} className={`delete_button ${listName}`}>Delete</button>
+              </>
+              }
             </div>
           </div>
           <div className='flex gap-4'>

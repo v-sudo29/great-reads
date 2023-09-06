@@ -39,7 +39,11 @@ export const POST = async (req: Request): Promise<NewResponse> => {
       id: user._id.toString(),
       email: user.email,
       name: user.name,
-      lists: {},
+      lists: {
+        ['Read']: [],
+        ['Currently Reading']: [],
+        ['Want to Read']: []
+      },
       friends: []
     }
   })
