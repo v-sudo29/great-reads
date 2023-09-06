@@ -9,6 +9,7 @@ interface GoogleUserDocument extends Document {
   name: string
   lists: Record<string, IBook[]> | {}
   friends: SchemaDefinitionProperty[] | []
+  image: string
 }
 
 interface Methods {
@@ -38,6 +39,9 @@ const googleUserSchema = new Schema<GoogleUserDocument, {}, Methods>({
   friends: {
     type: [Schema.ObjectId],
     required: true
+  },
+  image: {
+    type: String
   }
 }, { minimize: false })
 
