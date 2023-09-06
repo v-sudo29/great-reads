@@ -28,7 +28,11 @@ const googleUserSchema = new Schema<GoogleUserDocument, {}, Methods>({
   },
   lists: {
     type: Schema.Types.Mixed,
-    default: {},
+    default: {
+      ['Read']: [Schema.Types.Mixed],
+      ['Currently Reading']: [Schema.Types.Mixed],
+      ['Want to Read']: [Schema.Types.Mixed]
+    },
     required: true
   },
   friends: {
