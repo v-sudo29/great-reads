@@ -133,7 +133,11 @@ const authOptions: AuthOptions = {
           const user = await GoogleUser.create({
             email: profile!.email,
             name: profile!.name,
-            lists: {},
+            lists: {
+              ['Read']: [],
+              ['Currently Reading']: [],
+              ['Want to Read']: []
+            },
             friends: []
           })
           return true
