@@ -35,7 +35,7 @@ const Profile = () => {
 
       // Send form data
       try {
-        const res = await fetch('/api/auth/profile/upload', {
+        const res = await fetch('/api/profile/upload', {
           method: 'POST',
           body: formData
         })

@@ -22,7 +22,7 @@ export const UserProvider = ({ children } : { children: ReactNode }) => {
   // GET request to get temporary signed image url from s3
   const fetchImage = async () => {
     try {
-      const res = await fetch('/api/auth/user/imageUrl', {
+      const res = await fetch('/api/users/user/imageUrl', {
         method: 'POST',
         body: JSON.stringify({ imageName: session && session.user.imageName})
       })

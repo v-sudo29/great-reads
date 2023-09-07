@@ -152,7 +152,7 @@ const authOptions: AuthOptions = {
 
         // If new user, create user in database
         if (!userExists) {
-          const user = await GoogleUser.create({
+          await GoogleUser.create({
             email: profile!.email,
             name: profile!.name,
             lists: {
@@ -179,10 +179,6 @@ const authOptions: AuthOptions = {
         return false
       }
     },
-    // async redirect({ url, baseUrl }) {
-    //   if (url.includes('sign-in')) return baseUrl + '/feed'
-    //   else return baseUrl
-    // }
   },
   secret: process.env.NEXTAUTH_SECRET
 }

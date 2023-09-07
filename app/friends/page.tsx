@@ -23,7 +23,7 @@ const Friends = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch('/api/auth/users/')
+      const res = await fetch('/api/users/')
       const data: FetchUsersType = await res.json()
       setUsersData(data.users)
     } catch (error) {
@@ -33,7 +33,7 @@ const Friends = () => {
 
   const fetchFriends = async () => {
     try {
-      const res = await fetch('/api/auth/friends/', {
+      const res = await fetch('/api/friends/', {
         method: 'POST',
         body: JSON.stringify({ id: session?.user.id })
       })

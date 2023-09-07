@@ -2,7 +2,8 @@ import { NextResponse, NextRequest } from "next/server"
 import crypto from 'crypto'
 import User from "@models/userModel"
 import startDb from "@lib/db"
-import { uploadFile, getObjectSignedUrl } from "@lib/s3"
+import { uploadFile, deleteFile, getObjectSignedUrl } from "@lib/s3"
+import GoogleUser from "@models/googleUserModel"
 
 type NewResponse = NextResponse<{
   error?: string
@@ -34,22 +35,15 @@ export const POST = async (req: NextRequest): Promise<NewResponse> => {
   // -----------------------------
   // Find and retrieve user info
   await startDb()
-  const userInfo = await User.findById(id)
+  const userExists = await User.findById(id)
+  const googleUserExists = await GoogleUser.findById(id)
 
-  // Update database
-  const updatedUser = new User({
-    _id: id, 
-    email: userInfo?.email,
-    name: userInfo?.name,
-    friends: userInfo?.friends,
-    lists: userInfo?.lists,
-    imageName: imageName
-  })
-  const result = await User.findByIdAndUpdate(id, updatedUser, {})
+  // Check if database has old imageName, if so then delete old image from s3
+  if (userExists?.imageName) await deleteFile(userExists.imageName)
+  if (googleUserExists?.imageName) await deleteFile(googleUserExists.imageName)
 
   // Get temporary signed url from s3
   const signedUrl = await getObjectSignedUrl(imageName)
-  console.log(signedUrl)
 
   // Return temporary image url to client
   return NextResponse.json({
