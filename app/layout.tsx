@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import Nav from '@components/nav/Nav'
 import Footer from '@components/Footer'
 import AuthProvider from '@components/AuthProvider'
+import { UserProvider } from '@context/userContext'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -12,15 +13,17 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
-      <html lang="en">
-        <body>
-          <main className='app'>
-              <Nav />
-                {children}
-              <Footer />
-          </main>
-        </body>
-      </html>
+      <UserProvider>
+        <html lang="en">
+          <body>
+            <main className='app'>
+                <Nav />
+                  {children}
+                <Footer />
+            </main>
+          </body>
+        </html>
+      </UserProvider>
     </AuthProvider>
   )
 }

@@ -2,12 +2,12 @@ import startDb from "@lib/db"
 import User from "@models/userModel"
 import GoogleUser from "@models/googleUserModel"
 import { NextResponse } from "next/server"
+import { SchemaDefinitionProperty } from "mongoose"
 
 interface NewUserRequest {
   name: string
   email: string
   password: string
-  lists: Record<string, string[]> | {}
 }
 
 interface NewUserResponse {
@@ -15,13 +15,15 @@ interface NewUserResponse {
   name: string
   email: string
   lists: Record<string, string[]> | {}
+  friends: SchemaDefinitionProperty[] | [],
+  imageName: string | null
 }
 
 type NewResponse = NextResponse<{user?: NewUserResponse; error?: string}>
 
 export const POST = async (req: Request): Promise<NewResponse> => {
   const body = (await req.json()) as NewUserRequest
-  console.log(body)
+
   await startDb()
   const emailExists = await User.findOne({ email: body.email })
   const googleEmailExists = await GoogleUser.findOne({ email: body.email })
@@ -46,7 +48,7 @@ export const POST = async (req: Request): Promise<NewResponse> => {
         ['Want to Read']: []
       },
       friends: [],
-      imageUrl: null
+      imageName: null
     }
   })
 }

@@ -3,6 +3,7 @@ import User from "@models/userModel"
 import GoogleUser from "@models/googleUserModel"
 import { NextResponse } from "next/server"
 import { SchemaDefinitionProperty } from "mongoose"
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 
 interface UserResponse {
   id: string
@@ -27,7 +28,7 @@ export const GET = async (req: Request): Promise<NewResponse> => {
         id: user._id,
         name: user.name,
         lists: user.lists,
-        friends: user.friends
+        friends: user.friends,
       })
     })
   

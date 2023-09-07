@@ -36,6 +36,11 @@
   @apply px-5 py-2 rounded-full text-sm font-medium bg-gray-500 text-white hover:bg-gray-700 transition-all
 }
 
+.general_blue_button {
+  @apply px-5 py-2 rounded-full text-sm font-medium bg-blue-950 text-white hover:bg-blue-1000 transition-all
+
+}
+
 .add_button {
   @apply px-5 py-2 rounded-full text-sm font-medium bg-green-500 text-white hover:bg-green-800 transition-all
 }
