@@ -13,6 +13,7 @@ A personal book management app built with **Next.js**.
 - Delete books or entire bookshelves as your interests change
 - Connect your Google account or register with basic credentials
 - Browse other users' bookshelves for recommendations
+- Update profile pictures
 
 ## Technology
 - [Next.js](https://nextjs.org/) for React server-side rendering and routing
@@ -21,6 +22,7 @@ A personal book management app built with **Next.js**.
 - [MongoDB](https://mongodb.com/) for flexible data modeling
 - [Google Books API](https://developers.google.com/books) to expand library discovery
 - [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [AWS S3](https://aws.amazon.com/s3/) for cloud storage of profile pictures
 
 ## What I Learned
 - How to **implement OAuth login flow** with Next-Auth for social authentication
