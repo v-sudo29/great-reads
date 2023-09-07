@@ -10,6 +10,7 @@ interface GoogleUserDocument extends Document {
   lists: Record<string, IBook[]> | {}
   friends: SchemaDefinitionProperty[] | []
   imageName: string | null
+  defaultImage?: string
 }
 
 interface Methods {
@@ -43,6 +44,10 @@ const googleUserSchema = new Schema<GoogleUserDocument, {}, Methods>({
   imageName: {
     type: Schema.Types.Mixed,
     default: null
+  },
+  defaultImage: {
+    type: String,
+    required: true
   }
 }, { minimize: false })
 

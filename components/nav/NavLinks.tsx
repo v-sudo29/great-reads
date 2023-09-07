@@ -3,14 +3,16 @@ import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
+import { useUser } from "@context/userContext"
 
 const NavLinks = () => {
   const router = useRouter()
   const { data: session } = useSession()
+  const { imageUrl, loading } = useUser()
 
   return (
     <div className='flex gap-5 justify-center items-center'>
-      {(session && session.user) && (
+      {(session && !loading) && (
         <>
           <Link href='/friends'>Friends</Link>
           <Link href='/feed'>Feed</Link>
@@ -18,7 +20,14 @@ const NavLinks = () => {
           <div className='flex flex-col items-center'>
             <Link href='/profile'>
               <Image
-                src={session.user?.image ? `${session.user?.image}` : '/../default-profile-pic.svg'}
+                src={
+                  // If user has imageName -- display imageUrl
+                  (session.user.imageName && imageUrl) ? `${imageUrl}` :
+                  // Else if user has defaultImage -- display defaultImage
+                    session.user.defaultImage ? `${session.user.defaultImage}` :
+                  // Else if user has none, display default profile pic
+                     '/../default-profile-pic.svg'
+                }
                 priority={true}
                 alt='Profile picture'
                 width={35}

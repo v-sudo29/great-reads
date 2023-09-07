@@ -56,7 +56,7 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, session, trigger }) {
-      console.log('JWT CALLBACK: ', { token, user, session})
+      // console.log('JWT CALLBACK: ', { token, user, session})
       // If user updates NAME, update token and database
       if (trigger === 'update' && session?.name) {
         token.name = session.name
@@ -117,12 +117,13 @@ const authOptions: AuthOptions = {
       if (user?.id && /^\d+$/.test(user.id)) {
         const { email } = user
         const foundUser = await GoogleUser.findOne({ email })
-
+        console.log('GOOGLE USER!!!')
         if (foundUser?._id) {
           token.id = foundUser._id
           token.lists = foundUser.lists
           token.friends = foundUser.friends
           token.imageName = foundUser.imageName
+          token.defaultImage = foundUser.defaultImage
         }
       }
 
@@ -137,6 +138,7 @@ const authOptions: AuthOptions = {
         session.user.lists = token.lists
         session.user.friends = token.friends
         session.user.imageName = token.imageName
+        session.user.defaultImage = token.defaultImage
       }
       return session
     }, 
@@ -146,7 +148,8 @@ const authOptions: AuthOptions = {
         // Connect to database
         await startDb()
         const userExists = await GoogleUser.findOne({ email: profile.email }).lean()
-        console.log('SIGNIN CALLBACK: ', profile)
+        // console.log('SIGNIN CALLBACK: ', profile)
+
         // If new user, create user in database
         if (!userExists) {
           const user = await GoogleUser.create({
@@ -158,7 +161,8 @@ const authOptions: AuthOptions = {
               ['Want to Read']: []
             },
             friends: [],
-            imageName: (profile as GoogleProfile)!.picture
+            imageName: null,
+            defaultImage: (profile as GoogleProfile)!.picture
           })
           return true
         } 

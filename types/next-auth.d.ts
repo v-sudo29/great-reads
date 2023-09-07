@@ -11,6 +11,7 @@ declare module "next-auth" {
       friends: SchemaDefinitionProperty[] | [],
       id: string
       imageName: string | null
+      defaultImage?: string
     } & DefaultSession["user"]
   }
 
@@ -20,6 +21,7 @@ declare module "next-auth" {
     lists: Record<string, IBook[]> | {},
     friends: SchemaDefinitionProperty[] | []
     imageName: string | null
+    defaultImage?: string
   }
 }
 
@@ -29,5 +31,6 @@ declare module "next-auth/jwt" {
     lists: Record<string, IBook[]> | {},
     friends: SchemaDefinitionProperty[] | []
     imageName: string | null
+    defaultImage?: string
   } 
 }

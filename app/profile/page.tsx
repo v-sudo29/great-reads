@@ -11,7 +11,7 @@ const Profile = () => {
   const updateNameRef = useRef<HTMLInputElement>(null)
   const { data: session, update } = useSession()
   const router = useRouter()
-  const { imageUrl, setImageUrl } = useUser()
+  const { imageUrl, setImageUrl, loading } = useUser()
   
   useEffect(() => {
     if (session === null) router.push('/')
@@ -60,14 +60,26 @@ const Profile = () => {
   if (session) return (
     <div className='flex flex-col items-center p-2'>
       <h1 className='page_heading'><b>{session.user ? `${session.user.name}'s` : 'my'}</b> profile</h1>
-      <Image
-        className='mt-5'
-        src={session.user?.imageName && imageUrl ? `${imageUrl}` : '/../default-profile-pic.svg'}
-        priority={true}
-        alt='Profile picture'
-        width={100}
-        height={40}
-      />
+        <div style={{ width: '100px', height: '100px'}}>
+          {!loading && 
+            <Image
+              className='mt-5'
+              src={
+                // If user has imageName -- display imageUrl
+                (session.user.imageName && imageUrl) ? `${imageUrl}` :
+                // Else if user has defaultImage -- display defaultImage
+                  session.user.defaultImage ? `${session.user.defaultImage}` :
+                // Else if user has none, display default profile pic
+                  '/../default-profile-pic.svg'
+              }
+              alt='Profile picture'
+              priority={true}
+              width={100}
+              height={100}
+              style={{ height: 'auto' }}
+            />
+          }
+        </div>
       <div className='flex flex-col gap-4 mt-10'>
         {/* Update full name */}
         <div>
