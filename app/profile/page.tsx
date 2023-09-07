@@ -4,14 +4,14 @@ import { useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import React from "react"
-import { useUser } from "@context/userContext"
+import { useProfileImage } from "@context/ProfileImageProvider"
 
 const Profile = () => {
   const [file, setFile] = useState<File | null>(null)
   const updateNameRef = useRef<HTMLInputElement>(null)
   const { data: session, update } = useSession()
   const router = useRouter()
-  const { imageUrl, setImageUrl, loading } = useUser()
+  const { imageUrl, setImageUrl, loading } = useProfileImage()
   
   useEffect(() => {
     if (session === null) router.push('/')

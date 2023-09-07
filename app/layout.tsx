@@ -2,8 +2,8 @@ import '@styles/globals.css'
 import type { Metadata } from 'next'
 import Nav from '@components/nav/Nav'
 import Footer from '@components/Footer'
-import AuthProvider from '@components/AuthProvider'
-import { UserProvider } from '@context/userContext'
+import AuthProvider from '@context/AuthProvider'
+import { ProfileImageProvider } from '@context/ProfileImageProvider'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
-      <UserProvider>
+      <ProfileImageProvider>
         <html lang="en">
           <body>
             <main className='app'>
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </main>
           </body>
         </html>
-      </UserProvider>
+      </ProfileImageProvider>
     </AuthProvider>
   )
 }

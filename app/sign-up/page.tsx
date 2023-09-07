@@ -18,7 +18,6 @@ const SignUp = () => {
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value } = target
-
     setUserInfo({ ...userInfo, [name]: value })
   }
 
@@ -37,7 +36,7 @@ const SignUp = () => {
       if (!data.error) setError('')
       
       // Redirect to login page
-      router.replace('/api/auth/sign-in')
+      router.replace('/sign-in')
       
     } catch (error) {
       console.log(error)

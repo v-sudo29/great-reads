@@ -1,14 +1,14 @@
 'use client'
 import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { useProfileImage } from "@context/ProfileImageProvider"
 import Link from "next/link"
 import Image from "next/image"
-import { useUser } from "@context/userContext"
 
 const NavLinks = () => {
   const router = useRouter()
   const { data: session } = useSession()
-  const { imageUrl, loading } = useUser()
+  const { imageUrl, loading } = useProfileImage()
 
   return (
     <div className='flex gap-5 justify-center items-center'>

@@ -2,19 +2,19 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 
-interface IUserContext {
+interface IProfileImageContext {
   imageUrl: string | null | undefined
   setImageUrl: React.Dispatch<React.SetStateAction<string | null>>
   loading: boolean
 }
 
-const UserContext = createContext<IUserContext>({} as IUserContext)
+const ProfileImageContext = createContext<IProfileImageContext>({} as IProfileImageContext)
 
-export const useUser = () => {
-  return useContext(UserContext)
+export const useProfileImage = () => {
+  return useContext(ProfileImageContext)
 }
 
-export const UserProvider = ({ children } : { children: ReactNode }) => {
+export const ProfileImageProvider = ({ children } : { children: ReactNode }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const { data: session } = useSession()
@@ -48,8 +48,8 @@ export const UserProvider = ({ children } : { children: ReactNode }) => {
   const userObject = { imageUrl, setImageUrl, loading }
 
   return (
-    <UserContext.Provider value={userObject}>
+    <ProfileImageContext.Provider value={userObject}>
       {children}
-    </UserContext.Provider>
+    </ProfileImageContext.Provider>
   )
 }
