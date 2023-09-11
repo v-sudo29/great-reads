@@ -58,6 +58,7 @@ const Lists = () => {
   }
 
   const handleClickEdit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
     setShowModal(true)
     const buttonElement = e.target as HTMLButtonElement
     const headingElement = (buttonElement.parentElement as HTMLDivElement).previousSibling as HTMLHeadingElement
