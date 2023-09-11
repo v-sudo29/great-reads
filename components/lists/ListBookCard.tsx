@@ -13,11 +13,12 @@ const ListBookCard = ({ book, listName } : IListCard) => {
   const { data: session, update } = useSession()
 
   const handleDeleteBook = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
     const buttonElement = e.target as HTMLButtonElement
     const parentDiv = buttonElement.parentElement?.parentElement as HTMLDivElement
     const classesArr = parentDiv.classList.value.split(' ')
     const selectedBookId = classesArr[classesArr.length - 1]
-
+  
     if (session) {
       const copyLists = Object.assign({}, session.user.lists as Record<string, IBook[]>)
 
@@ -25,6 +26,7 @@ const ListBookCard = ({ book, listName } : IListCard) => {
       const updatedLists = copyLists[listName].filter(book => book.bookId !== selectedBookId)
       copyLists[listName] = updatedLists
 
+      console.log(copyLists)
       // Update lists in session
       update({
         lists: Object.assign({}, copyLists)
