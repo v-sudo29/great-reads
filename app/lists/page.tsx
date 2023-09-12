@@ -27,7 +27,7 @@ const Lists = () => {
       
       const newListObj = { [newListRef.current.value]: [] }
 
-      update({ 
+      await update({ 
         lists: Object.assign({}, session.user.lists, newListObj)
       })
 
@@ -129,6 +129,8 @@ const Lists = () => {
           {lists}
         </div>
       }
+      
+      {/* Display default text if users don't have lists */}
       {(session && Object.keys(session.user.lists).length === 0) && <div>You don&apos;t have any lists</div> }
       
       {/* UPDATE LIST NAME MODAL */}

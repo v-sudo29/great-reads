@@ -2,9 +2,9 @@
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
+import { useProfileImage } from "@context/ProfileImageProvider"
 import Image from "next/image"
 import React from "react"
-import { useProfileImage } from "@context/ProfileImageProvider"
 
 const Profile = () => {
   const [file, setFile] = useState<File | null>(null)
@@ -13,8 +13,9 @@ const Profile = () => {
   const router = useRouter()
   const { imageUrl, setImageUrl, loading } = useProfileImage()
   
+  // If user not logged in, redirect to login page
   useEffect(() => {
-    if (session === null) router.push('/')
+    if (session === null) router.push('/sign-in')
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 

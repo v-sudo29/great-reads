@@ -1,9 +1,16 @@
+'use client'
+
 import { signIn } from "next-auth/react"
 import { FcGoogle } from "react-icons/fc"
+import { useState } from "react"
 
-export const GoogleButton = ({ loading, text } : { loading: boolean, text: string }) => {
+export const GoogleButton = ({ text } : { text: string }) => {
+  const [loading, setLoading] = useState(false)
+
   const handleClick = async () => {
+    setLoading(true)
     await signIn('google', { redirect: true, callbackUrl: 'http://localhost:3000/' })
+    setLoading(false)
   }
 
   return (
