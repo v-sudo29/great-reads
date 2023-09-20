@@ -28,7 +28,7 @@ A personal book management app built with **Next.js**.
 - How to **implement OAuth login flow** with Next-Auth for social authentication
 - How to **implement credentials-based authentication** with username/password registration and login
 - How to structure React applications with Next.js for **maximum performance** on subsequent requests
-- Lessons in **accessibility, responsiveness, and performance optimization** using Tailwind CSS
+- The advantages of a **utility-first CSS** framework like Tailwind CSS for rapid prototyping and ease of consistent implementation across large codebases
 
 ## Getting Started
 First, run the development server:
