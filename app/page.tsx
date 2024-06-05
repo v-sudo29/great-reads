@@ -34,7 +34,7 @@ const ButtonLinks = ({
 
 export default function Home() {
   return (
-    <section className='pt-[60px] px-[43px]'>
+    <section className='pt-[60px] px-[12px] h-full'>
       <div>
         <Image
           src='/great-reads-hero-image.png'

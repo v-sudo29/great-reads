@@ -20,9 +20,9 @@ export default function RootLayout({
       <ProfileImageProvider>
         <html lang="en">
           <body>
-            <main className='app bg-[#F9FBFC]'>
+            <main className='app bg-[#F9FBFC] h-screen'>
                 <Nav />
-                  {children}
+                {children}
                 <Footer />
             </main>
           </body>
