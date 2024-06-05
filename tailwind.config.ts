@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss'
-import colors from 'tailwindcss/colors'
 
 const config: Config = {
   content: [
@@ -13,8 +12,14 @@ const config: Config = {
         blue: {
           950: '#3C86FF',
           1000: '#3376E2'
-        }
+        },
+        primary: '#53675D'
       },
+      fontFamily: {
+        'lora': ['Lora', 'serif'],
+        'montserrat': ['Montserrat', 'serif'],
+        'rubik': ['Rubik', 'serif']
+      }
     },
   },
   plugins: [],
