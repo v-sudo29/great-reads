@@ -1,11 +1,15 @@
 'use client'
 
-import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { IBook } from '@/types/bookType'
 
-const AddBookModal = ({ selectedBook } : { selectedBook: IBook | null }) => {
-  const [showModal, setShowModal] = useState(false)
+interface IAddBookModal {
+  selectedBook: IBook | null,
+  showModal: boolean,
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const AddBookModal = ({ selectedBook, showModal, setShowModal } : IAddBookModal) => {
   const { data: session, update } = useSession()
   let listButtons: JSX.Element[] | null = null
   

@@ -5,9 +5,7 @@ const ListDetail = ({ params }: { params: { list: string } }) => {
   return (
     <div>
       <h1 className='page_heading'>{params.list.replaceAll(/_/g, ' ')}</h1>
-      <AllBookCards 
-        params={params}
-      />
+      <AllBookCards params={params}/>
     </div>    
   )
 }
