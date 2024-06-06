@@ -25,7 +25,9 @@ const SignIn = () => {
       <SignInForm/>
       <Separator/>
       <div>
-        <GoogleButton text={'Sign in with Google'}/>
+        <GoogleButton>
+          Sign-in
+        </GoogleButton>
       </div>
     </div>
   )
