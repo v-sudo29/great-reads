@@ -1,36 +1,5 @@
 import Image from "next/image"
-import { ReactNode } from "react"
-
-interface ButtonLinkProps {
-  href: string
-  className?: string
-  children: ReactNode
-  type: 'primary' | 'secondary'
-}
-
-const ButtonLinks = ({
-  href,
-  className,
-  children,
-  type
-} : ButtonLinkProps & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-  const defaultStyles = 'rounded-full font-rubik font-medium px-8 py-[10px]'
-  
-  const typeStyles = 
-    type === 'primary' ?
-    'bg-primary text-[#F5F5F5]' :
-    type === 'secondary' ?
-      'text-primary border border-[#A9B3AE]' :
-    ''
-  return (
-    <a
-      href={href}
-      className={defaultStyles + ' ' + typeStyles + ' ' + className}
-    >
-      {children}
-    </a>
-  )
-}
+import ButtonLink from "@components/common/ButtonLink"
 
 export default function Home() {
   return (
@@ -53,18 +22,20 @@ export default function Home() {
         </p>
       </div>
       <div className='flex gap-2'>
-        <ButtonLinks
+        <ButtonLink
           href='/sign-up'
           type='secondary'
+          bordersRounded={true}
         >
           Create Account
-        </ButtonLinks>
-        <ButtonLinks
+        </ButtonLink>
+        <ButtonLink
           href='/sign-in'
           type='primary'
+          bordersRounded={true}
         >
           Sign In
-        </ButtonLinks>
+        </ButtonLink>
       </div>
     </section>
   )

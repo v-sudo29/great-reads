@@ -5,17 +5,9 @@ import Logo from './Logo'
 import HomeIcon from './icons/HomeIcon'
 import ProfileIcon from './icons/ProfileIcon'
 import FriendsListIcon from './icons/FriendsListIcon'
-import NavLinks from './NavLinks'
-
-const HamburgerIcon = () => {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M6 12H18" stroke="#53675D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M4 6H20" stroke="#53675D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M4 18H20" stroke="#53675D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  )
-}
+import HamburgerIcon from './icons/HamburgerIcon'
+import PlusIcon from './icons/PlusIcon'
+import ButtonLink from '@components/common/ButtonLink'
 
 interface SidebarNavLinkProps {
   href: string
@@ -69,7 +61,7 @@ const MobileSidebar = ({ isMobileSidebarOpen } : { isMobileSidebarOpen: boolean 
             </li>
             <li>
               <SidebarNavLink
-                href='/'
+                href='/friends'
                 icon={<FriendsListIcon />}
               >
                 Friends List
@@ -77,6 +69,38 @@ const MobileSidebar = ({ isMobileSidebarOpen } : { isMobileSidebarOpen: boolean 
             </li>
           </ul>
         </nav>
+        {/* LINE DIVIDER */}
+        <div className='w-full border-b pt-4 mb-4'></div>
+        <div className='flex items-center justify-between px-3 py-3'>
+          <div className='flex gap-2 font-montserrat font-bold'>
+            <p className='text-primary'>My Lists</p>
+            <span className='flex items-center w-8 text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>3</span>
+          </div>
+          <div>
+            <PlusIcon/>
+          </div>
+        </div>
+        <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2'>
+          Sign in to add books to your list!
+        </p>
+        <div className='flex flex-col gap-2 mt-2'>
+          <ButtonLink
+            href='/'
+            type='primary'
+            bordersRounded={true}
+            className='flex w-full justify-center'
+          >
+            Sign In
+          </ButtonLink>
+          <ButtonLink
+            href='/'
+            type='secondary'
+            bordersRounded={true}
+            className='flex w-full justify-center'
+          >
+            Create Account
+          </ButtonLink>
+        </div>
       </div>
     </div>
   )
