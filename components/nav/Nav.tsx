@@ -73,12 +73,15 @@ const MobileSidebar = ({ isMobileSidebarOpen } : { isMobileSidebarOpen: boolean 
         <div className='w-full border-b pt-4 mb-4'></div>
         <div className='flex items-center justify-between px-3 py-3'>
           <div className='flex gap-2 font-montserrat font-bold'>
-            <p className='text-primary'>My Lists</p>
-            <span className='flex items-center w-8 text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>3</span>
+            <p className='text-primary'>
+              My Lists
+            </p>
+            {/* TODO: Uncomment when implementing session check logic */}
+            {/* <span className='flex items-center w-8 text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>3</span> */}
           </div>
-          <div>
+          <button>
             <PlusIcon/>
-          </div>
+          </button>
         </div>
         <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2'>
           Sign in to add books to your list!
