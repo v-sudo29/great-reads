@@ -11,8 +11,9 @@ const SignUpForm = () => {
     password: ''
   })
   const { name, email, password } = userInfo
-
   const router = useRouter()
+  const formLabelStyles = 'font-montserrat font-medium text-[14px] text-[#344054]'
+  const formTextInputStyles = 'border border-[#D0D5DD] rounded-[4px] h-11 px-[14px] py-[10px] placeholder:italic placeholder:font-normal placeholder:text-[#A4B1B8]'
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value } = target
@@ -45,52 +46,78 @@ const SignUpForm = () => {
 
   return (
     <form className='form' onSubmit={handleSubmit}>
-      <div>
-        <h1 className='text-2xl font-semibold'>Sign Up</h1>
-        <span className='text-sm font-normal'>And discover your next favorite book</span>
+      <div className='font-montserrat'>
+        <h1 className='text-[18px] text-[#101828] font-semibold leading-[28px]'>
+          Create an account
+        </h1>
+        <p className='text-[14px] font-medium text-[#475467] mt-[2px]'>
+          Sign up with Google or an email address
+        </p>
       </div>
-      {error.length > 0 && <p className='text-red-500 font-sm'>{error}</p>}
-      <div>
-        <label className="text_field_label" htmlFor="name">Name</label>
+      {error.length > 0 && (
+        <p className='text-red-500 font-sm'>
+          {error}
+        </p>
+      )}
+      <div className='flex flex-col gap-[6px]'>
+        <label
+          className={formLabelStyles}
+          htmlFor='name'
+        >
+          Name*
+        </label>
         <input
-          className="text_field"
-          type="text" 
-          name="name" 
+          className={formTextInputStyles}
+          type='text'
+          name='name'
+          placeholder='Name'
           value={name}
           onChange={handleChange}
         />
       </div>
 
-      <div>
-        <label className="text_field_label" htmlFor="email">Email</label>
+      <div className='flex flex-col gap-[6px]'>
+        <label
+          className={formLabelStyles}
+          htmlFor='email'
+        >
+          Email*
+        </label>
         <input
-          className="text_field"
-          type="email"
-          name="email"
+          className={formTextInputStyles}
+          type='email'
+          name='email'
+          placeholder='Email Address'
           value={email}
           onChange={handleChange}
         />
       </div>
 
-      <div>
-        <label className="text_field_label" htmlFor="password">Password</label>
+      <div className='flex flex-col gap-[6px]'>
+        <label
+          className={formLabelStyles}
+          htmlFor="password"
+        >
+          Password*
+        </label>
         <input
-          className="text_field"
-          type="password"
-          name="password"
+          className={formTextInputStyles}
+          type='password'
+          name='password'
+          placeholder='Password'
           value={password}
           onChange={handleChange}
-          autoComplete="off"
+          autoComplete='off'
         />
       </div>
 
       <button
-        className="form_submit_button"
+        className='font-montserrat font-semibold text-[14px] leading-[24px] h-11 rounded-[4px] bg-primary text-white mt-2'
         type="submit"
         disabled={loading}
         style={{ opacity: loading ? 0.5 : 1 }}
       >
-        Sign Up
+        Complete Sign Up
       </button>
     </form>
   )

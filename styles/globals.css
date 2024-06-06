@@ -3,11 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tailwind Styles */
-.app {
-  @apply min-h-screen flex flex-col items-center
+html, * {
+  box-sizing: border-box;
 }
 
+/* Tailwind Styles */
 .page_heading {
   @apply text-3xl font-medium m-2 text-center
 }
