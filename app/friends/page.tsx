@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { IOtherUser, IUser } from '@/types/userTypes'
+import { IOtherUser, IUser } from '@customTypes/userTypes'
 import CurrentFriendCard from '@components/friends/CurrentFriendCard'
 import PotentialFriendCard from '@components/friends/PotentialFriendCard'
 

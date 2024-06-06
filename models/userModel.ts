@@ -1,6 +1,6 @@
 import { Model, models, model, SchemaDefinitionProperty } from 'mongoose'
 import { Document, Schema } from 'mongoose'
-import { IBook } from '@/types/bookType'
+import { IBook } from '@customTypes/bookType'
 import bcrypt from 'bcrypt'
 
 interface UserDocument extends Document {

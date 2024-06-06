@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { IBook } from '@/types/bookType'
+import { IBook } from '@customTypes/bookType'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 

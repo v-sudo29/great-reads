@@ -1,7 +1,7 @@
 'use client'
 import { useSession } from "next-auth/react"
 import { useRef, useState } from "react"
-import { IBook } from "@/types/bookType"
+import { IBook } from "@customTypes/bookType"
 import React from "react"
 import ListBookCard from "@components/lists/ListBookCard"
 import ListCard from "@components/lists/ListCard"

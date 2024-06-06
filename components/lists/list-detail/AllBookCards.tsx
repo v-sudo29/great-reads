@@ -3,7 +3,7 @@
 import React from 'react'
 import BookCard from './BookCard'
 import { useSession } from 'next-auth/react'
-import { IBook } from '@/types/bookType'
+import { IBook } from '@customTypes/bookType'
 
 const AllBookCards = ({ params } : { params: { list: string } }) => {
   const { data: session } = useSession()

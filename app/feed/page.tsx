@@ -1,9 +1,9 @@
 'use client'
 
-import { FetchData, Item } from "@/types/googleBooksApiTypes"
+import { FetchData, Item } from "@customTypes/googleBooksApiTypes"
 import { useRef, useState } from "react"
 import { useSession } from "next-auth/react"
-import { IBook } from "@/types/bookType"
+import { IBook } from "@customTypes/bookType"
 import ResultCard from "@components/feed/ResultCard"
 import AddBookModal from "@components/feed/AddBookModal"
 import SearchResults from "@components/feed/SearchResults"

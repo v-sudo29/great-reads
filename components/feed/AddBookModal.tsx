@@ -1,7 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { IBook } from '@/types/bookType'
+import { IBook } from '@customTypes/bookType'
 
 interface IAddBookModal {
   selectedBook: IBook | null,

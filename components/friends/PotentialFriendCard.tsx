@@ -1,5 +1,5 @@
 import React from 'react'
-import { IOtherUser } from '@/types/userTypes'
+import { IOtherUser } from '@customTypes/userTypes'
 
 interface IPotentialFriendCard {
   user: IOtherUser,

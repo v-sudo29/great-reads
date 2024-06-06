@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import { IBook } from '@/types/bookType'
+import { IBook } from '@customTypes/bookType'
 
 interface IListDetailBookCard {
   book: IBook,

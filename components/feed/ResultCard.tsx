@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import { Item } from '@types/googleBooksApiTypes'
-import { IBook } from '@/types/bookType'
+import { Item } from '@customTypes/googleBooksApiTypes'
+import { IBook } from '@customTypes/bookType'
 
 interface IResultCard {
   book: Item,

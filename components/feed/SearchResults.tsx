@@ -1,7 +1,7 @@
 'use client'
 
-import { Item } from '@/types/googleBooksApiTypes'
-import { IBook } from '@/types/bookType'
+import { Item } from '@customTypes/googleBooksApiTypes'
+import { IBook } from '@customTypes/bookType'
 import ResultCard from './ResultCard'
 
 interface ISearchResults {
