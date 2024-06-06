@@ -85,7 +85,7 @@ const MobileSidebar = ({ isMobileSidebarOpen } : { isMobileSidebarOpen: boolean 
         </p>
         <div className='flex flex-col gap-2 mt-2'>
           <ButtonLink
-            href='/'
+            href='/sign-in'
             type='primary'
             bordersRounded={true}
             className='flex w-full justify-center'
@@ -93,7 +93,7 @@ const MobileSidebar = ({ isMobileSidebarOpen } : { isMobileSidebarOpen: boolean 
             Sign In
           </ButtonLink>
           <ButtonLink
-            href='/'
+            href='/sign-up'
             type='secondary'
             bordersRounded={true}
             className='flex w-full justify-center'
