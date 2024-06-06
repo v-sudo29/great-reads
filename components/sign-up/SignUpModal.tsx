@@ -16,6 +16,14 @@ const SignUpModal = () => {
         <GoogleButton>
           Continue with Google
         </GoogleButton>
+        <div className='flex justify-center py-3'>
+          <a
+            className='font-montserrat font-semibold text-[14px] text-[#212925] underline leading-[24px]'
+            href="/sign-in"
+          >
+            I already have an account!
+          </a>
+        </div>
       </div>
     </div>
   )
