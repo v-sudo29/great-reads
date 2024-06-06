@@ -14,24 +14,28 @@ const HamburgerIcon = () => {
   )
 }
 
-const MobileSidebar = () => {
+const MobileSidebar = ({ isMobileSidebarOpen } : { isMobileSidebarOpen: boolean }) => {
+  const sidebarStyles = isMobileSidebarOpen ? 'translate-x-0' : 'translate-x-[-381px]'
   return (
-    <div className='fixed min-w-[318px] self-start min-h-screen bg-[#F9FBFC] border border-r-[#DFE7EB]'> 
-
+    <div className={sidebarStyles + ' ' + 'fixed min-w-[318px] self-start min-h-screen bg-[#F9FBFC] border border-r-[#DFE7EB] transition-transform'}> 
     </div>
   )
 }
 
 interface OverlayProps {
+  isMobileSidebarOpen: boolean
   setIsMobileSidebarOpen : React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Overlay = ({ setIsMobileSidebarOpen } : OverlayProps) => {
+const Overlay = ({
+  isMobileSidebarOpen,
+  setIsMobileSidebarOpen
+} : OverlayProps) => {
+  const overlayActiveStyles = isMobileSidebarOpen ? 'opacity-50 pointer-events-auto' : 'opacity-0 pointer-events-none'
   const handleOverlayClick = () => setIsMobileSidebarOpen(false)
-  
   return (
     <div
-      className='fixed w-full min-h-screen bg-black opacity-30'
+      className={overlayActiveStyles + ' ' + 'fixed w-full min-h-screen bg-black transition-opacity'}
       onClick={handleOverlayClick}
     >
     </div>
@@ -54,14 +58,13 @@ export default function Nav() {
         </div>
         <Logo />
       </nav>
-      {isMobileSidebarOpen && (
-        <>  
-          <Overlay
-            setIsMobileSidebarOpen={setIsMobileSidebarOpen}
-          />
-          <MobileSidebar />
-        </>
-      )}
+      <Overlay
+        isMobileSidebarOpen={isMobileSidebarOpen}
+        setIsMobileSidebarOpen={setIsMobileSidebarOpen}
+      />
+      <MobileSidebar
+        isMobileSidebarOpen={isMobileSidebarOpen}
+      />
     </>
   )
 }
