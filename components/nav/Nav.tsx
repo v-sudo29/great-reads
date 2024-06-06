@@ -4,7 +4,7 @@ import { useState } from 'react'
 import MobileSidebar from './MobileSidebar'
 import Overlay from '@components/common/Overlay'
 import Logo from './Logo'
-import HamburgerIcon from './icons/HamburgerIcon'
+import HamburgerIcon from '../common/icons/HamburgerIcon'
 
 export default function Nav() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
@@ -14,7 +14,7 @@ export default function Nav() {
   
   return (
     <>
-      <nav className="h-[3.5rem] flex w-screen items-center justify-between px-5 py-3 border-b border-b-[#DFE7EB]">
+      <nav className="relative h-[3.5rem] flex w-screen items-center justify-between px-5 py-3 border-b border-b-[#DFE7EB]">
         <div
           className='cursor-pointer'
           onClick={handleHamburgerIconClick}

@@ -1,10 +1,10 @@
 import { ReactNode } from "react"
 import Logo from "./Logo"
 import ButtonLink from "@components/common/ButtonLink"
-import FriendsListIcon from "./icons/FriendsListIcon"
-import HomeIcon from "./icons/HomeIcon"
-import PlusIcon from "./icons/PlusIcon"
-import ProfileIcon from "./icons/ProfileIcon"
+import FriendsListIcon from "../common/icons/FriendsListIcon"
+import HomeIcon from "../common/icons/HomeIcon"
+import PlusIcon from "../common/icons/PlusIcon"
+import ProfileIcon from "../common/icons/ProfileIcon"
 
 interface SidebarNavLinkProps {
   href: string
