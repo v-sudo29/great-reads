@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -61,4 +62,31 @@
 
 .overlay {
   @apply z-10 top-0 left-0 fixed min-h-screen min-w-full bg-gray-800 opacity-40 transition-all
+}
+
+.mobileOverlayActive {
+  background-color: black;
+  animation: display-overlay 0.250s forwards;
+}
+
+.mobileSidebar {
+  animation: sidebar-flyin 0.150s forwards;
+}
+
+@keyframes display-overlay {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 30%;
+  }
+}
+
+@keyframes sidebar-flyin {
+  from {
+    transform: translate(-200px, 0px);
+  }
+  to {
+    transform: translate(0px, 0px);
+  }
 }
