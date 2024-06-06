@@ -21,7 +21,13 @@ const nextConfig = {
         hostname: 'great-reads-bucket.s3.us-west-1.amazonaws.com',
         port: '',
         pathname: '/**'
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'great-reads.onrender.com',
+        port: '',
+        pathname: '/__next/**',
+      },
     ],
   },
 }
