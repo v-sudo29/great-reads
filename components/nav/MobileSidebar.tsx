@@ -30,7 +30,13 @@ const SidebarNavLink = ({
   )
 }
 
-const MobileSidebar = ({ isMobileSidebarOpen } : { isMobileSidebarOpen: boolean }) => {
+const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
+
+const MobileSidebar = ({
+  isMobileSidebarOpen
+} : {
+  isMobileSidebarOpen: boolean
+}) => {
   const sidebarStyles = isMobileSidebarOpen ? '' : 'transform translate-x-[-381px]'
   return (
     <div className={sidebarStyles + ' ' + 'fixed min-w-[318px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
@@ -66,8 +72,7 @@ const MobileSidebar = ({ isMobileSidebarOpen } : { isMobileSidebarOpen: boolean 
             </li>
           </ul>
         </nav>
-        {/* LINE DIVIDER */}
-        <div className='w-full border-b pt-4 mb-4'></div>
+        <LineDivider />
         <div className='flex items-center justify-between px-3 py-3'>
           <div className='flex gap-2 font-montserrat font-bold'>
             <p className='text-primary'>
