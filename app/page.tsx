@@ -1,12 +1,13 @@
 import Image from "next/image"
 import ButtonLink from "@components/common/ButtonLink"
+import heroImage from "@public/great-reads-hero-image.png"
 
 export default function Home() {
   return (
     <section className='pt-[60px] px-[12px] h-full'>
       <div>
         <Image
-          src='/great-reads-hero-image.png'
+          src={heroImage}
           width='304'
           height='222'
           alt=''
