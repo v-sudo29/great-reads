@@ -7,7 +7,7 @@ export default function Home() {
     <section className='pt-[60px] px-[12px] h-full'>
       <div>
         <Image
-          src={heroImage}
+          src='/great-reads-hero-image.png'
           width='304'
           height='222'
           alt=''
