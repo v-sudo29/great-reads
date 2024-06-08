@@ -15,7 +15,7 @@ const ButtonLink = ({
   type,
   bordersRounded
 } : ButtonLinkProps & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-  const defaultStyles = 'font-rubik font-medium px-8 py-[10px]'
+  const defaultStyles = 'font-rubik font-medium px-8 py-[10px] leading-[20px] xl:text-[20px] xl:py-4'
   const borderStyles = 
     bordersRounded ?
       'rounded-full' :
