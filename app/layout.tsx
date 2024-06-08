@@ -19,7 +19,7 @@ export default function RootLayout({
     <AuthProvider>
       <ProfileImageProvider>
         <html lang="en">
-          <body className='flex flex-col h-screen'>
+          <body className='flex flex-col h-screen xl:flex-row'>
             <Nav />
             <main className='flex-auto bg-[#F9FBFC] flex w-full justify-center overflow-scroll'>
               {children}
