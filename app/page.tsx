@@ -4,7 +4,7 @@ import heroImage from "@public/great-reads-hero-image.png"
 
 export default function Home() {
   return (
-    <section className='pt-[60px] px-[12px] h-full'>
+    <section className='py-[60px] px-[12px] h-full xl:py-[186px]'>
       <div>
         <Image
           src='/great-reads-hero-image.png'

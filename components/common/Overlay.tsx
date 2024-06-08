@@ -11,7 +11,7 @@ const Overlay = ({
 
   return (
     <div
-      className={overlayActiveStyles + ' ' + 'absolute w-full top-0 min-h-screen bg-black transition-opacity'}
+      className={overlayActiveStyles + ' ' + 'fixed w-full h-screen bg-black transition-opacity'}
       onClick={handleClose}
     >
     </div>

@@ -25,7 +25,7 @@ const SidebarNavLink = ({
 } : SidebarNavLinkProps) => {
   return (
     <a
-      className='flex items-center gap-4 h-[52px] px-3 text-primary font-montserrat text-[14px] font-medium rounded-[4px] hover:bg-[#F0F4F6] hover:font-semibold'
+      className='flex items-center gap-4 h-[52px] px-3 text-primary font-montserrat text-[14px] font-medium rounded-[4px] hover:bg-[#F0F4F6] hover:font-semibold xl:text-[18px] xl:h-[56px]'
       href={href}
     >
       <div className='w-6 h-6'>
@@ -58,13 +58,13 @@ export default function Nav() {
 
       {/* Desktop Sidebar Nav */}
       <div className='hidden xl:relative xl:block'>
-        <div className='min-w-[318px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out xl:flex xl:flex-col'>
-          <div className='h-[3.5rem] px-5 py-3 border-b border-b-[#DFE7EB]'>
+        <div className='min-w-[400px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out xl:flex xl:flex-col'>
+          <div className='h-[3.5rem] mx-6 px-2 pt-6 pb-8'>
             <Logo />
           </div>
-          <div className='px-3 py-4 flex-auto flex flex-col'>
+          <div className='px-6 py-8 flex-auto flex flex-col'>
             <nav>
-              <ul>
+              <ul className='xl:flex xl:flex-col xl:gap-2'>
                 <li>
                   <SidebarNavLink
                     href='/'
@@ -94,7 +94,7 @@ export default function Nav() {
             <LineDivider />
             <div className='flex items-center justify-between px-3 py-3'>
               <div className='flex gap-2 font-montserrat font-bold'>
-                <p className='text-primary'>
+                <p className='text-primary xl:text-[18px]'>
                   My Lists
                 </p>
                 {/* TODO: Uncomment when implementing session check logic */}
@@ -104,7 +104,7 @@ export default function Nav() {
                 <PlusIcon/>
               </a>
             </div>
-            <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2'>
+            <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2 xl:text-[18px]'>
               Sign in to add books to your list!
             </p>
             <ul className='mt-auto'>
@@ -112,7 +112,7 @@ export default function Nav() {
                 <SidebarNavLink
                   href='/'
                   icon={<SettingsIcon/>}
-                  >
+                >
                   Settings
                 </SidebarNavLink>
               </li>
