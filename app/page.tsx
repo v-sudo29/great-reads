@@ -1,6 +1,5 @@
 import Image from "next/image"
 import ButtonLink from "@components/common/ButtonLink"
-import heroImage from "@public/great-reads-hero-image.png"
 
 export default function Home() {
   return (
@@ -8,6 +7,7 @@ export default function Home() {
       <div>
         <Image
           src='/great-reads-hero-image.png'
+          className='xl:w-[532px] xl:h-[390px]'
           width='304'
           height='222'
           alt=''
@@ -15,14 +15,14 @@ export default function Home() {
         />
       </div>
       <div className='text-center'>
-        <h1 className='font-lora text-xl text-primary font-semibold mt-10'>
+        <h1 className='font-lora text-xl text-primary font-semibold mt-10 xl:text-[32px]'>
           Discover, Share, Connect.
         </h1>
-        <p className='font-montserrat text-primary text-[14px] font-medium tracking-[-0.5px] mb-8 mt-3'>
+        <p className='font-montserrat text-primary text-[14px] font-medium tracking-[-0.5px] mb-8 mt-4 xl:text-xl'>
           Sign up to unlock a world of literary adventures!
         </p>
       </div>
-      <div className='flex gap-2'>
+      <div className='flex gap-2 xl:gap-4 xl:justify-center xl:mt-12'>
         <ButtonLink
           href='/sign-up'
           type='secondary'
