@@ -8,7 +8,7 @@ const SignUpModal = () => {
       <div className='relative mt-[6.5rem] flex flex-col w-full h-max max-w-[480px] gap-3 px-4 py-5 bg-white shadow-xl rounded-md xl:mt-auto xl:mb-auto xl:p-6'>
         <a 
           href='/'
-          className='absolute right-[22px]'
+          className='absolute right-[22px] top-[22px]'
         >
           <ExitIcon/>
         </a>
