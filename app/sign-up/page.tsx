@@ -26,7 +26,7 @@ const SignUp = () => {
         isOpen={true}
         handleClose={()=>{}}
       />    
-      <div className='flex relative w-full min-w-full justify-center px-4'>
+      <div className='flex relative w-full min-w-full h-full justify-center px-4'>
         <div className='pointer-events-none flex justify-center w-full'>
           <Home />
         </div>
