@@ -19,17 +19,31 @@ const SignUpModal = () => {
           stepNumber={stepNumber}
           setStepNumber={setStepNumber}
         />
-        <GoogleButton>
-          Continue with Google
-        </GoogleButton>
-        <div className='flex justify-center py-3 xl:pb-0'>
-          <a
-            className='font-montserrat font-semibold text-[14px] text-[#212925] underline leading-[24px]'
-            href="/sign-in"
-          >
-            I already have an account!
-          </a>
-        </div>
+        {stepNumber === 1 && (
+          <>
+            <GoogleButton>
+              Continue with Google
+            </GoogleButton>
+            <div className='flex justify-center py-3 xl:pb-0'>
+              <a
+                className='font-montserrat font-semibold text-[14px] text-[#212925] underline leading-[24px]'
+                href={"/sign-in"}
+                >
+                I already have an account!
+              </a>
+            </div>
+          </>
+        )}
+        {stepNumber === 2 && (
+          <div className='flex justify-center py-3 xl:pb-0'>
+            <a
+              className='font-montserrat font-semibold text-[14px] text-[#212925] underline leading-[24px]'
+              href={"/sign-up"} // TODO: lift userInfo state from SignUpForm component to allow reset
+            >
+              Start Over
+            </a>
+          </div>
+        )}
       </div>
     </div>
   )

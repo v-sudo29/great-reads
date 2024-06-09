@@ -84,11 +84,14 @@ const SignUpForm = ({
     <form className='flex flex-col w-full rounded-md'>
       <div className='font-montserrat mb-5'>
         <h1 className='text-[18px] text-[#101828] font-semibold leading-[28px]'>
-          Create an account
+          {stepNumber === 1 && 'Create an account'}
+          {stepNumber === 2 && 'Tell us about yourself'}
         </h1>
-        <p className='text-[14px] font-medium text-[#475467] mt-[2px]'>
-          Sign up with Google or an email address
-        </p>
+        {stepNumber === 1 && (
+          <p className='text-[14px] font-medium text-[#475467] mt-[2px]'>
+            Sign up with Google or an email address
+          </p>
+        )}
       </div>
       {stepNumber === 1 && (
         <div className='flex flex-col gap-6 mb-8'>
@@ -135,7 +138,7 @@ const SignUpForm = ({
         </div>
       )}
       {stepNumber === 2 && (
-        <div className='flex flex-col gap-[6px]'>
+        <div className='flex flex-col gap-[6px] mb-6'>
           <label
             className={formLabelStyles}
             htmlFor='name'
@@ -159,7 +162,7 @@ const SignUpForm = ({
         style={{ opacity: loading ? 0.5 : 1 }}
         onClick={stepNumber === 1 ? handleNextStepClick : handleSubmit}
       >
-        {stepNumber === 1 && 'Next'}
+        {stepNumber === 1 && 'Continue with Email'}
         {stepNumber === 2 && 'Complete Sign Up'}
       </button>
     </form>
