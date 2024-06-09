@@ -9,7 +9,9 @@ export const GoogleButton = ({ children } : { children: ReactNode }) => {
 
   const handleClick = async () => {
     setLoading(true)
-    await signIn('google', { redirect: true, callbackUrl: 'http://localhost:3000/' })
+    await signIn('google', {
+      redirect: true,
+      callbackUrl: '/' })
     setLoading(false)
   }
 
