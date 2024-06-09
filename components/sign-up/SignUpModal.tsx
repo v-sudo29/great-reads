@@ -5,6 +5,20 @@ import { useState } from "react"
 
 const SignUpModal = () => {
   const [stepNumber, setStepNumber] = useState(1)
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    email: '',
+    password: ''
+  })
+
+  const handleReset = () => {
+    setStepNumber(1)
+    setUserInfo({
+      name: '',
+      email: '',
+      password: ''
+    })
+  }
 
   return (
     <div className='absolute flex justify-center w-full h-full px-4 xl:fixed xl:top-0 xl:left-0'>
@@ -16,7 +30,9 @@ const SignUpModal = () => {
           <ExitIcon/>
         </a>
         <SignUpForm
+          userInfo={userInfo}
           stepNumber={stepNumber}
+          setUserInfo={setUserInfo}
           setStepNumber={setStepNumber}
         />
         {stepNumber === 1 && (
@@ -36,12 +52,12 @@ const SignUpModal = () => {
         )}
         {stepNumber === 2 && (
           <div className='flex justify-center py-3 xl:pb-0'>
-            <a
+            <button
               className='font-montserrat font-semibold text-[14px] text-[#212925] underline leading-[24px]'
-              href={"/sign-up"} // TODO: lift userInfo state from SignUpForm component to allow reset
+              onClick={handleReset} // TODO: lift userInfo state from SignUpForm component to allow reset
             >
               Start Over
-            </a>
+            </button>
           </div>
         )}
       </div>

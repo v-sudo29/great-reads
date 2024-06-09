@@ -3,21 +3,28 @@ import { ChangeEventHandler, MouseEventHandler, useState } from "react"
 import { useRouter } from "next/navigation"
 
 interface SignUpFormProps {
+  userInfo: {
+    name: string
+    email: string
+    password: string
+  }
   stepNumber: number
+  setUserInfo: React.Dispatch<React.SetStateAction<{
+    name: string;
+    email: string;
+    password: string;
+}>>
   setStepNumber: React.Dispatch<React.SetStateAction<number>>
 }
 
 const SignUpForm = ({
+  userInfo,
   stepNumber,
+  setUserInfo,
   setStepNumber
 } : SignUpFormProps) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [userInfo, setUserInfo] = useState({
-    name: '',
-    email: '',
-    password: ''
-  })
   const [emailError, setEmailError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
   const { name, email, password } = userInfo
