@@ -23,9 +23,9 @@ const SignUpForm = ({
   const { name, email, password } = userInfo
   const router = useRouter()
 
-  const formLabelStyles = 'font-montserrat font-medium text-[14px] text-[#344054] xl:absolute xl:text-[12px] xl:font-semibold xl:text-primary xl:px-[14px] xl:py-[10px] xl:pointer-events-none'
-  const formTextInputStyles = 'border border-[#D0D5DD] rounded-[4px] h-11 px-[14px] py-[10px] focus:outline-none focus:outline-offset-[-1.5px] focus:outline-[1.5px] focus:outline-[#4285F4] placeholder:font-normal placeholder:text-[#A4B1B8] xl:text-[14px] xl:h-[54px] xl:pt-[30px]'
-  const formInputErrorStyles = 'border-[1.5px] border-[#D23B2E] rounded-[4px] h-11 px-[14px] py-[10px] focus:outline-none focus:outline-offset-[-1.5px] focus:outline-[1.5px] focus:outline-[#D23B2E] placeholder:font-normal placeholder:text-[#A4B1B8] xl:text-[14px] xl:h-[54px] xl:pt-[30px]'
+  const formLabelStyles = 'font-montserrat font-medium text-[14px] text-[#344054] xl:text-[12px] xl:text-base xl:pointer-events-none'
+  const formTextInputStyles = 'border border-[#D0D5DD] rounded-[4px] h-11 px-[14px] py-[10px] focus:outline-none focus:outline-offset-[-1.5px] focus:outline-[1.5px] focus:outline-[#4285F4] placeholder:font-normal placeholder:text-[#A4B1B8] xl:text-base xl:h-[54px]'
+  const formInputErrorStyles = 'border-[1.5px] border-[#D23B2E] rounded-[4px] h-11 px-[14px] py-[10px] focus:outline-none focus:outline-offset-[-1.5px] focus:outline-[1.5px] focus:outline-[#D23B2E] placeholder:font-normal placeholder:text-[#A4B1B8] xl:text-base xl:h-[54px]'
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value } = target
@@ -100,7 +100,7 @@ const SignUpForm = ({
               className={formLabelStyles}
               htmlFor='email'
             >
-              Email*
+              Email Address*
             </label>
             <input
               className={emailError ? formInputErrorStyles : formTextInputStyles}
@@ -156,7 +156,7 @@ const SignUpForm = ({
         </div>
       )}
       <button
-        className='font-montserrat font-semibold text-[14px] leading-[24px] h-11 rounded-[4px] bg-primary text-white xl:h-12'
+        className='font-montserrat font-semibold text-[14px] leading-[24px] h-11 rounded-[4px] bg-primary text-white xl:h-12 xl:text-base'
         type="submit"
         disabled={loading}
         style={{ opacity: loading ? 0.5 : 1 }}

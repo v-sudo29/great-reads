@@ -28,7 +28,7 @@ const SignUpModal = () => {
               <a
                 className='font-montserrat font-semibold text-[14px] text-[#212925] underline leading-[24px]'
                 href={"/sign-in"}
-                >
+              >
                 I already have an account!
               </a>
             </div>
