@@ -24,11 +24,14 @@ const SignUpForm = ({
   const router = useRouter()
 
   const formLabelStyles = 'font-montserrat font-medium text-[14px] text-[#344054] xl:absolute xl:text-[12px] xl:font-semibold xl:text-primary xl:px-[14px] xl:py-[10px] xl:pointer-events-none'
-  const formTextInputStyles = 'border border-[#D0D5DD] rounded-[4px] h-11 px-[14px] py-[10px] focus:outline-primary placeholder:font-normal placeholder:text-[#A4B1B8] xl:text-[14px] xl:h-[54px] xl:pt-[30px]'
-  const formInputErrorStyles = formTextInputStyles + ' border-[#D23B2E]'
+  const formTextInputStyles = 'border border-[#D0D5DD] rounded-[4px] h-11 px-[14px] py-[10px] focus:outline-none focus:outline-offset-[-1.5px] focus:outline-[1.5px] focus:outline-[#4285F4] placeholder:font-normal placeholder:text-[#A4B1B8] xl:text-[14px] xl:h-[54px] xl:pt-[30px]'
+  const formInputErrorStyles = 'border-[1.5px] border-[#D23B2E] rounded-[4px] h-11 px-[14px] py-[10px] focus:outline-none focus:outline-offset-[-1.5px] focus:outline-[1.5px] focus:outline-[#D23B2E] placeholder:font-normal placeholder:text-[#A4B1B8] xl:text-[14px] xl:h-[54px] xl:pt-[30px]'
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { name, value } = target
+
+    if (name === 'email' && value !== '' && emailError) setEmailError(false) 
+    if (name === 'password' && value !== '' && passwordError) setPasswordError(false)
     setUserInfo({ ...userInfo, [name]: value })
   }
 
