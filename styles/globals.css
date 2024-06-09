@@ -25,10 +25,6 @@ html, * {
   @apply text-sm font-medium
 }
 
-.form {
-  @apply flex flex-col gap-4 w-full rounded-md
-}
-
 .form_submit_button {
   @apply py-2 my-2 rounded-md text-sm font-medium bg-blue-950 text-white hover:bg-blue-1000 transition-all
 }
