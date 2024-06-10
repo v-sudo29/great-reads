@@ -38,7 +38,7 @@ export default function Nav() {
 
       {/* Desktop Sidebar Nav */}
       <div className='hidden xl:relative xl:block'>
-        <div className='min-w-[400px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out xl:flex xl:flex-col'>
+        <div className='min-w-[400px] self-start min-h-screen bg-[#FFFFFF] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out xl:flex xl:flex-col'>
           <div className='h-[3.5rem] mx-6 px-2 pt-6 pb-8'>
             <Logo />
           </div>
