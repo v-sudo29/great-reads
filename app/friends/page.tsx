@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import { IOtherUser, IUser } from '@customTypes/userTypes'
 import CurrentFriendCard from '@components/friends/CurrentFriendCard'
 import PotentialFriendCard from '@components/friends/PotentialFriendCard'
+import { useRouter } from "next/navigation"
 
 interface FetchUsersType {
   users: IOtherUser[]
@@ -18,6 +19,8 @@ const Friends = () => {
   const [friendsData, setFriendsData] = useState<IOtherUser[] | null>(null)
   const [alreadyAdded, setAlreadyAdded] = useState(false)
   const { data: session, update } = useSession()
+  const router = useRouter()
+
   let friendCards: JSX.Element[] = []
   let potentialCards: (JSX.Element | null)[] | null = null
 
@@ -86,8 +89,11 @@ const Friends = () => {
 
   // Fetch all users
   useEffect(() => {
-    if (session) fetchUsers()
-    if (session) fetchFriends()
+    if (session) {
+      fetchUsers()
+      fetchFriends()
+    }
+    if (session === null) router.replace('/sign-in')
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
@@ -119,6 +125,9 @@ const Friends = () => {
       )
     })
   }
+
+  if (session === undefined) return <></>
+  if (session === null) return <></>
 
   return (
     <div className='flex flex-col w-1/2 h-screen border'>
