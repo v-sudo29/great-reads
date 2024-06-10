@@ -2,9 +2,9 @@
 import { useEffect} from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { GoogleButton } from '@components/authButtons'
-import Separator from '@components/Separator'
 import SignInModal from '@components/sign-in/SignInModal'
+import Overlay from '@components/common/Overlay'
+import Home from '@app/page'
 
 const SignIn = () => {
   const { data: session } = useSession()
@@ -21,7 +21,18 @@ const SignIn = () => {
 
   // Show login form if user is not authenticated
   if (session === null) return (
-    <SignInModal/>
+    <>
+      <Overlay
+        isOpen={true}
+        handleClose={()=>{}}
+      />
+      <div className='flex relative w-full min-w-full h-full justify-center px-4'>
+        <div className='pointer-events-none flex justify-center w-full'>
+          <Home />
+        </div>
+        <SignInModal/>
+      </div>
+    </>
   )
 
   if (session) return <></>
