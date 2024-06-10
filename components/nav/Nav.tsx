@@ -22,6 +22,7 @@ export default function Nav() {
   const handleHamburgerIconClick = () => setIsMobileSidebarOpen(true)
   const handleOverlayClose = () => setIsMobileSidebarOpen(false)
 
+  if (session === undefined) return <></>
   return (
     <>
       {/* Mobile Nav */}
@@ -98,7 +99,7 @@ export default function Nav() {
               )}
               <li>
                 <SidebarNavLink
-                  href={session === null ? '/sign-in' : '/'} // TODO: update to setting once settings page is implemented
+                  href={session === null ? '/sign-in' : '/settings'} // TODO: update to setting once settings page is implemented
                   icon={<SettingsIcon/>}
                 >
                   Settings
