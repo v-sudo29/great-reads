@@ -83,9 +83,11 @@ export default function Nav() {
                 <PlusIcon/>
               </a>
             </div>
-            <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2 xl:text-[18px]'>
-              Sign in to add books to your list!
-            </p>
+            {session === null && (
+              <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2 xl:text-[18px]'>
+                Sign in to add books to your list!
+              </p>
+            )}
             <ul className='mt-auto'>
               {session && (
                 <li>
