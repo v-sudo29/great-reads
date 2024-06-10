@@ -6,12 +6,20 @@ import { SchemaDefinitionProperty } from "mongoose"
 
 interface UserResponse {
   id: string
+  firstName: string
+  lastName: string
+  lists: Record<string, string[]> | {}
+  friends?: SchemaDefinitionProperty[] | []
+}
+
+interface GoogleUserResponse {
+  id: string
   name: string
   lists: Record<string, string[]> | {}
   friends?: SchemaDefinitionProperty[] | []
 }
 
-type NewResponse = NextResponse<{error?: string; users?: UserResponse[]}>
+type NewResponse = NextResponse<{error?: string; users?: (UserResponse | GoogleUserResponse)[]}>
 
 export const GET = async (req: Request): Promise<NewResponse> => {
   try {
@@ -20,12 +28,13 @@ export const GET = async (req: Request): Promise<NewResponse> => {
     const allGoogleUsers = await GoogleUser.find({})
   
     const usersArr: UserResponse[] = []
-    const googleUsersArr: UserResponse[] = []
+    const googleUsersArr: GoogleUserResponse[] = []
   
     allUsers.forEach(user => {
       usersArr.push({
         id: user._id,
-        name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         lists: user.lists,
         friends: user.friends,
       })
