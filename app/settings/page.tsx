@@ -28,7 +28,7 @@ export default function Settings() {
         />
         <div>
           <p className='font-lora font-bold text-xl text-primary'>
-            {session.user.name ?? ''}
+            {`${session.user.firstName} ${session.user.lastName}` ?? ''}
           </p>
           <p className='font-montserrat font-medium text-[14px] text-primary'>
             {session.user.email ?? ''}
