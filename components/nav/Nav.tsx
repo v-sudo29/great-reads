@@ -10,7 +10,7 @@ import ProfileIcon from '@components/common/icons/ProfileIcon'
 import FriendsListIcon from '@components/common/icons/FriendsListIcon'
 import PlusIcon from '@components/common/icons/PlusIcon'
 import SettingsIcon from '@components/common/icons/SettingsIcon'
-import NavLinks from './NavLinks'
+import { useSession, signOut } from 'next-auth/react'
 
 interface SidebarNavLinkProps {
   href: string
@@ -40,6 +40,7 @@ const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
 export default function Nav() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
+  const { data: session } = useSession()
 
   const handleHamburgerIconClick = () => setIsMobileSidebarOpen(true)
   const handleOverlayClose = () => setIsMobileSidebarOpen(false)
@@ -109,6 +110,13 @@ export default function Nav() {
               Sign in to add books to your list!
             </p>
             <ul className='mt-auto'>
+              {session && (
+                <li>
+                  <button onClick={() => signOut()}>
+                    Sign Out
+                  </button>
+                </li>
+              )}
               <li>
                 <SidebarNavLink
                   href='/'

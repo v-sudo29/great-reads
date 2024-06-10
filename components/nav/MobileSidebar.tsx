@@ -5,6 +5,7 @@ import FriendsListIcon from "../common/icons/FriendsListIcon"
 import HomeIcon from "../common/icons/HomeIcon"
 import PlusIcon from "../common/icons/PlusIcon"
 import ProfileIcon from "../common/icons/ProfileIcon"
+import { useSession, signOut } from 'next-auth/react'
 
 interface SidebarNavLinkProps {
   href: string
@@ -37,6 +38,7 @@ const MobileSidebar = ({
 } : {
   isMobileSidebarOpen: boolean
 }) => {
+  const { data: session } = useSession()
   const sidebarStyles = isMobileSidebarOpen ? '' : 'transform translate-x-[-381px]'
   return (
     <div className={sidebarStyles + ' ' + 'fixed w-full max-w-[366px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
@@ -85,27 +87,36 @@ const MobileSidebar = ({
             <PlusIcon/>
           </a>
         </div>
-        <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2'>
-          Sign in to add books to your list!
-        </p>
-        <div className='flex flex-col gap-2 mt-2'>
-          <ButtonLink
-            href='/sign-in'
-            type='primary'
-            bordersRounded={true}
-            className='flex w-full justify-center'
-          >
-            Sign In
-          </ButtonLink>
-          <ButtonLink
-            href='/sign-up'
-            type='secondary'
-            bordersRounded={true}
-            className='flex w-full justify-center'
-          >
-            Create Account
-          </ButtonLink>
-        </div>
+        {session && (
+          <button onClick={() => signOut()}>
+            Sign Out
+          </button>
+        )}
+        {!session && (
+        <>
+            <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2'>
+              Sign in to add books to your list!
+            </p>
+            <div className='flex flex-col gap-2 mt-2'>
+              <ButtonLink
+                href='/sign-in'
+                type='primary'
+                bordersRounded={true}
+                className='flex w-full justify-center'
+              >
+                Sign In
+              </ButtonLink>
+              <ButtonLink
+                href='/sign-up'
+                type='secondary'
+                bordersRounded={true}
+                className='flex w-full justify-center'
+              >
+                Create Account
+              </ButtonLink>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )
