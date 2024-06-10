@@ -15,7 +15,7 @@ export default function Settings() {
   const email = session.user.email
   
   const labelStyles = 'font-bold text-[14px] text-primary leading-[28px] xl:text-[18px]'
-  const detailStyles = 'font-montserrat font-semibold leading-[24px] text-[#707070] xl:text-xl'
+  const detailStyles = 'font-montserrat font-semibold leading-[24px] text-[#707070] xl:text-xl xl:mt-1'
   const editButtonStyles = 'text-primary font-semibold text-[14px] leading-[28px] xl:text-[18px]'
 
   return (
