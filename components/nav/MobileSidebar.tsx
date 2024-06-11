@@ -87,13 +87,8 @@ const MobileSidebar = ({
             <PlusIcon/>
           </a>
         </div>
-        {session && (
-          <button onClick={() => signOut()}>
-            Sign Out
-          </button>
-        )}
         {!session && (
-        <>
+          <>
             <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2'>
               Sign in to add books to your list!
             </p>
