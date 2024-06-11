@@ -69,9 +69,11 @@ export const Button = ({
       className={defaultStyles + ' ' + typeStyles + ' ' +  borderStyles + ' ' + className}
       onClick={clickHandler}
     >
-      <div className='w-5 h-5'>
-        {icon}
-      </div>
+      {icon && (
+        <div className='w-5 h-5'>
+          {icon}
+        </div>
+      )}
       {children}
     </button>
   )
