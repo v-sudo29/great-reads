@@ -46,10 +46,8 @@ const ProfilePicture = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file])
 
-  if (session === undefined) return <></>
-
   return (
-    <div className='relative border w-[104px] h-[104px] rounded-full overflow-hidden'>
+    <div className='relative border w-[104px] h-[104px] rounded-full overflow-hidden xl:w-[160px] xl:h-[160px]'>
       <Image
         className='w-full min-w-full scale-150 h-auto'
         src={              
