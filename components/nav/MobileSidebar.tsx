@@ -41,7 +41,7 @@ const MobileSidebar = ({
   const { data: session } = useSession()
   const sidebarStyles = isMobileSidebarOpen ? '' : 'transform translate-x-[-381px]'
   return (
-    <div className={sidebarStyles + ' ' + 'fixed w-full max-w-[366px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
+    <div className={sidebarStyles + ' ' + 'fixed z-50 w-full max-w-[366px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
       <div className='h-[3.5rem] px-5 py-3 border-b border-b-[#DFE7EB]'>
         <Logo />
       </div>
