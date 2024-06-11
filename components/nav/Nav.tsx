@@ -69,6 +69,14 @@ export default function Nav() {
                     Friends List
                   </SidebarNavLink>
                 </li>
+                <li>
+                  <SidebarNavLink
+                    href={session === null ? '/sign-in' : '/settings'}
+                    icon={<SettingsIcon/>}
+                  >
+                    Settings
+                  </SidebarNavLink>
+                </li>
               </ul>
             </nav>
             <LineDivider />
@@ -89,23 +97,6 @@ export default function Nav() {
                 Sign in to add books to your list!
               </p>
             )}
-            <ul className='mt-auto'>
-              {session && (
-                <li>
-                  <button onClick={() => signOut()}>
-                    Sign Out
-                  </button>
-                </li>
-              )}
-              <li>
-                <SidebarNavLink
-                  href={session === null ? '/sign-in' : '/settings'} // TODO: update to setting once settings page is implemented
-                  icon={<SettingsIcon/>}
-                >
-                  Settings
-                </SidebarNavLink>
-              </li>
-            </ul>
           </div>
         </div>
         
