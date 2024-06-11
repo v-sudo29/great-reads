@@ -28,7 +28,7 @@ export default function Settings() {
 
   return (
     <div className='py-8 px-3 w-full xl:py-[112px] xl:px-[108px]'>
-      
+
       {/* PROFILE PIC and INFO */}
       <div className='flex gap-5 items-center mb-10 xl:gap-10'>
         <ProfilePicture/>
@@ -94,7 +94,7 @@ export default function Settings() {
         bordersRounded={true}
         icon={<LogoutIcon/>}
         clickHandler={() => signOut()}
-        className='w-full justify-center mt-12'
+        className='w-full justify-center mt-12 xl:w-max'
       >
         Log Out
       </Button>
