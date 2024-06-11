@@ -8,10 +8,10 @@ import Logo from './Logo'
 import HamburgerIcon from '../common/icons/HamburgerIcon'
 import HomeIcon from '@components/common/icons/HomeIcon'
 import ProfileIcon from '@components/common/icons/ProfileIcon'
-import FriendsListIcon from '@components/common/icons/FriendsListIcon'
 import PlusIcon from '@components/common/icons/PlusIcon'
 import SettingsIcon from '@components/common/icons/SettingsIcon'
 import { useSession } from 'next-auth/react'
+import ExploreIcon from '@components/common/icons/ExploreIcon'
 
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
@@ -63,10 +63,10 @@ export default function Nav() {
                 </li>
                 <li>
                   <SidebarNavLink
-                    href='/friends'
-                    icon={<FriendsListIcon />}
+                    href='/'
+                    icon={<ExploreIcon />}
                   >
-                    Friends List
+                    Explore
                   </SidebarNavLink>
                 </li>
                 <li>

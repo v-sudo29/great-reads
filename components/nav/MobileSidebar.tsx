@@ -1,11 +1,12 @@
 import { ReactNode } from "react"
 import Logo from "./Logo"
 import { ButtonLink } from "@components/common/Button"
-import FriendsListIcon from "../common/icons/FriendsListIcon"
 import HomeIcon from "../common/icons/HomeIcon"
 import PlusIcon from "../common/icons/PlusIcon"
 import ProfileIcon from "../common/icons/ProfileIcon"
-import { useSession, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
+import ExploreIcon from "@components/common/icons/ExploreIcon"
+import SettingsIcon from "@components/common/icons/SettingsIcon"
 
 interface SidebarNavLinkProps {
   href: string
@@ -67,9 +68,17 @@ const MobileSidebar = ({
             <li>
               <SidebarNavLink
                 href='/friends'
-                icon={<FriendsListIcon />}
+                icon={<ExploreIcon/>}
               >
-                Friends List
+                Explore
+              </SidebarNavLink>
+            </li>
+            <li>
+              <SidebarNavLink
+                href={session === null ? '/sign-in' : '/settings'}
+                icon={<SettingsIcon/>}
+              >
+                Settings
               </SidebarNavLink>
             </li>
           </ul>
