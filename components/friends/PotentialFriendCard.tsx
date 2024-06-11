@@ -9,7 +9,7 @@ interface IPotentialFriendCard {
 const PotentialFriendCard = ({ user, addFriend } : IPotentialFriendCard) => {
   return (
     <div className='flex justify-between h-10 w-80'>
-      <h1>{user.name}</h1>
+      <h1>{`${user.firstName} ${user.lastName}`}</h1>
       <button
         onClick={(e) => addFriend(e)}
         className={`general_button ${user.id}`}
