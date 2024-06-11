@@ -1,6 +1,8 @@
 'use client'
 import { useProfileImage } from "@context/ProfileImageProvider"
 import { signOut, useSession } from 'next-auth/react'
+import { Button } from "@components/common/Button"
+import LogoutIcon from "@components/common/icons/LogoutIcon"
 import Image from "next/image"
 
 export default function Settings() {
@@ -92,12 +94,15 @@ export default function Settings() {
       </div>
 
       {/* LOG OUT */}
-      <button
-        className=''
-        onClick={() => signOut()}
+      <Button
+        type='primary'
+        bordersRounded={true}
+        icon={<LogoutIcon/>}
+        clickHandler={() => signOut()}
+        className='w-full justify-center mt-12'
       >
-        Sign Out
-      </button>
+        Log Out
+      </Button>
     </div>
   )
 }

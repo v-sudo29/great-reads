@@ -13,6 +13,7 @@ interface ButtonProps {
   children: ReactNode
   type: 'primary' | 'secondary',
   bordersRounded: boolean
+  icon?: ReactNode
   clickHandler: () => void
 }
 
@@ -49,9 +50,10 @@ export const Button = ({
   className,
   bordersRounded,
   type,
+  icon,
   clickHandler
 } : ButtonProps) => {
-  const defaultStyles = 'font-rubik font-medium px-8 py-[10px] leading-[20px] xl:text-[20px] xl:py-4'
+  const defaultStyles = 'flex gap-2 font-rubik font-medium px-8 py-[10px] leading-[20px] xl:text-[20px] xl:py-4'
   const borderStyles = 
     bordersRounded ?
       'rounded-full' :
@@ -67,6 +69,9 @@ export const Button = ({
       className={defaultStyles + ' ' + typeStyles + ' ' +  borderStyles + ' ' + className}
       onClick={clickHandler}
     >
+      <div className='w-5 h-5'>
+        {icon}
+      </div>
       {children}
     </button>
   )
