@@ -62,10 +62,10 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, session, trigger }) {
-      // If user updates NAME, update token and database
-      if (trigger === 'update' && session?.name) {
+      
+      // If user updates FIRST NAME, update token and database
+      if (trigger === 'update' && session?.firstName) {
         token.firstName = session.firstName
-        token.lastName = session.lastName
 
         // Update user in database
         const credentialsUser = await User.findOne({ email: token.email })
@@ -73,6 +73,18 @@ const authOptions: AuthOptions = {
 
         if (googleUser) await GoogleUser.findOneAndUpdate({ email: token.email }, { name: token.name })
         if (credentialsUser) await User.findOneAndUpdate({ email: token.email }, { firstName: token.firstName })
+      }
+
+      // If user updates LAST NAME, update token and database
+      if (trigger === 'update' && session?.lastName) {
+        token.lastName = session.lastName
+
+        // Update user in database
+        const credentialsUser = await User.findOne({ email: token.email })
+        const googleUser = await GoogleUser.findOne({ email: token.email })
+
+        if (googleUser) await GoogleUser.findOneAndUpdate({ email: token.email }, { name: token.name })
+        if (credentialsUser) await User.findOneAndUpdate({ email: token.email }, { lastName: token.lastName })
       }
 
       // If user updates LIST, update token and database

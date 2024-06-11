@@ -1,17 +1,59 @@
 'use client'
 import { signOut, useSession } from 'next-auth/react'
 import { Button } from "@components/common/Button"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import ProfilePicture from "@components/settings/ProfilePicture"
 import LogoutIcon from "@components/common/icons/LogoutIcon"
-import router from "next/router"
+import { useRouter } from "next/navigation"
+
+const UPDATE_TYPES = {
+  FIRST_NAME: 'First Name',
+  LAST_NAME: 'Last Name'
+}
 
 export default function Settings() {
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const [isFirstNameEditing, setIsFirstNameEditing] = useState(false)
+  const [isLastNameEditing, setIsLastNameEditing] = useState(false)
+  const firstNameRef = useRef<HTMLInputElement>(null)
+  const lastNameRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
-  const handleEditClick = () => {
-    setIsFirstNameEditing(prev => !prev)
+  const handleEditClick = (updateType: string) => {
+    if (updateType === UPDATE_TYPES.FIRST_NAME) {
+      setIsFirstNameEditing(prev => !prev)
+    }
+    if (updateType === UPDATE_TYPES.LAST_NAME) {
+      setIsLastNameEditing(prev => !prev)
+    }
+  }
+
+  const handleUpdate = async (updateType: string) => {
+    // Update first name
+    if (firstNameRef.current?.value &&
+      firstNameRef.current?.value.replace(/\s/g, '').length &&
+      updateType === UPDATE_TYPES.FIRST_NAME
+    ) {
+      try {
+        await update({ firstName: firstNameRef.current.value })
+        setIsFirstNameEditing(false)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    
+    // Update last name
+    if (lastNameRef.current?.value &&
+      lastNameRef.current?.value.replace(/\s/g, '').length &&
+      updateType === UPDATE_TYPES.LAST_NAME
+    ) {
+      try {
+        await update({ lastName: lastNameRef.current.value })
+        setIsLastNameEditing(false)
+      } catch (err) {
+        console.error(err)
+      }
+    }
   }
 
   // If user not logged in, redirect to login page
@@ -50,7 +92,7 @@ export default function Settings() {
 
       {/* MY DETAILS */}
       <div className='flex flex-col'>
-        <h2 className='font-lora font-bold text-[18px] text-primary xl:text-[28px] xl:mb-[6px]'>
+        <h2 className='font-lora font-bold text-[18px] text-primary xl:text-[24px] xl:mb-[6px]'>
           My Details
         </h2>
         <div className='border-b border-b-[#DFE7EB] py-4 xl:py-6'>
@@ -60,7 +102,7 @@ export default function Settings() {
             </h3>
             <button
               className={editButtonStyles}
-              onClick={handleEditClick}
+              onClick={() => handleEditClick(UPDATE_TYPES.FIRST_NAME)}
             >
               {isFirstNameEditing ? 'Cancel' :'Edit'}
             </button>
@@ -73,15 +115,16 @@ export default function Settings() {
           {isFirstNameEditing && (
             <>
               <input
+                ref={firstNameRef}
                 type="text"
                 className={textInputStyles}
-                defaultValue={session.user.firstName}
+                defaultValue={firstName}
                 autoFocus
               />
               <Button
                 type='primary'
                 bordersRounded={true}
-                clickHandler={()=>{}}
+                clickHandler={() => handleUpdate(UPDATE_TYPES.FIRST_NAME)}
                 className='mt-4'
               >
                 Save Update
@@ -92,15 +135,39 @@ export default function Settings() {
         <div className='border-b border-b-[#DFE7EB] py-4 xl:py-6'>
           <div className='flex justify-between font-montserrat'>
             <h3 className={labelStyles}>
-              Last Name
+              {isLastNameEditing && 'Edit'} Last Name
             </h3>
-            <button className={editButtonStyles}>
-              Edit
+            <button
+              className={editButtonStyles}
+              onClick={() => handleEditClick(UPDATE_TYPES.LAST_NAME)}
+            >
+              {isLastNameEditing ? 'Cancel' : 'Edit'}
             </button>
           </div>
-          <p className={detailStyles}>
-            {lastName}
-          </p>
+          {!isLastNameEditing && (
+            <p className={detailStyles}>
+              {lastName}
+            </p>
+          )}
+          {isLastNameEditing && (
+            <>
+              <input
+                ref={lastNameRef}
+                type="text"
+                className={textInputStyles}
+                defaultValue={lastName}
+                autoFocus
+              />
+              <Button
+                type='primary'
+                bordersRounded={true}
+                clickHandler={() => handleUpdate(UPDATE_TYPES.LAST_NAME)}
+                className='mt-4'
+              >
+                Save Update
+              </Button>
+            </>
+          )}
         </div>
         <div className='border-b border-b-[#DFE7EB] py-4 xl:py-6'>
           <div className='flex justify-between font-montserrat'>

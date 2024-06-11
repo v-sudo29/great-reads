@@ -14,7 +14,7 @@ interface ButtonProps {
   type: 'primary' | 'secondary',
   bordersRounded: boolean
   icon?: ReactNode
-  clickHandler: () => void
+  clickHandler: (() => void) | ((any: any) => Promise<void>)
 }
 
 export const ButtonLink = ({
