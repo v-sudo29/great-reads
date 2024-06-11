@@ -11,7 +11,7 @@ import ProfileIcon from '@components/common/icons/ProfileIcon'
 import FriendsListIcon from '@components/common/icons/FriendsListIcon'
 import PlusIcon from '@components/common/icons/PlusIcon'
 import SettingsIcon from '@components/common/icons/SettingsIcon'
-import { useSession, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 

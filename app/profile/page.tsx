@@ -60,7 +60,7 @@ const Profile = () => {
   if (session === undefined) return <></>
   if (session) return (
     <div className='flex flex-col items-center p-2'>
-      <h1 className='page_heading'><b>{session.user ? `${session.user.name}'s` : 'my'}</b> profile</h1>
+      <h1 className='page_heading'><b>{session.user ? `${session.user.firstName}'s` : 'my'}</b> profile</h1>
         <div style={{ width: '100px', height: '100px'}}>
           {!loading && 
             <Image
