@@ -65,7 +65,7 @@ const ProfilePicture = () => {
       {isProfileHovered && (
         <>
           <div className='absolute z-20 flex top-0 w-full h-full bg-black opacity-50'></div>
-          <p className='absolute z-20 flex top-0 w-full h-full justify-center items-center text-white'>
+          <p className='absolute z-20 flex top-0 w-full h-full justify-center items-center text-white xl:text-xl font-semibold font-montserrat'>
             Update
           </p>
         </>
