@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import Logo from "./Logo"
-import ButtonLink from "@components/common/ButtonLink"
+import { ButtonLink } from "@components/common/Button"
 import FriendsListIcon from "../common/icons/FriendsListIcon"
 import HomeIcon from "../common/icons/HomeIcon"
 import PlusIcon from "../common/icons/PlusIcon"

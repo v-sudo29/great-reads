@@ -1,6 +1,6 @@
 'use client'
 import { useProfileImage } from "@context/ProfileImageProvider"
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Image from "next/image"
 
 export default function Settings() {
@@ -90,6 +90,14 @@ export default function Settings() {
           </p>
         </div>
       </div>
+
+      {/* LOG OUT */}
+      <button
+        className=''
+        onClick={() => signOut()}
+      >
+        Sign Out
+      </button>
     </div>
   )
 }
