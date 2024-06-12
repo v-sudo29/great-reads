@@ -1,4 +1,3 @@
-import { ReactNode } from "react"
 import Logo from "./Logo"
 import { ButtonLink } from "@components/common/Button"
 import HomeIcon from "../common/icons/HomeIcon"
@@ -9,6 +8,8 @@ import ExploreIcon from "@components/common/icons/ExploreIcon"
 import SettingsIcon from "@components/common/icons/SettingsIcon"
 import { IBook } from "@customTypes/bookType"
 import SidebarNavLink from "./SidebarNavLink"
+import { useState } from "react"
+import CreateListModal from "./CreateListModal"
 
 interface MobileSidebarProps {
   isMobileSidebarOpen: boolean
@@ -21,10 +22,14 @@ const MobileSidebar = ({
   isMobileSidebarOpen,
   handleOverlayClose
 } : MobileSidebarProps) => {
+  const [isListModalOpen, setIsListModalOpen] = useState(false)
   const { data: session } = useSession()
   const numberOfLists = Object.keys(session?.user?.lists ?? {}).length
   const sidebarStyles = isMobileSidebarOpen ? '' : 'transform translate-x-[-381px]'
   let listLinks: JSX.Element[]| [] = []
+
+  const handleListModalOpen = () => setIsListModalOpen(true)
+  const handleListModalClose = () => setIsListModalOpen(false)
 
   if (session) {
     for (let listName in session.user.lists) {
@@ -51,6 +56,12 @@ const MobileSidebar = ({
   }
 
   return (
+    <>
+    <div className='absolute w-full h-full border border-red-500 z-[100]'>
+      <CreateListModal
+        handleListModalClose={handleListModalClose}
+      />
+    </div>
     <div className={sidebarStyles + ' ' + 'fixed z-50 w-full max-w-[366px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
       <div className='h-[3.5rem] px-5 py-3 border-b border-b-[#DFE7EB]'>
         <Logo />
@@ -108,9 +119,9 @@ const MobileSidebar = ({
               </span>
             )}
           </div>
-          <a href='/sign-in'>
+          <button onClick={handleListModalOpen}>
             <PlusIcon/>
-          </a>
+          </button>
         </div>
         {session && listLinks}
         {!session && (
@@ -140,6 +151,7 @@ const MobileSidebar = ({
         )}
       </div>
     </div>
+    </>
   )
 }
 
