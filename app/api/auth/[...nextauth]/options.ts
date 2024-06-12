@@ -156,7 +156,7 @@ const authOptions: AuthOptions = {
         id: string;
         firstName: string;
         lastName: string;
-        lists?: Record<string, IBook[]>;
+        lists?: Record<string, Record<string, string | IBook[]>>;
         friends?: SchemaDefinitionProperty[];
         imageName?: string | null;
         defaultImage?: string;
