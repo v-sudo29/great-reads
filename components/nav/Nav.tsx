@@ -22,7 +22,7 @@ export default function Nav() {
   const numberOfLists = Object.keys(session?.user?.lists ?? {}).length
 
   const handleHamburgerIconClick = () => setIsMobileSidebarOpen(true)
-  const handleOverlayClose = () => setIsMobileSidebarOpen(false)
+  const handleMobileSidebarClose = () => setIsMobileSidebarOpen(false)
 
   if (session === undefined) return <></>
 
@@ -137,11 +137,11 @@ export default function Nav() {
       </div>
       <Overlay
         isOpen={isMobileSidebarOpen}
-        handleClose={handleOverlayClose}
+        handleClose={handleMobileSidebarClose}
       />
       <MobileSidebar
         isMobileSidebarOpen={isMobileSidebarOpen}
-        handleOverlayClose={handleOverlayClose}
+        handleMobileSidebarClose={handleMobileSidebarClose}
       />
     </>
   )

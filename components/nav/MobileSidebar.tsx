@@ -10,17 +10,18 @@ import { IBook } from "@customTypes/bookType"
 import SidebarNavLink from "./SidebarNavLink"
 import { useState } from "react"
 import CreateListModal from "./CreateListModal"
+import Overlay from "@components/common/Overlay"
 
 interface MobileSidebarProps {
   isMobileSidebarOpen: boolean
-  handleOverlayClose: () => void
+  handleMobileSidebarClose: () => void
 }
 
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
 const MobileSidebar = ({
   isMobileSidebarOpen,
-  handleOverlayClose
+  handleMobileSidebarClose
 } : MobileSidebarProps) => {
   const [isListModalOpen, setIsListModalOpen] = useState(false)
   const { data: session } = useSession()
@@ -57,11 +58,17 @@ const MobileSidebar = ({
 
   return (
     <>
-    <div className='absolute w-full h-full border border-red-500 z-[100]'>
-      <CreateListModal
-        handleListModalClose={handleListModalClose}
-      />
-    </div>
+    {isListModalOpen && (
+      <div className='absolute w-full h-full z-[10]'>
+        <CreateListModal
+          handleListModalClose={handleListModalClose}
+        />
+        <Overlay
+          isOpen={isListModalOpen}
+          handleClose={handleListModalClose}
+        />
+      </div>
+    )}
     <div className={sidebarStyles + ' ' + 'fixed z-50 w-full max-w-[366px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
       <div className='h-[3.5rem] px-5 py-3 border-b border-b-[#DFE7EB]'>
         <Logo />
@@ -73,7 +80,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href='/'
                 icon={<HomeIcon />}
-                onClick={handleOverlayClose}
+                onClick={handleMobileSidebarClose}
               >
                 Home
               </SidebarNavLink>
@@ -82,7 +89,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href='/profile'
                 icon={<ProfileIcon />}
-                onClick={handleOverlayClose}
+                onClick={handleMobileSidebarClose}
               >
                 My Profile
               </SidebarNavLink>
@@ -91,7 +98,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href='/friends'
                 icon={<ExploreIcon/>}
-                onClick={handleOverlayClose}
+                onClick={handleMobileSidebarClose}
               >
                 Explore
               </SidebarNavLink>
@@ -100,7 +107,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href={session === null ? '/sign-in' : '/settings'}
                 icon={<SettingsIcon/>}
-                onClick={handleOverlayClose}
+                onClick={handleMobileSidebarClose}
               >
                 Settings
               </SidebarNavLink>
@@ -119,7 +126,10 @@ const MobileSidebar = ({
               </span>
             )}
           </div>
-          <button onClick={handleListModalOpen}>
+          <button onClick={() => {
+            handleListModalOpen()
+            handleMobileSidebarClose()
+          }}>
             <PlusIcon/>
           </button>
         </div>
