@@ -5,7 +5,10 @@ export interface IOtherUser {
   id: string
   firstName: string
   lastName: string
-  lists: Record<string, IBook[]> | {}
+  lists: Record<string, {
+    color: string,
+    books: IBook[]
+  }> | {}
   friends: SchemaDefinitionProperty[] | []
 }
 
@@ -15,6 +18,9 @@ export interface IUser {
   email: string
   firstName: string
   lastName: string
-  lists: Record<string, Record<string, Record<string, string>>[]> | {}
+  lists: Record<string, {
+    color: string,
+    books: IBook[]
+  }> | {}
   friends: SchemaDefinitionProperty[]
 }

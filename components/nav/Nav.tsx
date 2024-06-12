@@ -18,11 +18,14 @@ const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 export default function Nav() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
   const { data: session } = useSession()
+  const numberOfLists = Object.keys(session?.user?.lists ?? {}).length
 
   const handleHamburgerIconClick = () => setIsMobileSidebarOpen(true)
   const handleOverlayClose = () => setIsMobileSidebarOpen(false)
 
   if (session === undefined) return <></>
+
+  console.log(session?.user)
   return (
     <>
       {/* Mobile Nav */}
@@ -81,12 +84,13 @@ export default function Nav() {
             </nav>
             <LineDivider />
             <div className='flex items-center justify-between px-3 py-3'>
-              <div className='flex gap-2 font-montserrat font-bold'>
+              <div className='flex items-center gap-2 font-montserrat font-bold'>
                 <p className='text-primary xl:text-[18px]'>
                   My Lists
                 </p>
-                {/* TODO: Uncomment when implementing session check logic */}
-                {/* <span className='flex items-center w-8 text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>3</span> */}
+                <span className='flex items-center w-8 h-[22px] text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>
+                  {numberOfLists}
+                </span>
               </div>
               <a href='/sign-in'>
                 <PlusIcon/>

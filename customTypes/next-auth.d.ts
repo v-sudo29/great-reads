@@ -7,7 +7,10 @@ import { Profile } from "next-auth";
 declare module "next-auth" {
   interface Session {
     user : {
-      lists: Record<string, IBook[]> | {},
+      lists: Record<string, {
+        color: string,
+        books: IBook[]
+      }> | {}
       friends: SchemaDefinitionProperty[] | [],
       id: string
       imageName: string | null
@@ -20,7 +23,10 @@ declare module "next-auth" {
   interface User {
     id: string
     email: string
-    lists: Record<string, IBook[]> | {},
+    lists: Record<string, {
+      color: string,
+      books: IBook[]
+    }> | {}
     friends: SchemaDefinitionProperty[] | []
     imageName: string | null
     defaultImage?: string
@@ -32,7 +38,10 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT{
     id: string
-    lists: Record<string, IBook[]> | {},
+    lists: Record<string, {
+      color: string,
+      books: IBook[]
+    }> | {}
     friends: SchemaDefinitionProperty[] | []
     imageName: string | null
     defaultImage?: string

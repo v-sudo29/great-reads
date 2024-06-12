@@ -10,7 +10,10 @@ interface UserDocument extends Document {
   firstName: string
   lastName: string
   password: string
-  lists: Record<string, IBook[]> | {}
+  lists: Record<string, {
+    color: string,
+    books: IBook[]
+  }> | {}
   friends: SchemaDefinitionProperty[] | []
   imageName: string | null
   error?: string
@@ -43,9 +46,18 @@ const userSchema = new Schema<UserDocument, {}, Methods>({
   lists: {
     type: Schema.Types.Mixed,
     default: {
-      ['Read']: [Schema.Types.Mixed],
-      ['Currently Reading']: [Schema.Types.Mixed],
-      ['Want to Read']: [Schema.Types.Mixed]
+      ['Read']: {
+        color: "59BC99",
+        books: [Schema.Types.Mixed]
+      },
+      ['Currently Reading']: {
+        color: "745DFF",
+        books: [Schema.Types.Mixed]
+      },
+      ['Want to Read']: {
+        color: "FBB246",
+        books: [Schema.Types.Mixed]
+      }
     },
     required: true
   },

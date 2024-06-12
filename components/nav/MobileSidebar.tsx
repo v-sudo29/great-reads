@@ -40,6 +40,7 @@ const MobileSidebar = ({
   isMobileSidebarOpen: boolean
 }) => {
   const { data: session } = useSession()
+  const numberOfLists = Object.keys(session?.user?.lists ?? {}).length
   const sidebarStyles = isMobileSidebarOpen ? '' : 'transform translate-x-[-381px]'
   return (
     <div className={sidebarStyles + ' ' + 'fixed z-50 w-full max-w-[366px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
@@ -89,8 +90,9 @@ const MobileSidebar = ({
             <p className='text-primary'>
               My Lists
             </p>
-            {/* TODO: Uncomment when implementing session check logic */}
-            {/* <span className='flex items-center w-8 text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>3</span> */}
+            <span className='flex items-center w-8 h-[22px] text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>
+              {numberOfLists}
+            </span>
           </div>
           <a href='/sign-in'>
             <PlusIcon/>
