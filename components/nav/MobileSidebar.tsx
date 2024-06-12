@@ -10,13 +10,17 @@ import SettingsIcon from "@components/common/icons/SettingsIcon"
 import { IBook } from "@customTypes/bookType"
 import SidebarNavLink from "./SidebarNavLink"
 
+interface MobileSidebarProps {
+  isMobileSidebarOpen: boolean
+  handleOverlayClose: () => void
+}
+
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
 const MobileSidebar = ({
-  isMobileSidebarOpen
-} : {
-  isMobileSidebarOpen: boolean
-}) => {
+  isMobileSidebarOpen,
+  handleOverlayClose
+} : MobileSidebarProps) => {
   const { data: session } = useSession()
   const numberOfLists = Object.keys(session?.user?.lists ?? {}).length
   const sidebarStyles = isMobileSidebarOpen ? '' : 'transform translate-x-[-381px]'
@@ -58,6 +62,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href='/'
                 icon={<HomeIcon />}
+                onClick={handleOverlayClose}
               >
                 Home
               </SidebarNavLink>
@@ -66,6 +71,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href='/profile'
                 icon={<ProfileIcon />}
+                onClick={handleOverlayClose}
               >
                 My Profile
               </SidebarNavLink>
@@ -74,6 +80,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href='/friends'
                 icon={<ExploreIcon/>}
+                onClick={handleOverlayClose}
               >
                 Explore
               </SidebarNavLink>
@@ -82,6 +89,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href={session === null ? '/sign-in' : '/settings'}
                 icon={<SettingsIcon/>}
+                onClick={handleOverlayClose}
               >
                 Settings
               </SidebarNavLink>

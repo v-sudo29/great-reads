@@ -119,9 +119,9 @@ export default function Nav() {
                   </span>
                 )}
               </div>
-              <a href='/sign-in'>
+              <button onClick={()=>{}}>
                 <PlusIcon/>
-              </a>
+              </button>
             </div>
             <div className='mt-2'>
               {session && listLinks}
@@ -141,6 +141,7 @@ export default function Nav() {
       />
       <MobileSidebar
         isMobileSidebarOpen={isMobileSidebarOpen}
+        handleOverlayClose={handleOverlayClose}
       />
     </>
   )

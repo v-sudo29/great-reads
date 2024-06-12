@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-interface SidebarNavLinkProps {
+interface SidebarNavLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string
   children: ReactNode
   icon: ReactNode
