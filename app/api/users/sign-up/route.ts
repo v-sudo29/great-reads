@@ -5,14 +5,16 @@ import { NextResponse } from "next/server"
 import { SchemaDefinitionProperty } from "mongoose"
 
 interface NewUserRequest {
-  name: string
+  firstName: string
+  lastName: string
   email: string
   password: string
 }
 
 interface NewUserResponse {
   id: string
-  name: string
+  firstName: string
+  lastName: string
   email: string
   lists: Record<string, string[]> | {}
   friends: SchemaDefinitionProperty[] | [],
@@ -41,7 +43,8 @@ export const POST = async (req: Request): Promise<NewResponse> => {
     user: {
       id: user._id.toString(),
       email: user.email,
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       lists: {
         ['Read']: [],
         ['Currently Reading']: [],

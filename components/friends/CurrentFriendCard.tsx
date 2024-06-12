@@ -9,7 +9,9 @@ interface ICurrentFriendCard {
 const CurrentFriendCard = ({ friend, removeFriend } : ICurrentFriendCard) => {
   return (
     <div className='flex justify-between h-10 w-80'>
-      <h1>{friend.name}</h1>
+      <h1>
+        {`${friend.firstName} ${friend.lastName}`}
+      </h1>
       <button
         onClick={(e) => removeFriend(e)}
         className={`delete_button ${friend.id}`}

@@ -1,11 +1,12 @@
 import { ReactNode } from "react"
 import Logo from "./Logo"
-import ButtonLink from "@components/common/ButtonLink"
-import FriendsListIcon from "../common/icons/FriendsListIcon"
+import { ButtonLink } from "@components/common/Button"
 import HomeIcon from "../common/icons/HomeIcon"
 import PlusIcon from "../common/icons/PlusIcon"
 import ProfileIcon from "../common/icons/ProfileIcon"
-import { useSession, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
+import ExploreIcon from "@components/common/icons/ExploreIcon"
+import SettingsIcon from "@components/common/icons/SettingsIcon"
 
 interface SidebarNavLinkProps {
   href: string
@@ -41,7 +42,7 @@ const MobileSidebar = ({
   const { data: session } = useSession()
   const sidebarStyles = isMobileSidebarOpen ? '' : 'transform translate-x-[-381px]'
   return (
-    <div className={sidebarStyles + ' ' + 'fixed w-full max-w-[366px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
+    <div className={sidebarStyles + ' ' + 'fixed z-50 w-full max-w-[366px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
       <div className='h-[3.5rem] px-5 py-3 border-b border-b-[#DFE7EB]'>
         <Logo />
       </div>
@@ -67,9 +68,17 @@ const MobileSidebar = ({
             <li>
               <SidebarNavLink
                 href='/friends'
-                icon={<FriendsListIcon />}
+                icon={<ExploreIcon/>}
               >
-                Friends List
+                Explore
+              </SidebarNavLink>
+            </li>
+            <li>
+              <SidebarNavLink
+                href={session === null ? '/sign-in' : '/settings'}
+                icon={<SettingsIcon/>}
+              >
+                Settings
               </SidebarNavLink>
             </li>
           </ul>
@@ -87,13 +96,8 @@ const MobileSidebar = ({
             <PlusIcon/>
           </a>
         </div>
-        {session && (
-          <button onClick={() => signOut()}>
-            Sign Out
-          </button>
-        )}
         {!session && (
-        <>
+          <>
             <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2'>
               Sign in to add books to your list!
             </p>

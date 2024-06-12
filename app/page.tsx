@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image"
-import ButtonLink from "@components/common/ButtonLink"
+import { ButtonLink } from "@components/common/Button"
 import { useSession } from "next-auth/react"
 
 export default function Home() {

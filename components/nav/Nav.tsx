@@ -8,10 +8,10 @@ import Logo from './Logo'
 import HamburgerIcon from '../common/icons/HamburgerIcon'
 import HomeIcon from '@components/common/icons/HomeIcon'
 import ProfileIcon from '@components/common/icons/ProfileIcon'
-import FriendsListIcon from '@components/common/icons/FriendsListIcon'
 import PlusIcon from '@components/common/icons/PlusIcon'
 import SettingsIcon from '@components/common/icons/SettingsIcon'
-import { useSession, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
+import ExploreIcon from '@components/common/icons/ExploreIcon'
 
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
@@ -22,6 +22,7 @@ export default function Nav() {
   const handleHamburgerIconClick = () => setIsMobileSidebarOpen(true)
   const handleOverlayClose = () => setIsMobileSidebarOpen(false)
 
+  if (session === undefined) return <></>
   return (
     <>
       {/* Mobile Nav */}
@@ -37,7 +38,7 @@ export default function Nav() {
 
       {/* Desktop Sidebar Nav */}
       <div className='hidden xl:relative xl:block'>
-        <div className='min-w-[400px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out xl:flex xl:flex-col'>
+        <div className='min-w-[400px] self-start min-h-screen bg-[#FFFFFF] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out xl:flex xl:flex-col'>
           <div className='h-[3.5rem] mx-6 px-2 pt-6 pb-8'>
             <Logo />
           </div>
@@ -62,10 +63,18 @@ export default function Nav() {
                 </li>
                 <li>
                   <SidebarNavLink
-                    href='/friends'
-                    icon={<FriendsListIcon />}
+                    href='/'
+                    icon={<ExploreIcon />}
                   >
-                    Friends List
+                    Explore
+                  </SidebarNavLink>
+                </li>
+                <li>
+                  <SidebarNavLink
+                    href={session === null ? '/sign-in' : '/settings'}
+                    icon={<SettingsIcon/>}
+                  >
+                    Settings
                   </SidebarNavLink>
                 </li>
               </ul>
@@ -83,26 +92,11 @@ export default function Nav() {
                 <PlusIcon/>
               </a>
             </div>
-            <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2 xl:text-[18px]'>
-              Sign in to add books to your list!
-            </p>
-            <ul className='mt-auto'>
-              {session && (
-                <li>
-                  <button onClick={() => signOut()}>
-                    Sign Out
-                  </button>
-                </li>
-              )}
-              <li>
-                <SidebarNavLink
-                  href={session === null ? '/sign-in' : '/'} // TODO: update to setting once settings page is implemented
-                  icon={<SettingsIcon/>}
-                >
-                  Settings
-                </SidebarNavLink>
-              </li>
-            </ul>
+            {session === null && (
+              <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2 xl:text-[18px]'>
+                Sign in to add books to your list!
+              </p>
+            )}
           </div>
         </div>
         

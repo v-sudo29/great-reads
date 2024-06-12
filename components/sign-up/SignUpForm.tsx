@@ -4,13 +4,15 @@ import { useRouter } from "next/navigation"
 
 interface SignUpFormProps {
   userInfo: {
-    name: string
+    firstName: string
+    lastName: string
     email: string
     password: string
   }
   stepNumber: number
   setUserInfo: React.Dispatch<React.SetStateAction<{
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
 }>>
@@ -27,7 +29,7 @@ const SignUpForm = ({
   const [error, setError] = useState('')
   const [emailError, setEmailError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
-  const { name, email, password } = userInfo
+  const { firstName, lastName, email, password } = userInfo
   const router = useRouter()
 
   const formLabelStyles = 'font-montserrat font-medium text-[14px] text-[#344054] xl:text-[12px] xl:text-base xl:pointer-events-none'
@@ -46,7 +48,8 @@ const SignUpForm = ({
     e.preventDefault()
 
     if (
-      name === '' ||
+      firstName === '' ||
+      lastName === '' ||
       email === '' ||
       password === ''
     ) return
@@ -145,22 +148,40 @@ const SignUpForm = ({
         </div>
       )}
       {stepNumber === 2 && (
-        <div className='flex flex-col gap-[6px] mb-6'>
-          <label
-            className={formLabelStyles}
-            htmlFor='name'
-          >
-            Name*
-          </label>
-          <input
-            className={formTextInputStyles}
-            type='text'
-            name='name'
-            placeholder='Name'
-            value={name}
-            onChange={handleChange}
-          />
-        </div>
+        <>
+          <div className='flex flex-col gap-[6px] mb-6'>
+            <label
+              className={formLabelStyles}
+              htmlFor='firstName'
+            >
+              First Name*
+            </label>
+            <input
+              className={formTextInputStyles}
+              type='text'
+              name='firstName'
+              placeholder='First Name'
+              value={firstName}
+              onChange={handleChange}
+            />
+          </div>
+            <div className='flex flex-col gap-[6px] mb-6'>
+            <label
+              className={formLabelStyles}
+              htmlFor='lastName'
+            >
+              Last Name*
+            </label>
+            <input
+              className={formTextInputStyles}
+              type='text'
+              name='lastName'
+              placeholder='Last Name'
+              value={lastName}
+              onChange={handleChange}
+            />
+          </div>
+        </>
       )}
       <button
         className='font-montserrat font-semibold text-[14px] leading-[24px] h-11 rounded-[4px] bg-primary text-white xl:h-12 xl:text-base'

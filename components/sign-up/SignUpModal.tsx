@@ -6,7 +6,8 @@ import { useState } from "react"
 const SignUpModal = () => {
   const [stepNumber, setStepNumber] = useState(1)
   const [userInfo, setUserInfo] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: ''
   })
@@ -14,7 +15,8 @@ const SignUpModal = () => {
   const handleReset = () => {
     setStepNumber(1)
     setUserInfo({
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: ''
     })

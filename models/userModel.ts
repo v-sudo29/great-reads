@@ -7,7 +7,8 @@ interface UserDocument extends Document {
   id?: string
   _id?: string
   email: string
-  name: string
+  firstName: string
+  lastName: string
   password: string
   lists: Record<string, IBook[]> | {}
   friends: SchemaDefinitionProperty[] | []
@@ -25,7 +26,12 @@ const userSchema = new Schema<UserDocument, {}, Methods>({
     required: true,
     unique: true
   },
-  name: {
+  firstName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  lastName: {
     type: String,
     required: true,
     trim: true
