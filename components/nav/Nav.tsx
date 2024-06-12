@@ -12,6 +12,7 @@ import PlusIcon from '@components/common/icons/PlusIcon'
 import SettingsIcon from '@components/common/icons/SettingsIcon'
 import { useSession } from 'next-auth/react'
 import ExploreIcon from '@components/common/icons/ExploreIcon'
+import { IBook } from '@customTypes/bookType'
 
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
@@ -25,7 +26,31 @@ export default function Nav() {
 
   if (session === undefined) return <></>
 
-  console.log(session?.user)
+  let listLinks: JSX.Element[]| [] = []
+
+  if (session) {
+    for (let listName in session.user.lists) {
+      const listsCopy = session.user.lists as Record<string, {
+        color: string;
+        books: IBook[];
+      }>
+      (listLinks as JSX.Element[]).push(
+        <SidebarNavLink
+          key={`${listName}-list`}
+          href='/'
+          icon={
+            <div
+              className='flex w-[14px] h-[14px] rounded-[2px]'
+              style={{ backgroundColor: `#${listsCopy[listName].color}`}}
+            ></div>
+          }
+          className='gap-2'
+        >
+          {listName}
+        </SidebarNavLink>
+      )
+    }
+  }
   return (
     <>
       {/* Mobile Nav */}
@@ -88,14 +113,17 @@ export default function Nav() {
                 <p className='text-primary xl:text-[18px]'>
                   My Lists
                 </p>
-                <span className='flex items-center w-8 h-[22px] text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>
-                  {numberOfLists}
-                </span>
+                {session && (
+                  <span className='flex items-center w-8 h-[22px] text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>
+                    {numberOfLists}
+                  </span>
+                )}
               </div>
               <a href='/sign-in'>
                 <PlusIcon/>
               </a>
             </div>
+            {session && listLinks}
             {session === null && (
               <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2 xl:text-[18px]'>
                 Sign in to add books to your list!

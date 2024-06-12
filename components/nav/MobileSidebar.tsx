@@ -8,32 +8,7 @@ import { useSession } from 'next-auth/react'
 import ExploreIcon from "@components/common/icons/ExploreIcon"
 import SettingsIcon from "@components/common/icons/SettingsIcon"
 import { IBook } from "@customTypes/bookType"
-
-interface SidebarNavLinkProps {
-  href: string
-  children: ReactNode
-  icon: ReactNode
-  className?: string
-}
-
-const SidebarNavLink = ({
-  href,
-  children,
-  icon,
-  className
-} : SidebarNavLinkProps) => {
-  return (
-    <a
-      className={'flex items-center gap-4 h-[52px] px-3 text-primary font-montserrat text-[14px] font-medium rounded-[4px] hover:bg-[#F0F4F6] hover:font-semibold' + ' ' + className}
-      href={href}
-    >
-      <div className='flex w-6 h-6 items-center justify-center'>
-        {icon}
-      </div>
-      {children}
-    </a>
-  )
-}
+import SidebarNavLink from "./SidebarNavLink"
 
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
