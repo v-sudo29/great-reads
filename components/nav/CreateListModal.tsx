@@ -27,7 +27,7 @@ const defaultColors = [
     color: '3DCAE8'
   },
   {
-    color: 'no-color' // Replace this with color-picker.png
+    color: 'no-color'
   }
 ]
 
@@ -36,6 +36,7 @@ const CreateListModal = ({
 } : CreateListModalProps) => {
   const [listName, setListName] = useState('')
   const [listNameError, setListNameError] = useState(false)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const [color, setColor] = useState<string | null>('FF4141')
   const [customColor, setCustomColor] = useState<string | null>(null)
   const [error, setError] = useState('')
@@ -44,7 +45,11 @@ const CreateListModal = ({
   
   const formLabelStyles = 'font-montserrat font-medium text-[14px] text-[#344054] xl:text-[12px] xl:text-base xl:pointer-events-none'
   const formTextInputStyles = 'border border-[#D0D5DD] rounded-[4px] h-12 px-[14px] py-[10px] focus:outline-none focus:outline-offset-[-1.5px] focus:outline-[1.5px] focus:outline-[#4285F4] placeholder:font-normal placeholder:text-[#A4B1B8] xl:text-base xl:h-[54px]'
-  const formInputErrorStyles = 'border-[1.5px] border-[#D23B2E] rounded-[4px] h-12 px-[14px] py-[10px] focus:outline-none focus:outline-offset-[-1.5px] focus:outline-[1.5px] focus:outline-[#D23B2E] placeholder:font-normal placeholder:text-[#A4B1B8] xl:text-base xl:h-[54px]'
+
+  const handleDefaultColorClick = (color : string) => {
+    setColor(color)
+    setCustomColor(null)
+  }
 
   const colorRadioButtons = defaultColors.map((obj, index) => {
     if (index !== defaultColors.length - 1) {
@@ -52,10 +57,7 @@ const CreateListModal = ({
         <div
           key={`${index}-${obj.color}`}
           className='flex rounded-[4px]'
-          onChange={() => {
-            setColor(obj.color)
-            setCustomColor(null)
-          }}
+          onChange={() => handleDefaultColorClick(obj.color)}
           style={ obj.color === color ? {
             border: obj.color === color ? '2px solid #4C4C4C' : '',
             width: obj.color === color ? 'w-8' : '',
@@ -129,41 +131,41 @@ const CreateListModal = ({
   })  
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    const { name, value } = target
+    const { value } = target
+    const trimmedValue = value.trim()
 
-    if (name === 'listName' && value !== '' && listName) setListNameError(false) 
-    setListName(value)
+    if (trimmedValue !== '') {
+      setListName(trimmedValue)
+      setIsButtonDisabled(false)
+    } else {
+      setListName('')
+      setIsButtonDisabled(true)
+    }
   }
 
   const handleSubmit: MouseEventHandler<HTMLButtonElement>= async (e) => {
     e.preventDefault()
 
-    if (listNameError || !session?.user.lists) return
+    if (listName === '') return
+    if (!color && !customColor) return
 
-    // try {
-    //   setLoading(true)
-    //   const listsCopy = session?.user.lists
-
-    //   const res = await update({
-    //     lists: {
-    //       ...listsCopy,
-    //       listName: {
-    //         color: '',
-    //         books: []
-    //       }
-    //     }
-    //   }) 
-    //   console.log('Create new list response: ', res)
-    // } catch(err) {
-    //   console.error(err)
-    // } finally {
-    //   setLoading(false)
-    // }    
-  }
-
-  const handleListColorClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault()
-    console.log('clicked!')
+    try {
+      setLoading(true)
+      const res = await update({
+        lists: {
+          ...session?.user.lists,
+          listName: {
+            color: color ?? customColor,
+            books: []
+          }
+        }
+      })
+      console.log('RESPONSE after submit: ', res)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }   
   }
 
   return (
@@ -187,16 +189,13 @@ const CreateListModal = ({
               List Name
             </label>
             <input
-              className={listNameError ? formInputErrorStyles : formTextInputStyles}
+              className={formTextInputStyles}
               type='text'
               name='listName'
               placeholder='Like "Hidden Gems" or "Summer 2024"'
               value={listName}
               onChange={handleChange}
             />
-            {listNameError && (
-              <span className='absolute font-montserrat font-semibold bottom-[-21px] text-[12px] text-[#D23B2E]'>Please enter a valid email address</span>
-            )}
           </div>
           
           {/* TODO: List Colors Here */}
@@ -215,8 +214,13 @@ const CreateListModal = ({
           <button
             className='flex w-full justify-center items-center mt-6 font-montserrat font-semibold text-[14px] leading-[24px] h-11 rounded-[4px] bg-primary text-white xl:h-12 xl:text-base'
             type="submit"
-            disabled={loading}
-            style={{ opacity: loading ? 0.5 : 1 }}
+            disabled={!loading ? isButtonDisabled : loading}
+            style={{
+              opacity: (!loading && isButtonDisabled) ?  0.5 :
+                (loading && !isButtonDisabled) ? 0.5 :
+                (!loading && !isButtonDisabled) ? 1 :
+                ''
+            }}
             onClick={handleSubmit}
           >
             Create list
