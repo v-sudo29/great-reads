@@ -113,12 +113,16 @@ const MobileSidebar = ({
               </span>
             )}
           </div>
-          <button onClick={() => {
-            handleCreateListModalOpen()
-            handleMobileSidebarClose()
-          }}>
-            <PlusIcon/>
-          </button>
+          {session && (
+            <button
+              onClick={() => {
+                handleCreateListModalOpen()
+                handleMobileSidebarClose()
+              }}
+            >
+              <PlusIcon/>
+            </button>
+          )}
         </div>
         {session && listLinks}
         {!session && (
