@@ -39,7 +39,7 @@ const CreateListModal = ({
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const [color, setColor] = useState<string | null>('FF4141')
   const [customColor, setCustomColor] = useState<string | null>(null)
-  const [error, setError] = useState('')
+  const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
   const { data: session, update } = useSession()
   
@@ -102,7 +102,7 @@ const CreateListModal = ({
           onChange={(e) => {
             const chosenColor = e.target.value.split('#')[1]
             setCustomColor(chosenColor)
-            setColor('no-color')
+            setColor(null)
           }}
         />
         {!customColor && (
@@ -132,10 +132,9 @@ const CreateListModal = ({
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { value } = target
-    const trimmedValue = value.trim()
 
-    if (trimmedValue !== '') {
-      setListName(trimmedValue)
+    if (value !== '') {
+      setListName(value)
       setIsButtonDisabled(false)
     } else {
       setListName('')
@@ -154,13 +153,17 @@ const CreateListModal = ({
       const res = await update({
         lists: {
           ...session?.user.lists,
-          listName: {
+          [listName]: {
             color: color ?? customColor,
             books: []
           }
         }
       })
-      console.log('RESPONSE after submit: ', res)
+
+      // Check if new list exists in session
+      if (!res?.user.lists.hasOwnProperty(listName)) {
+        setError(true) // TODO: error UI in case new list could not be updated in DB
+      }
     } catch (err) {
       console.error(err)
     } finally {
