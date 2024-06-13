@@ -15,22 +15,20 @@ import Overlay from "@components/common/Overlay"
 interface MobileSidebarProps {
   isMobileSidebarOpen: boolean
   handleMobileSidebarClose: () => void
+  handleCreateListModalOpen: () => void
 }
 
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
 const MobileSidebar = ({
   isMobileSidebarOpen,
-  handleMobileSidebarClose
+  handleMobileSidebarClose,
+  handleCreateListModalOpen
 } : MobileSidebarProps) => {
-  const [isListModalOpen, setIsListModalOpen] = useState(false)
   const { data: session } = useSession()
   const numberOfLists = Object.keys(session?.user?.lists ?? {}).length
   const sidebarStyles = isMobileSidebarOpen ? '' : 'transform translate-x-[-381px]'
   let listLinks: JSX.Element[]| [] = []
-
-  const handleListModalOpen = () => setIsListModalOpen(true)
-  const handleListModalClose = () => setIsListModalOpen(false)
 
   if (session) {
     for (let listName in session.user.lists) {
@@ -58,17 +56,6 @@ const MobileSidebar = ({
 
   return (
     <>
-    {isListModalOpen && (
-      <div className='absolute w-full h-full z-[10]'>
-        <CreateListModal
-          handleListModalClose={handleListModalClose}
-        />
-        <Overlay
-          isOpen={isListModalOpen}
-          handleClose={handleListModalClose}
-        />
-      </div>
-    )}
     <div className={sidebarStyles + ' ' + 'fixed z-50 w-full max-w-[366px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
       <div className='h-[3.5rem] px-5 py-3 border-b border-b-[#DFE7EB]'>
         <Logo />
@@ -127,7 +114,7 @@ const MobileSidebar = ({
             )}
           </div>
           <button onClick={() => {
-            handleListModalOpen()
+            handleCreateListModalOpen()
             handleMobileSidebarClose()
           }}>
             <PlusIcon/>

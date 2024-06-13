@@ -13,16 +13,21 @@ import SettingsIcon from '@components/common/icons/SettingsIcon'
 import { useSession } from 'next-auth/react'
 import ExploreIcon from '@components/common/icons/ExploreIcon'
 import { IBook } from '@customTypes/bookType'
+import CreateListModal from './CreateListModal'
 
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
 export default function Nav() {
+  const [isCreateListModalOpen, setIsCreateListModalOpen] = useState(false)
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
   const { data: session } = useSession()
   const numberOfLists = Object.keys(session?.user?.lists ?? {}).length
 
   const handleHamburgerIconClick = () => setIsMobileSidebarOpen(true)
   const handleMobileSidebarClose = () => setIsMobileSidebarOpen(false)
+
+  const handleListModalOpen = () => setIsCreateListModalOpen(true)
+  const handleListModalClose = () => setIsCreateListModalOpen(false)
 
   if (session === undefined) return <></>
 
@@ -119,7 +124,7 @@ export default function Nav() {
                   </span>
                 )}
               </div>
-              <button onClick={()=>{}}>
+              <button onClick={handleListModalOpen}>
                 <PlusIcon/>
               </button>
             </div>
@@ -142,7 +147,19 @@ export default function Nav() {
       <MobileSidebar
         isMobileSidebarOpen={isMobileSidebarOpen}
         handleMobileSidebarClose={handleMobileSidebarClose}
+        handleCreateListModalOpen={handleListModalOpen}
       />
+      {isCreateListModalOpen && (
+        <div className='absolute w-full h-full z-[10]'>
+          <CreateListModal
+            handleListModalClose={handleListModalClose}
+          />
+          <Overlay
+            isOpen={isCreateListModalOpen}
+            handleClose={handleListModalClose}
+          />
+        </div>
+      )}
     </>
   )
 }

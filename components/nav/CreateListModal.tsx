@@ -27,6 +27,12 @@ const defaultColors = [
     color: '3DCAE8'
   },
   {
+    color: '4F56FF'
+  },
+  {
+    color: 'FD99FF'
+  },
+  {
     color: 'no-color'
   }
 ]
@@ -35,11 +41,10 @@ const CreateListModal = ({
   handleListModalClose
 } : CreateListModalProps) => {
   const [listName, setListName] = useState('')
-  const [listNameError, setListNameError] = useState(false)
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const [color, setColor] = useState<string | null>('FF4141')
   const [customColor, setCustomColor] = useState<string | null>(null)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false) // TODO: create error UI if creating list fails
   const [loading, setLoading] = useState(false)
   const { data: session, update } = useSession()
   
@@ -163,7 +168,7 @@ const CreateListModal = ({
       // Check if new list exists in session
       if (!res?.user.lists.hasOwnProperty(listName)) {
         setError(true) // TODO: error UI in case new list could not be updated in DB
-      }
+      } else handleListModalClose()
     } catch (err) {
       console.error(err)
     } finally {
@@ -173,7 +178,7 @@ const CreateListModal = ({
 
   return (
     <div className='absolute flex justify-center z-20 w-full h-full px-4 xl:fixed xl:top-0 xl:left-0'>
-      <div className='relative mt-[6.5rem] flex flex-col w-full h-max max-w-[358px] gap-3 px-4 py-5 bg-white shadow-xl rounded-xl xl:mt-auto xl:mb-auto xl:p-6'>
+      <div className='relative mt-[6.5rem] flex flex-col w-full h-max max-w-[358px] gap-3 px-4 py-5 bg-white rounded-xl xl:max-w-[480px] xl:mt-auto xl:mb-auto xl:p-6 xl:gap-5'>
         <button
           className='absolute right-[22px] top-[22px]'
           onClick={handleListModalClose}
@@ -202,20 +207,20 @@ const CreateListModal = ({
           </div>
           
           {/* TODO: List Colors Here */}
-          <div className='flex flex-col gap-3 mt-4'>
+          <div className='flex flex-col gap-3 mt-4 xl:mt-6'>
             <label
               className={formLabelStyles}
               htmlFor='listColor'
             >
               List Color
             </label>
-              <fieldset className='flex gap-[17px]'>
+              <fieldset className='flex gap-[17px] flex-wrap w-full xl:gap-[18px]'>
                 {colorRadioButtons}
               </fieldset>
           </div>
 
           <button
-            className='flex w-full justify-center items-center mt-6 font-montserrat font-semibold text-[14px] leading-[24px] h-11 rounded-[4px] bg-primary text-white xl:h-12 xl:text-base'
+            className='flex w-full justify-center items-center mt-6 font-montserrat font-semibold text-[14px] leading-[24px] h-11 rounded-[22px] bg-primary text-white xl:h-12 xl:text-base xl:mt-8'
             type="submit"
             disabled={!loading ? isButtonDisabled : loading}
             style={{
