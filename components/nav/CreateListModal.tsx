@@ -1,6 +1,7 @@
 import ExitIcon from "@components/common/icons/ExitIcon"
 import { ChangeEventHandler, MouseEventHandler, useState } from "react"
 import { useSession } from "next-auth/react"
+import Image from "next/image"
 
 interface CreateListModalProps {
   handleListModalClose: () => void
@@ -26,7 +27,7 @@ const defaultColors = [
     color: '3DCAE8'
   },
   {
-    color: '000000'
+    color: 'no-color' // Replace this with color-picker.png
   }
 ]
 
@@ -35,7 +36,8 @@ const CreateListModal = ({
 } : CreateListModalProps) => {
   const [listName, setListName] = useState('')
   const [listNameError, setListNameError] = useState(false)
-  const [color, setColor] = useState('FF4141')
+  const [color, setColor] = useState<string | null>('FF4141')
+  const [customColor, setCustomColor] = useState<string | null>(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { data: session, update } = useSession()
@@ -45,28 +47,83 @@ const CreateListModal = ({
   const formInputErrorStyles = 'border-[1.5px] border-[#D23B2E] rounded-[4px] h-12 px-[14px] py-[10px] focus:outline-none focus:outline-offset-[-1.5px] focus:outline-[1.5px] focus:outline-[#D23B2E] placeholder:font-normal placeholder:text-[#A4B1B8] xl:text-base xl:h-[54px]'
 
   const colorRadioButtons = defaultColors.map((obj, index) => {
-    return (
+    if (index !== defaultColors.length - 1) {
+      return (
+        <div
+          key={`${index}-${obj.color}`}
+          className='flex rounded-[4px]'
+          onChange={() => {
+            setColor(obj.color)
+            setCustomColor(null)
+          }}
+          style={ obj.color === color ? {
+            border: obj.color === color ? '2px solid #4C4C4C' : '',
+            width: obj.color === color ? 'w-8' : '',
+            height: obj.color === color ? 'h-8' : '',
+            padding: obj.color === color ? '3px 3px' : ''
+          } : undefined}
+        >
+          <input
+            className='appearance-none w-8 h-8 rounded-[4px] checked:w-[22px] checked:h-[22px] checked:rounded-[2px] cursor-pointer'
+            style={{
+              backgroundColor: `#${obj.color}`,
+              width: obj.color === color ? '22px' : '32px',
+              height: obj.color === color ? '22px' : '32px',
+              borderRadius: obj.color === color ? '2px' : '4px'
+            }}
+            type="radio"
+            name={`chooseListColor`}
+            id={`listColor-${obj.color}`}
+            defaultChecked={index === 0 && true}
+          />
+          <label
+            className='w-0'
+            htmlFor={`listColor-${obj.color}`}
+          ></label>
+        </div>
+      )
+    } 
+    else return (
       <div
-        key={`${index}-${obj.color}`}
-        className='flex rounded-[4px]'
-        onChange={() => setColor(obj.color)}
+        key={`${index}-custom-color`}
+        className='relative w-8 h-8 rounded-[4px] overflow-hidden'
         style={{
-          border: obj.color === color ? '2px solid #4C4C4C' : '',
-          width: obj.color === color ? 'w-8' : '',
-          height: obj.color === color ? 'h-8' : '',
-          padding: obj.color === color ? '3px 3px' : ''
+          background: customColor ? 
+            'linear-gradient(45deg, red, orange, #19E515, #1574E5, #BD00FF, #FF00F5)'
+            : '',
+          padding: customColor ? '3px 3px' : ''
         }}
       >
         <input
-          className='appearance-none w-8 h-8 rounded-[4px] checked:w-[22px] checked:h-[22px] checked:rounded-[2px] cursor-pointer'
-          style={{
-            backgroundColor: `#${obj.color}`
+          type="color"
+          className='appearance-none opacity-0 cursor-pointer pointer-events-auto'
+          onChange={(e) => {
+            const chosenColor = e.target.value.split('#')[1]
+            setCustomColor(chosenColor)
+            setColor('no-color')
           }}
-          type="radio"
-          name="listColorFF4141"
-          id="listColorFF4141"
-          defaultChecked={index === 0 && true}
         />
+        {!customColor && (
+          <Image
+            className='absolute top-0 pointer-events-none'
+            src='/color-picker.png'
+            width='32'
+            height='32'
+            alt=''
+          />
+        )}
+        {customColor && (
+          <div
+            className='absolute top-[2px] left-[2px] rounded-[2px] w-[28px] h-[28px] bg-white border-[3px] border-white pointer-events-none'
+          >
+            <div className='rounded-[2px] w-full h-full'
+            style={{
+              backgroundColor: customColor ? `#${customColor}` : ''
+            }}
+            >
+            </div>
+          </div>
+        )}
       </div>
     )
   })  
@@ -150,22 +207,9 @@ const CreateListModal = ({
             >
               List Color
             </label>
-            <div className='flex gap-[17px]'>
-              {colorRadioButtons}
-              {/* <input
-                className='appearance-none w-8 h-8 bg-[#FF4141] rounded-[4px] checked:outline-2 checked:outline checked:outline-border-[#4C4C4C]'
-                type="radio"
-                name="listColorFF4141"
-                id="listColorFF4141"
-                defaultChecked={true}
-              />
-              <input
-                className='appearance-none w-8 h-8 bg-[#FFC700] rounded-[4px] checked:outline-2 checked:outline checked:outline-border-[#4C4C4C]'
-                type="radio"
-                name="listColorFF4141"
-                id="listColorFF4141"
-              /> */}
-            </div>
+              <fieldset className='flex gap-[17px]'>
+                {colorRadioButtons}
+              </fieldset>
           </div>
 
           <button
