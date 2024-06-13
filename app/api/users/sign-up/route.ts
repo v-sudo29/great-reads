@@ -3,6 +3,7 @@ import User from "@models/userModel"
 import GoogleUser from "@models/googleUserModel"
 import { NextResponse } from "next/server"
 import { SchemaDefinitionProperty } from "mongoose"
+import { IBook } from "@customTypes/bookType"
 
 interface NewUserRequest {
   firstName: string
@@ -16,7 +17,10 @@ interface NewUserResponse {
   firstName: string
   lastName: string
   email: string
-  lists: Record<string, string[]> | {}
+  lists: Record<string, {
+    color: string,
+    books: IBook[]
+  }> | {}
   friends: SchemaDefinitionProperty[] | [],
   imageName: string | null
 }
@@ -46,9 +50,18 @@ export const POST = async (req: Request): Promise<NewResponse> => {
       firstName: user.firstName,
       lastName: user.lastName,
       lists: {
-        ['Read']: [],
-        ['Currently Reading']: [],
-        ['Want to Read']: []
+        'Read': {
+          color: "59BC99",
+          books: []
+        },
+        'Currently Reading': {
+          color: "745DFF",
+          books: []
+        },
+        'Want to Read': {
+          color: "FBB246",
+          books: []
+        }
       },
       friends: [],
       imageName: null

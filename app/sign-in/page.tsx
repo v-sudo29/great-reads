@@ -30,7 +30,9 @@ const SignIn = () => {
         <div className='pointer-events-none flex justify-center w-full'>
           <Home />
         </div>
-        <SignInModal/>
+        <div className='z-50'>
+          <SignInModal/>
+        </div>
       </div>
     </>
   )

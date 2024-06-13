@@ -12,17 +12,50 @@ import PlusIcon from '@components/common/icons/PlusIcon'
 import SettingsIcon from '@components/common/icons/SettingsIcon'
 import { useSession } from 'next-auth/react'
 import ExploreIcon from '@components/common/icons/ExploreIcon'
+import { IBook } from '@customTypes/bookType'
+import CreateListModal from './CreateListModal'
 
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
 export default function Nav() {
+  const [isCreateListModalOpen, setIsCreateListModalOpen] = useState(false)
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
   const { data: session } = useSession()
+  const numberOfLists = Object.keys(session?.user?.lists ?? {}).length
 
   const handleHamburgerIconClick = () => setIsMobileSidebarOpen(true)
-  const handleOverlayClose = () => setIsMobileSidebarOpen(false)
+  const handleMobileSidebarClose = () => setIsMobileSidebarOpen(false)
+
+  const handleListModalOpen = () => setIsCreateListModalOpen(true)
+  const handleListModalClose = () => setIsCreateListModalOpen(false)
 
   if (session === undefined) return <></>
+
+  let listLinks: JSX.Element[]| [] = []
+
+  if (session) {
+    for (let listName in session.user.lists) {
+      const listsCopy = session.user.lists as Record<string, {
+        color: string;
+        books: IBook[];
+      }>
+      (listLinks as JSX.Element[]).push(
+        <SidebarNavLink
+          key={`${listName}-list`}
+          href='/'
+          icon={
+            <div
+              className='flex w-[14px] h-[14px] rounded-[2px]'
+              style={{ backgroundColor: `#${listsCopy[listName].color}`}}
+            ></div>
+          }
+          className='gap-2'
+        >
+          {listName}
+        </SidebarNavLink>
+      )
+    }
+  }
   return (
     <>
       {/* Mobile Nav */}
@@ -81,17 +114,27 @@ export default function Nav() {
             </nav>
             <LineDivider />
             <div className='flex items-center justify-between px-3 py-3'>
-              <div className='flex gap-2 font-montserrat font-bold'>
+              <div className='flex items-center gap-2 font-montserrat font-bold'>
                 <p className='text-primary xl:text-[18px]'>
                   My Lists
                 </p>
-                {/* TODO: Uncomment when implementing session check logic */}
-                {/* <span className='flex items-center w-8 text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>3</span> */}
+                {session && (
+                  <span className='flex items-center w-8 h-[22px] text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>
+                    {numberOfLists}
+                  </span>
+                )}
               </div>
-              <a href='/sign-in'>
-                <PlusIcon/>
-              </a>
+              {session && (
+                <button onClick={handleListModalOpen}>
+                  <PlusIcon/>
+                </button>
+              )}
             </div>
+            {session && (
+              <div className='mt-2'>
+                {listLinks}
+              </div>
+            )}
             {session === null && (
               <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2 xl:text-[18px]'>
                 Sign in to add books to your list!
@@ -103,11 +146,24 @@ export default function Nav() {
       </div>
       <Overlay
         isOpen={isMobileSidebarOpen}
-        handleClose={handleOverlayClose}
+        handleClose={handleMobileSidebarClose}
       />
       <MobileSidebar
         isMobileSidebarOpen={isMobileSidebarOpen}
+        handleMobileSidebarClose={handleMobileSidebarClose}
+        handleCreateListModalOpen={handleListModalOpen}
       />
+      {isCreateListModalOpen && (
+        <div className='absolute w-full h-full z-[10]'>
+          <CreateListModal
+            handleListModalClose={handleListModalClose}
+          />
+          <Overlay
+            isOpen={isCreateListModalOpen}
+            handleClose={handleListModalClose}
+          />
+        </div>
+      )}
     </>
   )
 }

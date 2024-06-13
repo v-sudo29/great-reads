@@ -63,6 +63,13 @@ const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user, session, trigger }) {
       
+      // Check if session property exists in token
+      // if (trigger === 'update' && !token.hasOwnProperty(Object.keys(session)[0])) {
+      //   return {
+      //     ...token,
+      //   }
+      // }
+
       // If user updates FIRST NAME, update token and database
       if (trigger === 'update' && session?.firstName) {
         token.firstName = session.firstName
@@ -90,7 +97,7 @@ const authOptions: AuthOptions = {
       // If user updates LIST, update token and database
       if (trigger === 'update' && session?.lists) {
         token.lists = session.lists
-        
+
         // Update user in database
         const credentialsUser = await User.findOne({ email: token.email })
         const googleUser = await GoogleUser.findOne({ email: token.email })
@@ -156,7 +163,7 @@ const authOptions: AuthOptions = {
         id: string;
         firstName: string;
         lastName: string;
-        lists?: Record<string, IBook[]>;
+        lists?: Record<string, Record<string, string | IBook[]>>;
         friends?: SchemaDefinitionProperty[];
         imageName?: string | null;
         defaultImage?: string;

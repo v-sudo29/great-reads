@@ -1,4 +1,3 @@
-import { ReactNode } from "react"
 import Logo from "./Logo"
 import { ButtonLink } from "@components/common/Button"
 import HomeIcon from "../common/icons/HomeIcon"
@@ -7,41 +6,56 @@ import ProfileIcon from "../common/icons/ProfileIcon"
 import { useSession } from 'next-auth/react'
 import ExploreIcon from "@components/common/icons/ExploreIcon"
 import SettingsIcon from "@components/common/icons/SettingsIcon"
+import { IBook } from "@customTypes/bookType"
+import SidebarNavLink from "./SidebarNavLink"
+import { useState } from "react"
+import CreateListModal from "./CreateListModal"
+import Overlay from "@components/common/Overlay"
 
-interface SidebarNavLinkProps {
-  href: string
-  children: ReactNode
-  icon: ReactNode
-}
-
-const SidebarNavLink = ({
-  href,
-  children,
-  icon
-} : SidebarNavLinkProps) => {
-  return (
-    <a
-      className='flex items-center gap-4 h-[52px] px-3 text-primary font-montserrat text-[14px] font-medium rounded-[4px] hover:bg-[#F0F4F6] hover:font-semibold'
-      href={href}
-    >
-      <div className='w-6 h-6'>
-        {icon}
-      </div>
-      {children}
-    </a>
-  )
+interface MobileSidebarProps {
+  isMobileSidebarOpen: boolean
+  handleMobileSidebarClose: () => void
+  handleCreateListModalOpen: () => void
 }
 
 const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
 
 const MobileSidebar = ({
-  isMobileSidebarOpen
-} : {
-  isMobileSidebarOpen: boolean
-}) => {
+  isMobileSidebarOpen,
+  handleMobileSidebarClose,
+  handleCreateListModalOpen
+} : MobileSidebarProps) => {
   const { data: session } = useSession()
+  const numberOfLists = Object.keys(session?.user?.lists ?? {}).length
   const sidebarStyles = isMobileSidebarOpen ? '' : 'transform translate-x-[-381px]'
+  let listLinks: JSX.Element[]| [] = []
+
+  if (session) {
+    for (let listName in session.user.lists) {
+      const listsCopy = session.user.lists as Record<string, {
+        color: string;
+        books: IBook[];
+      }>
+      (listLinks as JSX.Element[]).push(
+        <SidebarNavLink
+          key={`${listName}-list`}
+          href='/'
+          icon={
+            <div
+              className='flex w-[14px] h-[14px] rounded-[2px]'
+              style={{ backgroundColor: `#${listsCopy[listName].color}`}}
+            ></div>
+          }
+          className='gap-2'
+        >
+          {listName}
+        </SidebarNavLink>
+      )
+    }
+  }
+
   return (
+    <>
     <div className={sidebarStyles + ' ' + 'fixed z-50 w-full max-w-[366px] self-start min-h-screen bg-[#F9FBFC] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out'}>
       <div className='h-[3.5rem] px-5 py-3 border-b border-b-[#DFE7EB]'>
         <Logo />
@@ -53,6 +67,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href='/'
                 icon={<HomeIcon />}
+                onClick={handleMobileSidebarClose}
               >
                 Home
               </SidebarNavLink>
@@ -61,6 +76,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href='/profile'
                 icon={<ProfileIcon />}
+                onClick={handleMobileSidebarClose}
               >
                 My Profile
               </SidebarNavLink>
@@ -69,6 +85,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href='/friends'
                 icon={<ExploreIcon/>}
+                onClick={handleMobileSidebarClose}
               >
                 Explore
               </SidebarNavLink>
@@ -77,6 +94,7 @@ const MobileSidebar = ({
               <SidebarNavLink
                 href={session === null ? '/sign-in' : '/settings'}
                 icon={<SettingsIcon/>}
+                onClick={handleMobileSidebarClose}
               >
                 Settings
               </SidebarNavLink>
@@ -89,13 +107,24 @@ const MobileSidebar = ({
             <p className='text-primary'>
               My Lists
             </p>
-            {/* TODO: Uncomment when implementing session check logic */}
-            {/* <span className='flex items-center w-8 text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>3</span> */}
+            {session && (
+              <span className='flex items-center w-8 h-[22px] text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>
+                {numberOfLists}
+              </span>
+            )}
           </div>
-          <a href='/sign-in'>
-            <PlusIcon/>
-          </a>
+          {session && (
+            <button
+              onClick={() => {
+                handleCreateListModalOpen()
+                handleMobileSidebarClose()
+              }}
+            >
+              <PlusIcon/>
+            </button>
+          )}
         </div>
+        {session && listLinks}
         {!session && (
           <>
             <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2'>
@@ -123,6 +152,7 @@ const MobileSidebar = ({
         )}
       </div>
     </div>
+    </>
   )
 }
 
