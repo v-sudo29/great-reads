@@ -8,9 +8,6 @@ import ExploreIcon from "@components/common/icons/ExploreIcon"
 import SettingsIcon from "@components/common/icons/SettingsIcon"
 import { IBook } from "@customTypes/bookType"
 import SidebarNavLink from "./SidebarNavLink"
-import { useState } from "react"
-import CreateListModal from "./CreateListModal"
-import Overlay from "@components/common/Overlay"
 
 interface MobileSidebarProps {
   isMobileSidebarOpen: boolean
