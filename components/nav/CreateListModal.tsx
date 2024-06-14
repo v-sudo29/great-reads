@@ -133,7 +133,7 @@ const CreateListModal = ({
         )}
       </div>
     )
-  })  
+  })
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     const { value } = target
@@ -206,7 +206,6 @@ const CreateListModal = ({
             />
           </div>
           
-          {/* TODO: List Colors Here */}
           <div className='flex flex-col gap-3 mt-4 xl:mt-6'>
             <label
               className={formLabelStyles}

@@ -11,7 +11,7 @@ interface ButtonLinkProps {
 interface ButtonProps {
   className?: string
   children: ReactNode
-  type: 'primary' | 'secondary',
+  type: 'primary' | 'secondary' | 'tertiary',
   bordersRounded: boolean
   icon?: ReactNode
   clickHandler: (() => void) | ((any: any) => Promise<void>)
@@ -53,7 +53,7 @@ export const Button = ({
   icon,
   clickHandler
 } : ButtonProps) => {
-  const defaultStyles = 'flex gap-2 font-rubik font-medium px-8 py-[10px] leading-[20px] xl:text-[20px] xl:py-4'
+  const defaultStyles = 'flex gap-2 items-center font-rubik font-medium px-8 py-[10px] leading-[20px] xl:text-[20px] xl:py-4'
   const borderStyles = 
     bordersRounded ?
       'rounded-full' :
@@ -63,14 +63,17 @@ export const Button = ({
     'bg-primary text-[#F5F5F5]' :
     type === 'secondary' ?
       'text-primary border border-[#A9B3AE]' :
-    ''
+    type === 'tertiary' ?
+      'font-montserrat text-[12px] text-primary bg-[#E8ECEC] px-[12px] py-[6px] gap-[6px]' :
+      ''
+
   return (
     <button
       className={defaultStyles + ' ' + typeStyles + ' ' +  borderStyles + ' ' + className}
       onClick={clickHandler}
     >
       {icon && (
-        <div className='w-5 h-5'>
+        <div>
           {icon}
         </div>
       )}
