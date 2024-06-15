@@ -2,7 +2,7 @@
 import Image from "next/image"
 import { ButtonLink } from "@components/common/Button"
 import { useSession } from "next-auth/react"
-import { Post, TempUpdatePost } from "@components/home/Post"
+import { Post, TempUpdatePost, TempUpdatePost2 } from "@components/home/Post"
 
 export default function Home() {
   const { data: session } = useSession()
@@ -15,6 +15,7 @@ export default function Home() {
         <section className='px-3'>
           <Post/>
           <TempUpdatePost/>
+          <TempUpdatePost2/>
         </section>
       )}
 

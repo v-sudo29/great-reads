@@ -107,7 +107,7 @@ export const TempUpdatePost = () => {
       <div className='w-full'>
 
         {/* User's name + timestamp */}
-        <div className='flex items-center gap-2 font-lora font-bold text-primary flex-wrap'>
+        <div className='flex items-center gap-1 font-lora font-bold text-primary flex-wrap'>
           <p>Naruto Uzumaki</p>
           <span className='font-medium'>
             just completed:
@@ -153,6 +153,60 @@ export const TempUpdatePost = () => {
 export const TempUpdatePost2 = () => {
   return (
     <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9]'>
+      
+      {/* Profile Icon */}
+      <div>
+        <Image
+          src='/tempPostIcon3.png'
+          alt=''
+          width='40'
+          height='40'
+        />
+      </div>  
+
+      {/* Post Content */}
+      <div className='w-full'>
+
+        {/* User's name + timestamp */}
+        <div className='flex items-center gap-1 font-lora font-bold text-primary flex-wrap'>
+          <p>Sakura Haruno</p>
+          <span className='font-medium'>
+            wants to read:
+          </span>
+        </div>
+
+        {/* Book Image + Book Details */}
+        <div className='flex gap-4 mt-4'>
+
+          {/* Book */}
+          <div className='w-[75px] h-[116px]'>
+            <Image
+              src='/tempUpdateImage2.png'
+              alt=''
+              width='75'
+              height='116'
+            />
+          </div>
+
+          {/* Book Details */}
+          <div className='font-montserrat text-primary leading-[20px]'>
+            <p className='font-bold text-[15px] leading-[20px] mb-1'>
+              The Uchiha Clan: A History of Power and Tragedy
+            </p>
+            <p className='font-medium text-[14px] leading-[24px]'>
+              by Itachi Uchiha
+            </p>
+            <div className='flex gap-1 mt-[6px]'>
+              <FilledStar/>
+              <FilledStar/>
+              <FilledStar/>
+              <FilledStar/>
+              <UnfilledStar/>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   )
 }
