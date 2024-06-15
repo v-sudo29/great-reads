@@ -19,7 +19,7 @@ export const Post = () => {
           width='40'
           height='40'
         />
-        <p className='font-lora font-bold text-primary text-xl'>
+        <p className='font-lora font-bold text-primary text-xl hidden'>
           Sasuke Uchiha
         </p>
       </div>
@@ -97,23 +97,29 @@ export const Post = () => {
 
 export const TempUpdatePost = () => {
   return (
-    <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9]'>
+    <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:flex xl:flex-col'>
       
       {/* Profile Icon */}
-      <div>
+      <div className='xl:flex xl:gap-3 xl:items-center'>
         <Image
           src='/tempPostIcon2.png'
           alt=''
           width='40'
           height='40'
         />
-      </div>  
+        <p className='hidden font-lora font-bold text-xl text-primary xl:block'>
+          Naruto Uzumaki
+          <span className='font-medium ml-2'>
+            just completed:
+          </span>
+        </p>
+      </div>
 
       {/* Post Content */}
       <div className='w-full'>
 
         {/* User's name + timestamp */}
-        <div className='flex items-center gap-1 font-lora font-bold text-primary flex-wrap'>
+        <div className='flex items-center gap-1 font-lora font-bold text-primary flex-wrap xl:hidden'>
           <p>Naruto Uzumaki</p>
           <span className='font-medium'>
             just completed:
@@ -124,21 +130,23 @@ export const TempUpdatePost = () => {
         <div className='flex gap-4 mt-4'>
 
           {/* Book */}
-          <div className='w-[75px] h-[116px]'>
+          <div className='w-[75px] h-[116px] xl:w-[90px] xl:h-[140px]'>
             <Image
               src='/tempUpdateImage1.png'
               alt=''
               width='75'
               height='116'
+              className='xl:w-[90px] xl:h-[140px]'
+              objectFit='cover'
             />
           </div>
 
           {/* Book Details */}
           <div className='font-montserrat text-primary leading-[20px]'>
-            <p className='font-bold text-[15px] leading-[20px] mb-1'>
+            <p className='font-bold text-[15px] leading-[20px] mb-1 xl:font-montserrat xl:text-xl xl:leading-[28px]'>
               Seals and Symbols: A Guide to Fuinjutsu
             </p>
-            <p className='font-medium text-[14px] leading-[24px]'>
+            <p className='font-medium text-[14px] leading-[24px] xl:font-montserrat xl:text-base xl:font-semibold'>
               by Minato Uzumaki
             </p>
             <div className='flex gap-1 mt-[6px]'>
@@ -158,23 +166,29 @@ export const TempUpdatePost = () => {
 
 export const TempUpdatePost2 = () => {
   return (
-    <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9]'>
-      
+    <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:flex xl:flex-col'>
+
       {/* Profile Icon */}
-      <div>
+      <div className='xl:flex xl:gap-3 xl:items-center'>
         <Image
           src='/tempPostIcon3.png'
           alt=''
           width='40'
           height='40'
         />
-      </div>  
+        <p className='hidden font-lora font-bold text-xl text-primary xl:block'>
+          Sakura Haruno
+          <span className='font-medium ml-2'>
+            wants to read:
+          </span>
+        </p>
+      </div> 
 
       {/* Post Content */}
       <div className='w-full'>
 
         {/* User's name + timestamp */}
-        <div className='flex items-center gap-1 font-lora font-bold text-primary flex-wrap'>
+        <div className='flex items-center gap-1 font-lora font-bold text-primary flex-wrap xl:hidden'>
           <p>Sakura Haruno</p>
           <span className='font-medium'>
             wants to read:
@@ -185,21 +199,23 @@ export const TempUpdatePost2 = () => {
         <div className='flex gap-4 mt-4'>
 
           {/* Book */}
-          <div className='w-[75px] h-[116px]'>
+          <div className='w-[75px] h-[116px] xl:w-[90px] xl:h-[140px]'>
             <Image
               src='/tempUpdateImage2.png'
               alt=''
               width='75'
               height='116'
+              className='xl:w-[90px] xl:h-[140px]'
+              objectFit='cover'
             />
           </div>
 
           {/* Book Details */}
           <div className='font-montserrat text-primary leading-[20px]'>
-            <p className='font-bold text-[15px] leading-[20px] mb-1'>
+            <p className='font-bold text-[15px] leading-[20px] mb-1 xl:font-montserrat xl:text-xl xl:leading-[28px]'>
               The Uchiha Clan: A History of Power and Tragedy
             </p>
-            <p className='font-medium text-[14px] leading-[24px]'>
+            <p className='font-medium text-[14px] leading-[24px] xl:font-montserrat xl:text-base xl:font-semibold'>
               by Itachi Uchiha
             </p>
             <div className='flex gap-1 mt-[6px]'>
