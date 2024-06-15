@@ -13,12 +13,14 @@ export default function Home() {
       {/* Authenticated UI */}
       {session && (
         <section className='px-3 xl:py-10 xl:px-12'>
-          <h1 className='hidden font-lora font-bold text-[24px] text-primary leading-[60px] xl:block'>
+          <h1 className='hidden font-lora font-bold text-[24px] text-primary leading-[60px] mb-4 xl:block'>
             Latest Updates
           </h1>
-          <Post/>
-          <TempUpdatePost/>
-          <TempUpdatePost2/>
+          <div className='xl:flex xl:flex-col xl:gap-8'>
+            <Post/>
+            <TempUpdatePost/>
+            <TempUpdatePost2/>
+          </div>
         </section>
       )}
 

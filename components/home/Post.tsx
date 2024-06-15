@@ -19,7 +19,7 @@ export const Post = () => {
           width='40'
           height='40'
         />
-        <p className='font-lora font-bold text-primary text-xl hidden'>
+        <p className='font-lora font-bold text-primary text-xl hidden xl:block'>
           Sasuke Uchiha
         </p>
       </div>
@@ -97,7 +97,7 @@ export const Post = () => {
 
 export const TempUpdatePost = () => {
   return (
-    <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:flex xl:flex-col'>
+    <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white'>
       
       {/* Profile Icon */}
       <div className='xl:flex xl:gap-3 xl:items-center'>
@@ -166,7 +166,7 @@ export const TempUpdatePost = () => {
 
 export const TempUpdatePost2 = () => {
   return (
-    <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:flex xl:flex-col'>
+    <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white'>
 
       {/* Profile Icon */}
       <div className='xl:flex xl:gap-3 xl:items-center'>
