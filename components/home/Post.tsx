@@ -9,23 +9,26 @@ import UnfilledStar from "@components/common/icons/UnfilledStar"
 
 export const Post = () => {
   return (
-    <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9]'>
+    <div className='grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white'>
           
       {/* Profile Icon */}
-      <div>
+      <div className='xl:flex xl:items-center xl:gap-3 xl:rounded-[4px]'>
         <Image
           src='/tempPostIcon1.png'
           alt=''
           width='40'
           height='40'
         />
+        <p className='font-lora font-bold text-primary text-xl'>
+          Sasuke Uchiha
+        </p>
       </div>
 
       {/* Post Content */}
       <div className='w-full'>
 
         {/* User's name + timestamp */}
-        <div className='flex items-center gap-2 font-lora font-bold text-primary'>
+        <div className='flex items-center gap-2 font-lora font-bold text-primary xl:hidden'>
           <p>Sasuke Uchiha</p>
           <GreenDotIcon/>
           <span className='font-semibold'>
@@ -35,16 +38,19 @@ export const Post = () => {
 
         {/* Post caption */}
         <div className='mt-[6px]'>
-          <p className='font-montserrat font-medium text-primary text-[14px] leading-[20px]'>
+          <p className='font-montserrat font-medium text-primary text-[14px] leading-[20px] xl:text-[18px]'>
             This book delves into the darker side of human nature, the shadows we carry. It&apos;s a reflection of the path I&apos;ve walked...
-            <span className='text-[#8D8D8D] pl-2 cursor-pointer'>
+            <span className='text-[#8D8D8D] pl-2 cursor-pointer xl:hidden'>
               more
             </span>
+          </p>
+          <p className='font-montserrat font-semibold text-[13px] text-[#878787] leading-[30px] mt-2'>
+            2 minutes ago
           </p>
         </div>
 
         {/* Post image */}
-        <div className='w-full mt-4'>
+        <div className='w-full mt-4 xl:mt-8'>
           <Image
             className='w-full'
             src='/tempPostImage1.png'

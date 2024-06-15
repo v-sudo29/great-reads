@@ -64,7 +64,7 @@ export const Button = ({
     type === 'secondary' ?
       'text-primary border border-[#A9B3AE]' :
     type === 'tertiary' ?
-      'font-montserrat text-[12px] text-primary bg-[#E8ECEC] px-[12px] py-[6px] gap-[6px]' :
+      'font-montserrat text-[12px] text-primary bg-[#E8ECEC] px-[12px] py-[6px] gap-[6px] xl:py-[12px] xl:px-[20px] xl:gap-[12px] xl:text-[16px]' :
       ''
 
   return (
