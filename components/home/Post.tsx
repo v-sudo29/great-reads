@@ -62,7 +62,7 @@ export const Post = () => {
         </div>
 
         {/* Buttons Container */}
-        <div className='flex mt-3 gap-2'>
+        <div className='flex mt-3 gap-2 xl:mt-8 xl:gap-4'>
           <Button
             type='tertiary'
             bordersRounded={true}
