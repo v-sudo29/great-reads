@@ -2,18 +2,32 @@
 import Image from "next/image"
 import { ButtonLink } from "@components/common/Button"
 import { useSession } from "next-auth/react"
+import { Post, TempUpdatePost, TempUpdatePost2 } from "@components/home/Post"
 
 export default function Home() {
   const { data: session } = useSession()
 
   if (session === undefined) return <></>
   return (
-    <section className='py-[60px] px-[12px] h-full xl:py-[186px]'>
-      {/* TEMPORARY: Temp UI until design is finished */}
-      {session && <>You are logged in.</>} 
+    <>
+      {/* Authenticated UI */}
+      {session && (
+        <section className='px-3 xl:py-10 xl:px-12'>
+          <h1 className='hidden font-lora font-bold text-[24px] text-primary leading-[60px] mb-4 xl:block'>
+            Latest Updates
+          </h1>
+          <div className='xl:flex xl:flex-col xl:gap-8'>
+            <Post/>
+            <TempUpdatePost/>
+            <TempUpdatePost2/>
+          </div>
+        </section>
+      )}
+
+      {/* Unauthenticated UI */}
       {!session && (
-        <>
-          <div>
+        <section className='flex flex-col items-center py-[60px] px-[12px] w-full h-full xl:py-[186px]'>
+          <div className='w-max'>
             <Image
               src='/great-reads-hero-image.png'
               className='xl:w-[532px] xl:h-[390px]'
@@ -47,8 +61,8 @@ export default function Home() {
               Sign In
             </ButtonLink>
           </div>
-        </>
+        </section>
       )}
-    </section>
+    </>
   )
 }
