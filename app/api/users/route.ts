@@ -1,8 +1,8 @@
-import startDb from "@lib/db"
-import User from "@models/userModel"
-import GoogleUser from "@models/googleUserModel"
-import { NextResponse } from "next/server"
-import { SchemaDefinitionProperty } from "mongoose"
+import startDb from '@lib/db'
+import User from '@models/userModel'
+import GoogleUser from '@models/googleUserModel'
+import { NextResponse } from 'next/server'
+import { SchemaDefinitionProperty } from 'mongoose'
 
 interface UserResponse {
   id: string
@@ -19,18 +19,21 @@ interface GoogleUserResponse {
   friends?: SchemaDefinitionProperty[] | []
 }
 
-type NewResponse = NextResponse<{error?: string; users?: (UserResponse | GoogleUserResponse)[]}>
+type NewResponse = NextResponse<{
+  error?: string
+  users?: (UserResponse | GoogleUserResponse)[]
+}>
 
 export const GET = async (req: Request): Promise<NewResponse> => {
   try {
     await startDb()
     const allUsers = await User.find({})
     const allGoogleUsers = await GoogleUser.find({})
-  
+
     const usersArr: UserResponse[] = []
     const googleUsersArr: GoogleUserResponse[] = []
-  
-    allUsers.forEach(user => {
+
+    allUsers.forEach((user) => {
       usersArr.push({
         id: user._id,
         firstName: user.firstName,
@@ -39,27 +42,23 @@ export const GET = async (req: Request): Promise<NewResponse> => {
         friends: user.friends,
       })
     })
-  
-    allGoogleUsers.forEach(user => {
+
+    allGoogleUsers.forEach((user) => {
       googleUsersArr.push({
         id: user._id,
         name: user.name,
         lists: user.lists,
-        friends: user.friends
+        friends: user.friends,
       })
     })
-    
+
     return NextResponse.json({
-      users: [
-        ...usersArr,
-        ...googleUsersArr
-      ]
+      users: [...usersArr, ...googleUsersArr],
     })
   } catch (error) {
     console.log(error)
     return NextResponse.json({
-      error: `${error}`
+      error: `${error}`,
     })
   }
-  
 }

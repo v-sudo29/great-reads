@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const url = process.env.DATABASE_URL ?? ''
 let connection: typeof mongoose

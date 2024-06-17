@@ -10,10 +10,15 @@ interface UserDocument extends Document {
   firstName: string
   lastName: string
   password: string
-  lists: Record<string, {
-    color: string,
-    books: IBook[]
-  }> | {}
+  lists:
+    | Record<
+        string,
+        {
+          color: string
+          books: IBook[]
+        }
+      >
+    | {}
   friends: SchemaDefinitionProperty[] | []
   imageName: string | null
   error?: string
@@ -23,53 +28,56 @@ interface Methods {
   comparePassword(password: string): Promise<boolean>
 }
 
-const userSchema = new Schema<UserDocument, {}, Methods>({
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  firstName: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  lastName: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  lists: {
-    type: Schema.Types.Mixed,
-    default: {
-      ['Read']: {
-        color: "59BC99",
-        books: [Schema.Types.Mixed]
-      },
-      ['Currently Reading']: {
-        color: "745DFF",
-        books: [Schema.Types.Mixed]
-      },
-      ['Want to Read']: {
-        color: "FBB246",
-        books: [Schema.Types.Mixed]
-      }
+const userSchema = new Schema<UserDocument, {}, Methods>(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
-    required: true
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    lists: {
+      type: Schema.Types.Mixed,
+      default: {
+        ['Read']: {
+          color: '59BC99',
+          books: [Schema.Types.Mixed],
+        },
+        ['Currently Reading']: {
+          color: '745DFF',
+          books: [Schema.Types.Mixed],
+        },
+        ['Want to Read']: {
+          color: 'FBB246',
+          books: [Schema.Types.Mixed],
+        },
+      },
+      required: true,
+    },
+    friends: {
+      type: [Schema.ObjectId],
+      required: true,
+    },
+    imageName: {
+      type: Schema.Types.Mixed,
+      default: null,
+    },
   },
-  friends: {
-    type: [Schema.ObjectId],
-    required: true
-  },
-  imageName: {
-    type: Schema.Types.Mixed,
-    default: null
-  }
-}, { minimize: false })
+  { minimize: false }
+)
 
 // Hash the password before saving
 userSchema.pre('save', async function (next) {

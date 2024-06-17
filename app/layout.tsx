@@ -7,11 +7,12 @@ import { ProfileImageProvider } from '@context/ProfileImageProvider'
 
 export const metadata: Metadata = {
   title: 'Great Reads',
-  description: 'GreatReads - Discover your next great read. Explore an expanding library of book reviews, recommendations, and discussions from passionate readers like yourself. Join the community and take your literary journey to new heights.',
+  description:
+    'GreatReads - Discover your next great read. Explore an expanding library of book reviews, recommendations, and discussions from passionate readers like yourself. Join the community and take your literary journey to new heights.',
 }
 
 export default function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode
 }) {
@@ -19,9 +20,9 @@ export default function RootLayout({
     <AuthProvider>
       <ProfileImageProvider>
         <html lang="en">
-          <body className='flex flex-col min-h-screen xl:flex-row'>
+          <body className="flex flex-col min-h-screen xl:flex-row">
             <Nav />
-            <main className='flex-auto bg-[#F9FBFC] flex w-full justify-center overflow-y-scroll xl:ml-[400px]'>
+            <main className="flex-auto bg-[#F9FBFC] flex w-full justify-center overflow-y-scroll xl:ml-[400px]">
               {children}
             </main>
             <Footer />

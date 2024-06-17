@@ -1,15 +1,15 @@
-import Image from 'next/image';
-import FilledStar from '@components/common/icons/FilledStar';
-import UnfilledStar from '@components/common/icons/UnfilledStar';
+import Image from 'next/image'
+import FilledStar from '@components/common/icons/FilledStar'
+import UnfilledStar from '@components/common/icons/UnfilledStar'
 
 const truncateText = (string: string, maxCharacters = 32) => {
-  return string.substring(0, 35) + '...';
-};
+  return string.substring(0, 35) + '...'
+}
 
 const RecommendationCard = () => {
   const truncatedTitle = truncateText(
     'Chakra Mastery: Unveiling Hidden Potential'
-  );
+  )
 
   return (
     <div className="flex gap-6">
@@ -38,7 +38,7 @@ const RecommendationCard = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RecommendationCard;
+export default RecommendationCard
