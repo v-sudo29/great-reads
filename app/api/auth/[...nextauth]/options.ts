@@ -232,6 +232,7 @@ const authOptions: AuthOptions = {
           | {
               caption: string
               imageName?: string | null
+              timestamp: string
             }[]
           | []
       }

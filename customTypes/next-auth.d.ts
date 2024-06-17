@@ -11,6 +11,7 @@ declare module 'next-auth' {
         | {
             caption: string
             imageName?: string | null
+            timestamp: string
           }[]
         | []
       lists:
@@ -47,6 +48,7 @@ declare module 'next-auth' {
       | {
           caption: string
           imageName?: string | null
+          timestamp: string
         }[]
       | []
     friends: SchemaDefinitionProperty[] | []
@@ -73,6 +75,7 @@ declare module 'next-auth/jwt' {
       | {
           caption: string
           imageName?: string | null
+          timestamp: string
         }[]
       | []
     friends: SchemaDefinitionProperty[] | []
