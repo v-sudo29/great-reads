@@ -9,9 +9,7 @@ const CreatePost = () => {
   let userPosts: JSX.Element[] | null = null
 
   const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target && e.target.value !== '') {
-      setCaption(e.target.value)
-    }
+    if (e.target && e.target.value !== '') setCaption(e.target.value)
   }
 
   const handleCreatePost = async () => {
@@ -24,9 +22,30 @@ const CreatePost = () => {
         timestamp: currentTimestamp,
       }
 
-      await update({ posts: [...session.user.posts, requestObject] })
+      await update({
+        posts: [...session.user.posts, requestObject],
+      })
     } catch (err) {
       console.error(err)
+    }
+  }
+
+  const handleDeletePost = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    if (e.target) {
+      const buttonElement = e.target as HTMLButtonElement
+      const timestamp = buttonElement.getAttribute('data-timestamp')
+
+      try {
+        const oldPostsCopy = session?.user.posts
+        const updatedPosts = oldPostsCopy?.filter(
+          (post) => post.timestamp.toString() !== timestamp
+        )
+        update({ posts: updatedPosts })
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 
@@ -40,9 +59,23 @@ const CreatePost = () => {
         <div
           key={`${session.user.id}-post-${i}`}
           className="border border-black p-4 rounded-md"
+          data-timestamp={post.timestamp}
+          data-caption={post.caption}
         >
-          <p>{post.caption}</p>
-          <p>{formattedDate}</p>
+          <div>
+            <p>{post.caption}</p>
+            <p>{formattedDate}</p>
+          </div>
+          <div className="mt-4">
+            <button
+              className="bg-red-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1"
+              onClick={(e) => handleDeletePost(e)}
+              data-timestamp={post.timestamp}
+              data-caption={post.caption}
+            >
+              Delete
+            </button>
+          </div>
         </div>
       )
     })
