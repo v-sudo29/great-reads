@@ -2,13 +2,15 @@ import React from 'react'
 import { IOtherUser } from '@customTypes/userTypes'
 
 interface IPotentialFriendCard {
-  user: IOtherUser,
-  addFriend: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>
+  user: IOtherUser
+  addFriend: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => Promise<void>
 }
 
-const PotentialFriendCard = ({ user, addFriend } : IPotentialFriendCard) => {
+const PotentialFriendCard = ({ user, addFriend }: IPotentialFriendCard) => {
   return (
-    <div className='flex justify-between h-10 w-80'>
+    <div className="flex justify-between h-10 w-80">
       <h1>{`${user.firstName} ${user.lastName}`}</h1>
       <button
         onClick={(e) => addFriend(e)}

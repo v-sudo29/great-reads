@@ -15,7 +15,7 @@ import ExploreIcon from '@components/common/icons/ExploreIcon'
 import { IBook } from '@customTypes/bookType'
 import CreateListModal from './CreateListModal'
 
-const LineDivider = () => <div className='w-full border-b pt-4 mb-4'></div>
+const LineDivider = () => <div className="w-full border-b pt-4 mb-4"></div>
 
 export default function Nav() {
   const [isCreateListModalOpen, setIsCreateListModalOpen] = useState(false)
@@ -31,25 +31,28 @@ export default function Nav() {
 
   if (session === undefined) return <></>
 
-  let listLinks: JSX.Element[]| [] = []
+  let listLinks: JSX.Element[] | [] = []
 
   if (session) {
     for (let listName in session.user.lists) {
-      const listsCopy = session.user.lists as Record<string, {
-        color: string;
-        books: IBook[];
-      }>
-      (listLinks as JSX.Element[]).push(
+      const listsCopy = session.user.lists as Record<
+        string,
+        {
+          color: string
+          books: IBook[]
+        }
+      >
+      ;(listLinks as JSX.Element[]).push(
         <SidebarNavLink
           key={`${listName}-list`}
-          href='/'
+          href="/"
           icon={
             <div
-              className='flex w-[14px] h-[14px] rounded-[2px]'
-              style={{ backgroundColor: `#${listsCopy[listName].color}`}}
+              className="flex w-[14px] h-[14px] rounded-[2px]"
+              style={{ backgroundColor: `#${listsCopy[listName].color}` }}
             ></div>
           }
-          className='gap-2'
+          className="gap-2"
         >
           {listName}
         </SidebarNavLink>
@@ -59,53 +62,41 @@ export default function Nav() {
   return (
     <>
       {/* Mobile Nav */}
-      <nav className='relative h-[3.5rem] flex w-screen items-center justify-between px-5 py-3 border-b border-b-[#DFE7EB] xl:hidden'>
-        <div
-          className='cursor-pointer'
-          onClick={handleHamburgerIconClick}
-        >
+      <nav className="relative h-[3.5rem] flex w-screen items-center justify-between px-5 py-3 border-b border-b-[#DFE7EB] xl:hidden">
+        <div className="cursor-pointer" onClick={handleHamburgerIconClick}>
           <HamburgerIcon />
         </div>
         <Logo />
       </nav>
 
       {/* Desktop Sidebar Nav */}
-      <div className='hidden xl:fixed xl:block'>
-        <div className='min-w-[400px] self-start min-h-screen bg-[#FFFFFF] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out xl:flex xl:flex-col'>
-          <div className='h-[3.5rem] mx-6 px-2 pt-6 pb-8'>
+      <div className="hidden xl:fixed xl:block">
+        <div className="min-w-[400px] self-start min-h-screen bg-[#FFFFFF] border-r border-r-[#DFE7EB] transition-transform duration-200 ease-out xl:flex xl:flex-col">
+          <div className="h-[3.5rem] mx-6 px-2 pt-6 pb-8">
             <Logo />
           </div>
-          <div className='px-6 py-8 flex-auto flex flex-col'>
+          <div className="px-6 py-8 flex-auto flex flex-col">
             <nav>
-              <ul className='xl:flex xl:flex-col xl:gap-2'>
+              <ul className="xl:flex xl:flex-col xl:gap-2">
                 <li>
-                  <SidebarNavLink
-                    href='/'
-                    icon={<HomeIcon />}
-                  >
+                  <SidebarNavLink href="/" icon={<HomeIcon />}>
                     Home
                   </SidebarNavLink>
                 </li>
                 <li>
-                  <SidebarNavLink
-                    href='/profile'
-                    icon={<ProfileIcon />}
-                  >
+                  <SidebarNavLink href="/profile" icon={<ProfileIcon />}>
                     My Profile
                   </SidebarNavLink>
                 </li>
                 <li>
-                  <SidebarNavLink
-                    href='/'
-                    icon={<ExploreIcon />}
-                  >
+                  <SidebarNavLink href="/" icon={<ExploreIcon />}>
                     Explore
                   </SidebarNavLink>
                 </li>
                 <li>
                   <SidebarNavLink
                     href={session === null ? '/sign-in' : '/settings'}
-                    icon={<SettingsIcon/>}
+                    icon={<SettingsIcon />}
                   >
                     Settings
                   </SidebarNavLink>
@@ -113,36 +104,29 @@ export default function Nav() {
               </ul>
             </nav>
             <LineDivider />
-            <div className='flex items-center justify-between px-3 py-3'>
-              <div className='flex items-center gap-2 font-montserrat font-bold'>
-                <p className='text-primary xl:text-[18px]'>
-                  My Lists
-                </p>
+            <div className="flex items-center justify-between px-3 py-3">
+              <div className="flex items-center gap-2 font-montserrat font-bold">
+                <p className="text-primary xl:text-[18px]">My Lists</p>
                 {session && (
-                  <span className='flex items-center w-8 h-[22px] text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]'>
+                  <span className="flex items-center w-8 h-[22px] text-white bg-primary rounded-[60px] px-3 py-[1px] text-[12px]">
                     {numberOfLists}
                   </span>
                 )}
               </div>
               {session && (
                 <button onClick={handleListModalOpen}>
-                  <PlusIcon/>
+                  <PlusIcon />
                 </button>
               )}
             </div>
-            {session && (
-              <div className='mt-2'>
-                {listLinks}
-              </div>
-            )}
+            {session && <div className="mt-2">{listLinks}</div>}
             {session === null && (
-              <p className='font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2 xl:text-[18px]'>
+              <p className="font-montserrat text-[14px] text-primary font-medium px-3 py-2 leading-[32px] tracking-[-0.5px] mt-2 xl:text-[18px]">
                 Sign in to add books to your list!
               </p>
             )}
           </div>
         </div>
-        
       </div>
       <Overlay
         isOpen={isMobileSidebarOpen}
@@ -154,10 +138,8 @@ export default function Nav() {
         handleCreateListModalOpen={handleListModalOpen}
       />
       {isCreateListModalOpen && (
-        <div className='absolute w-full h-full z-[10]'>
-          <CreateListModal
-            handleListModalClose={handleListModalClose}
-          />
+        <div className="absolute w-full h-full z-[10]">
+          <CreateListModal handleListModalClose={handleListModalClose} />
           <Overlay
             isOpen={isCreateListModalOpen}
             handleClose={handleListModalClose}

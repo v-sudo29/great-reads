@@ -1,9 +1,9 @@
-import { NextResponse, NextRequest } from "next/server"
+import { NextResponse, NextRequest } from 'next/server'
 import crypto from 'crypto'
-import User from "@models/userModel"
-import startDb from "@lib/db"
-import { uploadFile, deleteFile, getObjectSignedUrl } from "@lib/s3"
-import GoogleUser from "@models/googleUserModel"
+import User from '@models/userModel'
+import startDb from '@lib/db'
+import { uploadFile, deleteFile, getObjectSignedUrl } from '@lib/s3'
+import GoogleUser from '@models/googleUserModel'
 
 type NewResponse = NextResponse<{
   error?: string
@@ -12,7 +12,8 @@ type NewResponse = NextResponse<{
   imageName?: string
 }>
 
-const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
+const randomImageName = (bytes = 32) =>
+  crypto.randomBytes(bytes).toString('hex')
 
 export const POST = async (req: NextRequest): Promise<NewResponse> => {
   const formData = await req.formData()
@@ -49,6 +50,6 @@ export const POST = async (req: NextRequest): Promise<NewResponse> => {
   return NextResponse.json({
     success: true,
     imageName: imageName,
-    imageUrl: signedUrl
+    imageUrl: signedUrl,
   })
 }

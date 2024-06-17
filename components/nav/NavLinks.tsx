@@ -1,9 +1,9 @@
 'use client'
-import { useSession, signOut } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useProfileImage } from "@context/ProfileImageProvider"
-import Link from "next/link"
-import Image from "next/image"
+import { useSession, signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useProfileImage } from '@context/ProfileImageProvider'
+import Link from 'next/link'
+import Image from 'next/image'
 
 const NavLinks = () => {
   const router = useRouter()
@@ -11,46 +11,46 @@ const NavLinks = () => {
   const { imageUrl, loading } = useProfileImage()
 
   return (
-    <div className='flex gap-5 justify-center items-center'>
-      {(session && !loading) && (
+    <div className="flex gap-5 justify-center items-center">
+      {session && !loading && (
         <>
-          <Link href='/friends'>Friends</Link>
-          <Link href='/feed'>Feed</Link>
-          <Link href='/lists'>Lists</Link>
-          <div className='flex flex-col items-center'>
-            <Link href='/profile'>
+          <Link href="/friends">Friends</Link>
+          <Link href="/feed">Feed</Link>
+          <Link href="/lists">Lists</Link>
+          <div className="flex flex-col items-center">
+            <Link href="/profile">
               <Image
                 src={
                   // If user has imageName -- display imageUrl
-                  (session.user.imageName && imageUrl) ? `${imageUrl}` :
-                  // Else if user has defaultImage -- display defaultImage
-                    session.user.defaultImage ? `${session.user.defaultImage}` :
-                  // Else if user has none, display default profile pic
-                     '/../default-profile-pic.svg'
+                  session.user.imageName && imageUrl
+                    ? `${imageUrl}`
+                    : // Else if user has defaultImage -- display defaultImage
+                      session.user.defaultImage
+                      ? `${session.user.defaultImage}`
+                      : // Else if user has none, display default profile pic
+                        '/../default-profile-pic.svg'
                 }
                 priority={true}
-                alt='Profile picture'
+                alt="Profile picture"
                 width={35}
                 height={35}
               />
-            </Link> 
+            </Link>
           </div>
-             
-          <button onClick={() => signOut()}>
-            Sign Out
-          </button>
+
+          <button onClick={() => signOut()}>Sign Out</button>
         </>
       )}
-      {(session === null) && (
+      {session === null && (
         <>
           <button
-            className='font-semibold hover:text-gray-400 transition-all'
+            className="font-semibold hover:text-gray-400 transition-all"
             onClick={() => router.replace('/sign-up')}
           >
             Sign Up
           </button>
           <button
-            className='bg-blue-950 px-9 py-2 text-white rounded-full font-semibold hover:bg-blue-1000 transition-all'
+            className="bg-blue-950 px-9 py-2 text-white rounded-full font-semibold hover:bg-blue-1000 transition-all"
             onClick={() => router.replace('/sign-in')}
           >
             Sign In

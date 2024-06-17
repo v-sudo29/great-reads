@@ -1,14 +1,19 @@
-import { SchemaDefinitionProperty } from "mongoose"
-import { IBook } from "./bookType"
+import { SchemaDefinitionProperty } from 'mongoose'
+import { IBook } from './bookType'
 
 export interface IOtherUser {
   id: string
   firstName: string
   lastName: string
-  lists: Record<string, {
-    color: string,
-    books: IBook[]
-  }> | {}
+  lists:
+    | Record<
+        string,
+        {
+          color: string
+          books: IBook[]
+        }
+      >
+    | {}
   friends: SchemaDefinitionProperty[] | []
 }
 
@@ -18,9 +23,14 @@ export interface IUser {
   email: string
   firstName: string
   lastName: string
-  lists: Record<string, {
-    color: string,
-    books: IBook[]
-  }> | {}
+  lists:
+    | Record<
+        string,
+        {
+          color: string
+          books: IBook[]
+        }
+      >
+    | {}
   friends: SchemaDefinitionProperty[]
 }

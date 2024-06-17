@@ -31,7 +31,7 @@ const FilledStar = () => {
         />
       </svg>
     </>
-  );
-};
+  )
+}
 
-export default FilledStar;
+export default FilledStar

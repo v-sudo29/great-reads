@@ -30,7 +30,7 @@ const UnfilledStar = () => {
         />
       </svg>
     </>
-  );
-};
+  )
+}
 
-export default UnfilledStar;
+export default UnfilledStar

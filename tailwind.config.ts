@@ -11,15 +11,15 @@ const config: Config = {
       colors: {
         blue: {
           950: '#3C86FF',
-          1000: '#3376E2'
+          1000: '#3376E2',
         },
-        primary: '#53675D'
+        primary: '#53675D',
       },
       fontFamily: {
-        'lora': ['Lora', 'serif'],
-        'montserrat': ['Montserrat', 'serif'],
-        'rubik': ['Rubik', 'serif']
-      }
+        lora: ['Lora', 'serif'],
+        montserrat: ['Montserrat', 'serif'],
+        rubik: ['Rubik', 'serif'],
+      },
     },
   },
   plugins: [],

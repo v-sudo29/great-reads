@@ -1,0 +1,85 @@
+'use client'
+import { Button } from '@components/common/Button'
+import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+
+const CreatePost = () => {
+  const [caption, setCaption] = useState('')
+  const { data: session, update } = useSession()
+  let userPosts: JSX.Element[] | null = null
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target && e.target.value !== '') {
+      setCaption(e.target.value)
+    }
+  }
+
+  const handleCreatePost = async () => {
+    if (caption === '' || !session || !session.user.id) return
+    try {
+      const currentTimestamp = new Date().getTime()
+
+      const requestObject = {
+        caption: caption,
+        timestamp: currentTimestamp,
+      }
+
+      await update({ posts: [...session.user.posts, requestObject] })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  if (session?.user) {
+    userPosts = session.user.posts.map((post, i) => {
+      const d = new Date(post.timestamp)
+      const formattedDate =
+        d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear()
+
+      return (
+        <div
+          key={`${session.user.id}-post-${i}`}
+          className="border border-black p-4 rounded-md"
+        >
+          <p>{post.caption}</p>
+          <p>{formattedDate}</p>
+        </div>
+      )
+    })
+  }
+
+  return (
+    <div className="border p-10">
+      {/* Caption */}
+      <div className="flex flex-col gap-2">
+        <label htmlFor="postCaption">Post Caption</label>
+        <textarea
+          className="resize p-3 border border-black"
+          name="postCaption"
+          placeholder="Enter post caption here"
+          rows={4}
+          cols={40}
+          onChange={(e) => handleOnChange(e)}
+        ></textarea>
+      </div>
+
+      {/* Image (optional) */}
+      <input type="text" />
+
+      {/* Create post */}
+      <Button
+        type="primary"
+        bordersRounded={false}
+        clickHandler={handleCreatePost}
+      >
+        Create Post
+      </Button>
+
+      {/* Posts In Order */}
+      <p className="mt-10">User Posts</p>
+      <div className="flex flex-col gap-5 mt-5">{userPosts?.reverse()}</div>
+    </div>
+  )
+}
+
+export default CreatePost

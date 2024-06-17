@@ -1,8 +1,8 @@
-import startDb from "@lib/db"
-import User from "@models/userModel"
-import GoogleUser from "@models/googleUserModel"
-import { NextResponse } from "next/server"
-import { SchemaDefinitionProperty } from "mongoose"
+import startDb from '@lib/db'
+import User from '@models/userModel'
+import GoogleUser from '@models/googleUserModel'
+import { NextResponse } from 'next/server'
+import { SchemaDefinitionProperty } from 'mongoose'
 
 interface FriendsResponse {
   _id?: string
@@ -16,12 +16,10 @@ interface FriendsRequest extends Request {
   id: string
 }
 
-
-type NewResponse = NextResponse<{friends?: FriendsResponse[]; error?: string;}>
+type NewResponse = NextResponse<{ friends?: FriendsResponse[]; error?: string }>
 
 // TODO: implement for Google users
 export const POST = async (req: Request): Promise<NewResponse> => {
-
   try {
     const body = (await req.json()) as FriendsRequest
     console.log(body)
@@ -29,89 +27,88 @@ export const POST = async (req: Request): Promise<NewResponse> => {
     // Search for user in database
     await startDb()
 
-      // Find credentials user and retrieve credential friends
-      const foundUser = await User.findById(body.id)
-        .populate({
-          path: 'friends',
-          model: 'User'
-        })
-        .catch(error => console.log(error))
-
-      // Retrieve Google friends
-      const foundUserAgain: typeof foundUser = await User.findById(body.id)
-        .populate({
-          path: 'friends',
-          model: 'GoogleUser'
-        })
-        .catch(error => console.log(error))
-      
-      // Find Google user and retrieve Google friends
-      const googleUser = await GoogleUser.findById(body.id)
+    // Find credentials user and retrieve credential friends
+    const foundUser = await User.findById(body.id)
       .populate({
         path: 'friends',
-        model: 'User'
+        model: 'User',
       })
-      .catch(error => console.log(error))
+      .catch((error) => console.log(error))
 
-      // Retrieve Google friends
-      const googleUserAgain: typeof googleUser = await GoogleUser.findById(body.id)
+    // Retrieve Google friends
+    const foundUserAgain: typeof foundUser = await User.findById(body.id)
       .populate({
         path: 'friends',
-        model: 'GoogleUser'
+        model: 'GoogleUser',
       })
-      .catch(error => console.log(error))
+      .catch((error) => console.log(error))
+
+    // Find Google user and retrieve Google friends
+    const googleUser = await GoogleUser.findById(body.id)
+      .populate({
+        path: 'friends',
+        model: 'User',
+      })
+      .catch((error) => console.log(error))
+
+    // Retrieve Google friends
+    const googleUserAgain: typeof googleUser = await GoogleUser.findById(
+      body.id
+    )
+      .populate({
+        path: 'friends',
+        model: 'GoogleUser',
+      })
+      .catch((error) => console.log(error))
 
     // Retrieve friends array from user
     const friendsArr: FriendsResponse[] = []
-    
+
     if (foundUser) {
-      (foundUser.friends as FriendsResponse[]).forEach(friend => {
+      ;(foundUser.friends as FriendsResponse[]).forEach((friend) => {
         friendsArr.push({
           id: friend._id ?? '',
           name: friend.name,
-          lists: friend.lists
+          lists: friend.lists,
         })
       })
     }
     if (foundUserAgain) {
-      (foundUserAgain.friends as FriendsResponse[]).forEach(friend => {
+      ;(foundUserAgain.friends as FriendsResponse[]).forEach((friend) => {
         friendsArr.push({
           id: friend._id ?? '',
           name: friend.name,
-          lists: friend.lists
+          lists: friend.lists,
         })
       })
     }
 
     if (googleUser) {
-      (googleUser.friends as FriendsResponse[]).forEach(friend => {
+      ;(googleUser.friends as FriendsResponse[]).forEach((friend) => {
         friendsArr.push({
           id: friend._id ?? '',
           name: friend.name,
-          lists: friend.lists
+          lists: friend.lists,
         })
       })
     }
     if (googleUserAgain) {
-      (googleUserAgain.friends as FriendsResponse[]).forEach(friend => {
+      ;(googleUserAgain.friends as FriendsResponse[]).forEach((friend) => {
         friendsArr.push({
           id: friend._id ?? '',
           name: friend.name,
-          lists: friend.lists
+          lists: friend.lists,
         })
       })
     }
 
     return NextResponse.json({
-      friends: [
-        ...friendsArr
-      ]
+      friends: [...friendsArr],
     })
-
   } catch (error) {
     console.log(error)
     return NextResponse.json({
-      error: `${error}`
+      error: `${error}`,
     })
   }
 }

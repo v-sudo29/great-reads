@@ -3,70 +3,70 @@
 @tailwind components;
 @tailwind utilities;
 
-html, * {
+html,
+* {
   box-sizing: border-box;
 }
 
 /* Tailwind Styles */
 .page_heading {
-  @apply text-3xl font-medium m-2 text-center
+  @apply text-3xl font-medium m-2 text-center;
 }
 
 .page_secondary_heading {
-  @apply text-2xl font-medium
+  @apply text-2xl font-medium;
 }
 
 .text_field {
   @apply flex flex-col h-8 p-2 w-full border border-slate-300 outline-slate-300 rounded-md
-  focus-within:outline-blue-400 focus-within:transition-all focus-within:duration-200
+  focus-within:outline-blue-400 focus-within:transition-all focus-within:duration-200;
 }
 
 .text_field_label {
-  @apply text-sm font-medium
+  @apply text-sm font-medium;
 }
 
 .form_submit_button {
-  @apply py-2 my-2 rounded-md text-sm font-medium bg-blue-950 text-white hover:bg-blue-1000 transition-all
+  @apply py-2 my-2 rounded-md text-sm font-medium bg-blue-950 text-white hover:bg-blue-1000 transition-all;
 }
 
 .general_button {
-  @apply px-5 py-2 rounded-full text-sm font-medium bg-gray-500 text-white hover:bg-gray-700 transition-all
+  @apply px-5 py-2 rounded-full text-sm font-medium bg-gray-500 text-white hover:bg-gray-700 transition-all;
 }
 
 .general_blue_button {
-  @apply px-5 py-2 rounded-full text-sm font-medium bg-blue-950 text-white hover:bg-blue-1000 transition-all
-
+  @apply px-5 py-2 rounded-full text-sm font-medium bg-blue-950 text-white hover:bg-blue-1000 transition-all;
 }
 
 .add_button {
-  @apply px-5 py-2 rounded-full text-sm font-medium bg-green-500 text-white hover:bg-green-800 transition-all
+  @apply px-5 py-2 rounded-full text-sm font-medium bg-green-500 text-white hover:bg-green-800 transition-all;
 }
 
 .delete_button {
-  @apply px-5 py-2 rounded-full text-sm font-medium bg-red-400 text-white hover:bg-red-800 transition-all
+  @apply px-5 py-2 rounded-full text-sm font-medium bg-red-400 text-white hover:bg-red-800 transition-all;
 }
 
 .separator {
   @apply flex text-center px-2 items-center 
   before:flex-1 before:border-slate-300 before:border-b
-  after:flex-1 after:border-slate-300 after:border-b
+  after:flex-1 after:border-slate-300 after:border-b;
 }
 
 .result_card {
-  @apply flex flex-col items-center gap-2 p-5 shadow-md rounded-3xl
+  @apply flex flex-col items-center gap-2 p-5 shadow-md rounded-3xl;
 }
 
 .overlay {
-  @apply z-10 top-0 left-0 fixed min-h-screen min-w-full bg-gray-800 opacity-40 transition-all
+  @apply z-10 top-0 left-0 fixed min-h-screen min-w-full bg-gray-800 opacity-40 transition-all;
 }
 
 .mobileOverlayActive {
   background-color: black;
-  animation: display-overlay 0.250s forwards;
+  animation: display-overlay 0.25s forwards;
 }
 
 .mobileSidebar {
-  animation: sidebar-flyin 0.150s forwards;
+  animation: sidebar-flyin 0.15s forwards;
 }
 
 @keyframes display-overlay {

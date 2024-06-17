@@ -3,19 +3,19 @@ import Image from 'next/image'
 import { IBook } from '@customTypes/bookType'
 
 interface IListDetailBookCard {
-  book: IBook,
+  book: IBook
   index: number
 }
 
-const BookCard = ({ book, index } : IListDetailBookCard) => {
+const BookCard = ({ book, index }: IListDetailBookCard) => {
   return (
     <div>
-      <div className='flex gap-4'>
-        <div className='font-medium'>{index + 1}</div>
+      <div className="flex gap-4">
+        <div className="font-medium">{index + 1}</div>
         <span>{book.title}</span>
       </div>
-      <div 
-        className='relative overflow-hidden rounded-lg'
+      <div
+        className="relative overflow-hidden rounded-lg"
         style={{ height: '10rem', width: '7rem' }}
       >
         <Image
@@ -23,7 +23,7 @@ const BookCard = ({ book, index } : IListDetailBookCard) => {
           priority={true}
           alt={book.title + ' image cover'}
           fill={true}
-          sizes='30px'
+          sizes="30px"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
       </div>

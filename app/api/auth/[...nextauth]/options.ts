@@ -1,5 +1,5 @@
 import GoogleProvider from 'next-auth/providers/google'
-import CredentialsProvider from "next-auth/providers/credentials"
+import CredentialsProvider from 'next-auth/providers/credentials'
 import startDb from '@lib/db'
 import User from '@models/userModel'
 import GoogleUser from '@models/googleUserModel'
@@ -10,20 +10,22 @@ import { SchemaDefinitionProperty } from 'mongoose'
 
 const authOptions: AuthOptions = {
   session: {
-    strategy: 'jwt'
+    strategy: 'jwt',
   },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
     }),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {},
       async authorize(credentials, req): Promise<any> {
-        
         // Destructure email and password from credentials
-        const { email, password } = credentials as { email: string, password: string }
+        const { email, password } = credentials as {
+          email: string
+          password: string
+        }
 
         // Connect to MongoDB database
         await startDb()
@@ -31,7 +33,7 @@ const authOptions: AuthOptions = {
         // Search up user's email in database
         const user = await User.findOne({ email })
         if (!user) throw Error('Incorrect email/password')
-        
+
         // Compare passwords
         const passwordMatch = await user.comparePassword(password)
         if (!passwordMatch) throw Error('Incorrect email/password')
@@ -45,6 +47,7 @@ const authOptions: AuthOptions = {
         const imageName = transformedUser.imageName
         const firstName = transformedUser.firstName
         const lastName = transformedUser.lastName
+        const posts = transformedUser.posts
 
         const returnedUser = {
           ...transformedUser,
@@ -53,7 +56,8 @@ const authOptions: AuthOptions = {
           friends: friends,
           imageName: imageName,
           firstName: firstName,
-          lastName: lastName
+          lastName: lastName,
+          posts: posts,
         }
 
         return returnedUser
@@ -62,7 +66,6 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, session, trigger }) {
-      
       // Check if session property exists in token
       // if (trigger === 'update' && !token.hasOwnProperty(Object.keys(session)[0])) {
       //   return {
@@ -78,8 +81,16 @@ const authOptions: AuthOptions = {
         const credentialsUser = await User.findOne({ email: token.email })
         const googleUser = await GoogleUser.findOne({ email: token.email })
 
-        if (googleUser) await GoogleUser.findOneAndUpdate({ email: token.email }, { name: token.name })
-        if (credentialsUser) await User.findOneAndUpdate({ email: token.email }, { firstName: token.firstName })
+        if (googleUser)
+          await GoogleUser.findOneAndUpdate(
+            { email: token.email },
+            { name: token.name }
+          )
+        if (credentialsUser)
+          await User.findOneAndUpdate(
+            { email: token.email },
+            { firstName: token.firstName }
+          )
       }
 
       // If user updates LAST NAME, update token and database
@@ -90,8 +101,16 @@ const authOptions: AuthOptions = {
         const credentialsUser = await User.findOne({ email: token.email })
         const googleUser = await GoogleUser.findOne({ email: token.email })
 
-        if (googleUser) await GoogleUser.findOneAndUpdate({ email: token.email }, { name: token.name })
-        if (credentialsUser) await User.findOneAndUpdate({ email: token.email }, { lastName: token.lastName })
+        if (googleUser)
+          await GoogleUser.findOneAndUpdate(
+            { email: token.email },
+            { name: token.name }
+          )
+        if (credentialsUser)
+          await User.findOneAndUpdate(
+            { email: token.email },
+            { lastName: token.lastName }
+          )
       }
 
       // If user updates LIST, update token and database
@@ -102,20 +121,36 @@ const authOptions: AuthOptions = {
         const credentialsUser = await User.findOne({ email: token.email })
         const googleUser = await GoogleUser.findOne({ email: token.email })
 
-        if (googleUser) await GoogleUser.findOneAndUpdate({ email: token.email }, { lists: token.lists })
-        if (credentialsUser) await User.findOneAndUpdate({ email: token.email }, { lists: token.lists })
+        if (googleUser)
+          await GoogleUser.findOneAndUpdate(
+            { email: token.email },
+            { lists: token.lists }
+          )
+        if (credentialsUser)
+          await User.findOneAndUpdate(
+            { email: token.email },
+            { lists: token.lists }
+          )
       }
 
       // If user updates FRIENDS -- update token and database
       if (trigger === 'update' && session?.friends) {
         token.friends = session.friends
-        
+
         // Update user in database
         const credentialsUser = await User.findOne({ email: token.email })
         const googleUser = await GoogleUser.findOne({ email: token.email })
 
-        if (googleUser) await GoogleUser.findOneAndUpdate({ email: token.email }, { friends: token.friends })
-        if (credentialsUser) await User.findOneAndUpdate({ email: token.email }, { friends: token.friends })
+        if (googleUser)
+          await GoogleUser.findOneAndUpdate(
+            { email: token.email },
+            { friends: token.friends }
+          )
+        if (credentialsUser)
+          await User.findOneAndUpdate(
+            { email: token.email },
+            { friends: token.friends }
+          )
       }
 
       // If user updates IMAGE NAME -- update token and database
@@ -126,8 +161,33 @@ const authOptions: AuthOptions = {
         const credentialsUser = await User.findOne({ email: token.email })
         const googleUser = await GoogleUser.findOne({ email: token.email })
 
-        if (googleUser) await GoogleUser.findOneAndUpdate({ email: token.email }, { imageName: token.imageName })
-        if (credentialsUser) await User.findOneAndUpdate({ email: token.email }, { imageName: token.imageName })
+        if (googleUser)
+          await GoogleUser.findOneAndUpdate(
+            { email: token.email },
+            { imageName: token.imageName }
+          )
+        if (credentialsUser)
+          await User.findOneAndUpdate(
+            { email: token.email },
+            { imageName: token.imageName }
+          )
+      }
+
+      // If user updates POST -- update token and database
+      if (trigger === 'update' && session?.posts) {
+        token.posts = session.posts
+
+        // Newest post
+        const newestPost = session.posts[session.posts.length - 1]
+
+        // Update user in database
+        const credentialsUser = await User.findOne({ email: token.email })
+
+        if (credentialsUser && newestPost)
+          await User.findOneAndUpdate(
+            { email: token.email },
+            { $push: { posts: newestPost } }
+          )
       }
 
       // On FIRST LOGIN: Check if credentials user exists AND initial id not autogenerated
@@ -138,6 +198,7 @@ const authOptions: AuthOptions = {
         token.imageName = user.imageName
         token.firstName = user.firstName
         token.lastName = user.lastName
+        token.posts = user.posts
       }
 
       // On FIRST LOGIN: Find Google user in database, initial id is autogenerated
@@ -160,13 +221,20 @@ const authOptions: AuthOptions = {
     async session({ session, token }) {
       // Define the expected shape of the session.user object
       interface SessionUser {
-        id: string;
-        firstName: string;
-        lastName: string;
-        lists?: Record<string, Record<string, string | IBook[]>>;
-        friends?: SchemaDefinitionProperty[];
-        imageName?: string | null;
-        defaultImage?: string;
+        id: string
+        firstName: string
+        lastName: string
+        lists?: Record<string, Record<string, string | IBook[]>>
+        friends?: SchemaDefinitionProperty[]
+        imageName?: string | null
+        defaultImage?: string
+        posts:
+          | {
+              caption: string
+              imageName?: string | null
+              timestamp: string
+            }[]
+          | []
       }
       // Pass in user id and lists from token to session
       if (session.user) {
@@ -178,20 +246,23 @@ const authOptions: AuthOptions = {
           friends: token.friends,
           imageName: token.imageName,
           defaultImage: token.defaultImage,
-        };
+          posts: token.posts,
+        }
         session.user = {
           ...session.user,
-          ...user
+          ...user,
         }
       }
       return session
-    }, 
+    },
     async signIn({ profile, user }) {
       if (!profile) return true
       try {
         // Connect to database
         await startDb()
-        const userExists = await GoogleUser.findOne({ email: profile.email }).lean()
+        const userExists = await GoogleUser.findOne({
+          email: profile.email,
+        }).lean()
         // console.log('SIGNIN CALLBACK: ', profile)
 
         // If new user, create user in database
@@ -202,14 +273,14 @@ const authOptions: AuthOptions = {
             lists: {
               ['Read']: [],
               ['Currently Reading']: [],
-              ['Want to Read']: []
+              ['Want to Read']: [],
             },
             friends: [],
             imageName: null,
-            defaultImage: (profile as GoogleProfile)!.picture
+            defaultImage: (profile as GoogleProfile)!.picture,
           })
           return true
-        } 
+        }
 
         // Update user info from database to user object
         user.name = userExists!.name
@@ -224,7 +295,7 @@ const authOptions: AuthOptions = {
       }
     },
   },
-  secret: process.env.NEXTAUTH_SECRET
+  secret: process.env.NEXTAUTH_SECRET,
 }
 
 export default authOptions

@@ -1,9 +1,9 @@
-import startDb from "@lib/db"
-import User from "@models/userModel"
-import GoogleUser from "@models/googleUserModel"
-import { NextResponse } from "next/server"
-import { SchemaDefinitionProperty } from "mongoose"
-import { IBook } from "@customTypes/bookType"
+import startDb from '@lib/db'
+import User from '@models/userModel'
+import GoogleUser from '@models/googleUserModel'
+import { NextResponse } from 'next/server'
+import { SchemaDefinitionProperty } from 'mongoose'
+import { IBook } from '@customTypes/bookType'
 
 interface NewUserRequest {
   firstName: string
@@ -17,15 +17,20 @@ interface NewUserResponse {
   firstName: string
   lastName: string
   email: string
-  lists: Record<string, {
-    color: string,
-    books: IBook[]
-  }> | {}
-  friends: SchemaDefinitionProperty[] | [],
+  lists:
+    | Record<
+        string,
+        {
+          color: string
+          books: IBook[]
+        }
+      >
+    | {}
+  friends: SchemaDefinitionProperty[] | []
   imageName: string | null
 }
 
-type NewResponse = NextResponse<{user?: NewUserResponse; error?: string}>
+type NewResponse = NextResponse<{ user?: NewUserResponse; error?: string }>
 
 export const POST = async (req: Request): Promise<NewResponse> => {
   const body = (await req.json()) as NewUserRequest
@@ -40,8 +45,8 @@ export const POST = async (req: Request): Promise<NewResponse> => {
       { status: 422 }
     )
   }
-  
-  const user = await User.create({...body })
+
+  const user = await User.create({ ...body })
   console.log('SIGN UP ROUTE: ', user)
   return NextResponse.json({
     user: {
@@ -50,21 +55,21 @@ export const POST = async (req: Request): Promise<NewResponse> => {
       firstName: user.firstName,
       lastName: user.lastName,
       lists: {
-        'Read': {
-          color: "59BC99",
-          books: []
+        Read: {
+          color: '59BC99',
+          books: [],
         },
         'Currently Reading': {
-          color: "745DFF",
-          books: []
+          color: '745DFF',
+          books: [],
         },
         'Want to Read': {
-          color: "FBB246",
-          books: []
-        }
+          color: 'FBB246',
+          books: [],
+        },
       },
       friends: [],
-      imageName: null
-    }
+      imageName: null,
+    },
   })
 }
