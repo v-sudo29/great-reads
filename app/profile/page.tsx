@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react'
 import ProfilePicture from '@components/settings/ProfilePicture'
 import GreenDotIcon from '@components/common/icons/GreenDotIcon'
 import { useState } from 'react'
+import Image from 'next/image'
 
 const TABS = {
   FAVORITES: 'Favorites',
@@ -27,7 +28,18 @@ const Profile = () => {
   return (
     <div className="w-full">
       {/* Profile Banner */}
-      <div className="bg-gray-300 w-full h-[134px]"></div>
+      <div className="bg-gray-300 w-full h-[134px] overflow-hidden">
+        <Image
+          src="/tempBannerImage.png"
+          alt=""
+          width="390"
+          height="134"
+          style={{
+            width: '100%',
+            objectFit: 'cover',
+          }}
+        />
+      </div>
 
       {/* User Profile Pic */}
       <div className="relative flex justify-center mt-[-50px]">
