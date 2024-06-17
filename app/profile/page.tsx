@@ -4,6 +4,9 @@ import ProfilePicture from '@components/settings/ProfilePicture'
 import GreenDotIcon from '@components/common/icons/GreenDotIcon'
 import { useState } from 'react'
 import Image from 'next/image'
+import { IBook } from '@customTypes/bookType'
+import { Post } from '@components/home/Post'
+import { Button } from '@components/common/Button'
 
 const TABS = {
   FAVORITES: 'Favorites',
@@ -24,6 +27,11 @@ const Profile = () => {
     const buttonElement = e.target as HTMLButtonElement
     if (buttonElement) setCurrentTab(buttonElement.value)
   }
+
+  const lists = session.user.lists as Record<
+    string,
+    { color: string; books: IBook[] }
+  >
 
   return (
     <div className="w-full">
@@ -104,10 +112,26 @@ const Profile = () => {
       </div>
 
       {/* Lists for: Favorites, Read, and Posts */}
-      <div>
+      <div className="px-3">
         {currentTab === TABS.FAVORITES && <>Coming Soon</>}
-        {currentTab === TABS.READ && <>Coming Soon</>}
-        {currentTab === TABS.POSTS && <>Coming Soon</>}
+        {currentTab === TABS.READ && (
+          <p>{lists['Read'].books.length} Books Read</p>
+        )}
+        {currentTab === TABS.POSTS && (
+          <>
+            <Button
+              type="primary"
+              bordersRounded={true}
+              clickHandler={() => {}}
+              className="w-full justify-center mt-8"
+            >
+              Create New Post
+            </Button>
+            <Post />
+            <Post />
+            <Post />
+          </>
+        )}
       </div>
     </div>
   )

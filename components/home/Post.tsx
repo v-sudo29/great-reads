@@ -20,13 +20,14 @@ export const Post = () => {
 
       {/* Post Content */}
       <div className="w-full">
-        {/* User's name + timestamp */}
+        {/* User's name */}
         <div className="flex items-center gap-2 font-lora font-bold text-primary xl:hidden">
           <p>Sasuke Uchiha</p>
-          <GreenDotIcon />
-          <span className="font-semibold">2 mins</span>
         </div>
-
+        {/* Timestamp */}
+        <span className="font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px]">
+          2 minutes ago
+        </span>
         {/* Post caption */}
         <div className="mt-[6px]">
           <p className="font-montserrat font-medium text-primary text-[14px] leading-[20px] xl:text-[18px]">
@@ -35,9 +36,6 @@ export const Post = () => {
             <span className="text-[#8D8D8D] pl-2 cursor-pointer xl:hidden">
               more
             </span>
-          </p>
-          <p className="font-montserrat font-semibold text-[13px] text-[#878787] leading-[30px] mt-2">
-            2 minutes ago
           </p>
         </div>
 
