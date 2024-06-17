@@ -9,9 +9,7 @@ const CreatePost = () => {
   let userPosts: JSX.Element[] | null = null
 
   const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target && e.target.value !== '') {
-      setCaption(e.target.value)
-    }
+    if (e.target && e.target.value !== '') setCaption(e.target.value)
   }
 
   const handleCreatePost = async () => {
@@ -24,7 +22,9 @@ const CreatePost = () => {
         timestamp: currentTimestamp,
       }
 
-      await update({ posts: [...session.user.posts, requestObject] })
+      await update({
+        posts: [...session.user.posts, requestObject],
+      })
     } catch (err) {
       console.error(err)
     }

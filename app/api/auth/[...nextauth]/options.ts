@@ -200,8 +200,8 @@ const authOptions: AuthOptions = {
             )
         }
 
-        // Remove post
-        if (isPostRemoved) {
+        // Remove post or update post
+        if (isPostRemoved || isPostUpdated) {
           token.posts = session.posts
 
           // Update user in database
