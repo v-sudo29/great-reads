@@ -36,21 +36,26 @@ const Profile = () => {
   return (
     <div className="w-full">
       {/* Profile Banner */}
-      <div className="bg-gray-300 w-full h-[134px] overflow-hidden">
-        <Image
-          src="/tempBannerImage.png"
-          alt=""
-          width="390"
-          height="134"
-          style={{
-            width: '100%',
-            objectFit: 'cover',
-          }}
-        />
+      <div className="xl:px-6 xl:pt-6">
+        <div className="relative w-full h-[134px] overflow-hidden xl:h-[272px] xl:rounded-[8px]">
+          <Image
+            src="/tempBannerImage.png"
+            alt=""
+            width="390"
+            height="134"
+            style={{
+              width: '100%',
+              objectFit: 'cover',
+            }}
+          />
+          {/* Banner Overlay */}
+          <div className="absolute top-0 h-full w-full bg-gradient-to-r from-black opacity-90 hidden xl:block"></div>
+          <div className="absolute top-0 h-full w-full bg-gradient-to-t from-black opacity-90 hidden xl:block"></div>
+        </div>
       </div>
 
       {/* User Profile Pic */}
-      <div className="relative flex justify-center mt-[-50px]">
+      <div className="relative flex justify-center mt-[-50px] xl:mt-[-100px] xl:justify-start xl:px-16">
         <ProfilePicture />
       </div>
 
