@@ -61,12 +61,12 @@ const Profile = () => {
         </h1>
         <div className="flex items-center gap-2 font-montserrat font-medium text-[14px] text-primary">
           <p>
-            <span className="font-bold">56</span>
+            <span className="font-bold">0</span>
             &nbsp;Followers
           </p>
           <GreenDotIcon />
           <p>
-            <span className="font-bold">3</span>
+            <span className="font-bold">0</span>
             &nbsp;Following
           </p>
         </div>
