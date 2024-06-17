@@ -22,6 +22,7 @@ interface UserDocument extends Document {
   friends: SchemaDefinitionProperty[] | []
   imageName: string | null
   error?: string
+  posts: SchemaDefinitionProperty[] | []
 }
 
 interface Methods {
@@ -75,8 +76,12 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
       type: Schema.Types.Mixed,
       default: null,
     },
+    posts: {
+      type: Schema.Types.Mixed,
+      required: false,
+    },
   },
-  { minimize: false }
+  { minimize: false, strict: false }
 )
 
 // Hash the password before saving

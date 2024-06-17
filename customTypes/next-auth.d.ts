@@ -7,6 +7,12 @@ import { Profile } from 'next-auth'
 declare module 'next-auth' {
   interface Session {
     user: {
+      posts:
+        | {
+            caption: string
+            imageName?: string | null
+          }[]
+        | []
       lists:
         | Record<
             string,
@@ -37,6 +43,12 @@ declare module 'next-auth' {
           }
         >
       | {}
+    posts:
+      | {
+          caption: string
+          imageName?: string | null
+        }[]
+      | []
     friends: SchemaDefinitionProperty[] | []
     imageName: string | null
     defaultImage?: string
@@ -57,6 +69,12 @@ declare module 'next-auth/jwt' {
           }
         >
       | {}
+    posts:
+      | {
+          caption: string
+          imageName?: string | null
+        }[]
+      | []
     friends: SchemaDefinitionProperty[] | []
     imageName: string | null
     defaultImage?: string
