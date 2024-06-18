@@ -135,8 +135,8 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Lists for: Favorites, Read, and Posts */}
-      <div className="px-3">
+      {/* Mobile Lists for: Favorites, Read, and Posts */}
+      <div className="px-3 xl:hidden">
         {currentTab === TABS.FAVORITES && <>Coming Soon</>}
         {currentTab === TABS.READ && (
           <p>{lists['Read'].books.length} Books Read</p>
@@ -156,6 +156,46 @@ const Profile = () => {
             <Post />
           </>
         )}
+      </div>
+
+      {/* Desktop Lists Sections: Favorites, Read, and Posts */}
+      <div className="hidden px-[56px] py-[52px] xl:block">
+        <section className="pb-[56px] border-b border-b-[#E4E6E8]">
+          <h2 className="font-lora font-bold text-primary text-2xl">
+            Favorites (0)
+          </h2>
+          <p className="font-montserrat font-semibold text-[18px] text-[#707070] mt-5 leading-[28px]">
+            Start adding books that have captured your heart.
+            <span className="font-bold text-primary">&nbsp;Explore</span>
+          </p>
+        </section>
+        <section className="py-[56px] border-b border-b-[#E4E6E8]">
+          <h2 className="font-lora font-bold text-primary text-2xl">
+            Read (0)
+          </h2>
+          <p className="font-montserrat font-semibold text-[18px] text-[#707070] mt-5 leading-[28px]">
+            It looks like you haven&apos;t added any completed books to your
+            list yet.
+            <span className="font-bold text-primary">&nbsp;Explore</span>
+          </p>
+        </section>
+        <section className="py-[56px]">
+          <h2 className="font-lora font-bold text-primary text-2xl">
+            My Posts (0)
+          </h2>
+          <p className="font-montserrat font-semibold text-[18px] text-[#707070] mt-5 leading-[28px]">
+            Looks like you haven&apos;t created any posts yet. Share your
+            thoughts, recommendations, or reflections on books you&apos;ve read.
+          </p>
+          <Button
+            className="xl:text-base xl:py-3 xl:px-5 xl:font-bold xl:leading-[20px] xl:mt-6"
+            type="primary"
+            bordersRounded={true}
+            clickHandler={() => {}}
+          >
+            Create New Post
+          </Button>
+        </section>
       </div>
     </div>
   )
