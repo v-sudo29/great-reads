@@ -3,7 +3,11 @@ import { useSession } from 'next-auth/react'
 import { useProfileImage } from '@context/ProfileImageProvider'
 import { useEffect, useState } from 'react'
 
-const ProfilePicture = () => {
+interface ProfilePictureProps {
+  className?: string
+}
+
+const ProfilePicture = ({ className }: ProfilePictureProps) => {
   const [isProfileHovered, setIsProfileHovered] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const { data: session, update } = useSession()
@@ -46,7 +50,13 @@ const ProfilePicture = () => {
   }, [file])
 
   return (
-    <div className="relative border-2 border-[#F9FBFC] w-[104px] h-[104px] rounded-full overflow-hidden xl:w-[160px] xl:h-[160px]">
+    <div
+      className={
+        'relative border-2 border-[#F9FBFC] w-[104px] h-[104px] rounded-full overflow-hidden xl:w-[160px] xl:h-[160px]' +
+        ' ' +
+        className
+      }
+    >
       <Image
         className="w-full min-w-full scale-150 h-auto"
         src={

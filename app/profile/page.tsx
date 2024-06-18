@@ -2,6 +2,7 @@
 import { useSession } from 'next-auth/react'
 import ProfilePicture from '@components/settings/ProfilePicture'
 import GreenDotIcon from '@components/common/icons/GreenDotIcon'
+import WhiteDotIcon from '@components/common/icons/WhiteDotIcon'
 import { useState } from 'react'
 import Image from 'next/image'
 import { IBook } from '@customTypes/bookType'
@@ -50,17 +51,35 @@ const Profile = () => {
           />
           {/* Banner Overlay */}
           <div className="absolute top-0 h-full w-full bg-gradient-to-r from-black opacity-90 hidden xl:block"></div>
-          <div className="absolute top-0 h-full w-full bg-gradient-to-t from-black opacity-90 hidden xl:block"></div>
+          <div className="absolute top-0 h-full w-full bg-gradient-to-t from-black opacity-70 hidden xl:block"></div>
         </div>
       </div>
 
       {/* User Profile Pic */}
-      <div className="relative flex justify-center mt-[-50px] xl:mt-[-100px] xl:justify-start xl:px-16">
-        <ProfilePicture />
+      <div className="relative flex justify-center mt-[-50px] xl:mt-[-145px] xl:justify-start xl:px-14 xl:gap-7">
+        <ProfilePicture className="xl:w-[186px] xl:h-[186px] xl:border-[6px]" />
+
+        {/* Desktop User Details */}
+        <div className="hidden text-[#F9FBFC] justify-center gap-3 xl:flex xl:flex-col ">
+          <h1 className="font-lora font-bold text-[32px] leading-[28px]">
+            {`${session.user.firstName} ${session.user.lastName}`}
+          </h1>
+          <div className="flex items-center gap-2 font-montserrat font-medium text-xl">
+            <p>
+              <span className="font-bold">0</span>
+              <span className="font-medium">&nbsp;Followers</span>
+            </p>
+            <WhiteDotIcon />
+            <p>
+              <span className="font-bold">0</span>
+              <span className="font-medium">&nbsp;Following</span>
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* User Details */}
-      <div className="flex flex-col items-center mt-4">
+      {/* Mobile User Details */}
+      <div className="flex flex-col items-center mt-4 xl:hidden">
         <h1 className="font-lora font-bold text-xl text-primary leading-[28px]">
           {`${session.user.firstName} ${session.user.lastName}`}
         </h1>
