@@ -22,7 +22,7 @@ interface UserDocument extends Document {
   friends: SchemaDefinitionProperty[] | []
   imageName: string | null
   error?: string
-  posts: SchemaDefinitionProperty[] | []
+  posts: Record<string, any>[] | []
 }
 
 interface Methods {

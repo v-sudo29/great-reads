@@ -1,12 +1,16 @@
 'use client'
 import { Button } from '@components/common/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { formatTime } from '@utils/formatTime'
+import Image from 'next/image'
 
 const CreatePost = () => {
   const [caption, setCaption] = useState('')
+  const [file, setFile] = useState<File | null>(null)
+  const [loading, setLoading] = useState(false) // TODO: create loading UI
   const { data: session, update } = useSession()
+  const [allPosts, setAllPosts] = useState<any>(null)
   let userPosts: JSX.Element[] | null = null
 
   const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -17,10 +21,14 @@ const CreatePost = () => {
     if (caption === '' || !session || !session.user.id) return
     try {
       const currentTimestamp = new Date().getTime()
+      const uploadResponse = await handleUpload()
 
       const requestObject = {
         caption: caption,
         timestamp: currentTimestamp,
+        imageName: uploadResponse ? uploadResponse.imageName : null,
+        likes: 0,
+        comments: [],
       }
 
       await update({
@@ -50,8 +58,8 @@ const CreatePost = () => {
     }
   }
 
-  if (session?.user) {
-    userPosts = session.user.posts.map((post, i) => {
+  if (session?.user && allPosts) {
+    userPosts = allPosts.map((post: any, i: number) => {
       const formattedTime = formatTime(Number(post.timestamp))
 
       return (
@@ -65,6 +73,11 @@ const CreatePost = () => {
             <p>{post.caption}</p>
             <p>{formattedTime}</p>
           </div>
+          {post.imageUrl && (
+            <div>
+              <Image src={post.imageUrl} alt="" width="400" height="100" />
+            </div>
+          )}
           <div className="mt-4">
             <button
               className="bg-red-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1"
@@ -78,6 +91,47 @@ const CreatePost = () => {
         </div>
       )
     })
+  }
+
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      if (session && session.user.id) {
+        console.log(session.user)
+        try {
+          const res = await fetch(`/api/posts/userPosts/${session.user.id}`)
+          const data = await res.json()
+          if (data.success) setAllPosts(data.posts)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    }
+    if (session && session.user.id) fetchUserPosts()
+  }, [session])
+
+  const handleUpload = async () => {
+    if (file && session && session.user && session.user.email) {
+      const formData = new FormData()
+
+      formData.append('file', file)
+      formData.append('id', session.user.id)
+
+      // Send form data
+      // 1. Uploads file to s3
+      // 2. Gets returned db imageName and s3 signed imageUrl
+      // 3. Update imageName in db, sets imageUrl on client
+      try {
+        const res = await fetch('/api/posts/post/upload', {
+          method: 'POST',
+          body: formData,
+        })
+        const data = await res.json()
+        if (data.success && data.imageName) return data
+        else return null
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 
   return (
@@ -96,7 +150,14 @@ const CreatePost = () => {
       </div>
 
       {/* Image (optional) */}
-      <input type="text" />
+      <div className="flex flex-col gap-2 my-4">
+        <label htmlFor="postImage">Image (Optional)</label>
+        <input
+          type="file"
+          name="postImage"
+          onChange={(e) => setFile(e.target.files && e.target.files[0])}
+        />
+      </div>
 
       {/* Create post */}
       <Button
