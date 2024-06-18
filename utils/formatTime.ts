@@ -1,3 +1,5 @@
+// reference: https://stackoverflow.com/questions/47253206/convert-milliseconds-to-timestamp-time-ago-59m-5d-3m-etc-in-javascript
+
 let periods = {
   month: 30 * 24 * 60 * 60 * 1000,
   week: 7 * 24 * 60 * 60 * 1000,
