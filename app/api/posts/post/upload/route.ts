@@ -1,5 +1,3 @@
-// Uploads file to s3
-
 import { NextResponse, NextRequest } from 'next/server'
 import crypto from 'crypto'
 import User from '@models/userModel'
@@ -33,17 +31,6 @@ export const POST = async (req: NextRequest): Promise<NewResponse> => {
 
   const imageName = randomImageName()
   await uploadFile(buffer, imageName, file.type)
-
-  // Update user image in database
-  // -----------------------------
-  // Find and retrieve user info
-  await startDb()
-  const userExists = await User.findById(id)
-  const googleUserExists = await GoogleUser.findById(id)
-
-  // Check if database has old imageName, if so then delete old image from s3
-  if (userExists?.imageName) await deleteFile(userExists.imageName)
-  if (googleUserExists?.imageName) await deleteFile(googleUserExists.imageName)
 
   // Get temporary signed url from s3
   const signedUrl = await getObjectSignedUrl(imageName)

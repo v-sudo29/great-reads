@@ -24,6 +24,9 @@ const ProfilePicture = ({ className }: ProfilePictureProps) => {
           formData.append('id', session.user.id)
 
           // Send form data
+          // 1. Uploads file to s3
+          // 2. Gets returned db imageName and s3 signed imageUrl
+          // 3. Update imageName in db, sets imageUrl on client
           try {
             const res = await fetch('/api/profile/upload', {
               method: 'POST',
