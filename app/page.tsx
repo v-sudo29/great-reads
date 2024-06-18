@@ -14,7 +14,7 @@ export default function Home() {
       {/* Authenticated UI */}
       {session && (
         <section className="px-3 xl:py-10 xl:px-12 xl:flex">
-          <div className="pr-[104px]">
+          <div className="xl:pr-[104px]">
             <h1 className="hidden font-lora font-bold text-[24px] text-primary leading-[60px] mb-4 xl:block">
               Latest Updates
             </h1>
