@@ -1,6 +1,5 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getObjectSignedUrl } from '@lib/s3'
-import { NextApiRequest } from 'next'
 import User from '@models/userModel'
 import startDb from '@lib/db'
 
@@ -15,7 +14,7 @@ type NewResponse = NextResponse<{
 }>
 
 // POST request to get temporary signed url from s3
-export const GET = async (req: NextApiRequest): Promise<NewResponse> => {
+export const GET = async (req: NextRequest): Promise<NewResponse> => {
   try {
     const pathNameSplit = new URL(req.url ?? '').pathname.split('/')
     const userId = pathNameSplit[pathNameSplit.length - 1]
