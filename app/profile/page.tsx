@@ -166,7 +166,9 @@ const Profile = () => {
           </h2>
           <p className="font-montserrat font-semibold text-[18px] text-[#707070] mt-5 leading-[28px]">
             Start adding books that have captured your heart.
-            <span className="font-bold text-primary">&nbsp;Explore</span>
+            <a href="/" className="font-bold text-primary">
+              &nbsp;&nbsp;Explore
+            </a>
           </p>
         </section>
         <section className="py-[56px] border-b border-b-[#E4E6E8]">
@@ -176,7 +178,9 @@ const Profile = () => {
           <p className="font-montserrat font-semibold text-[18px] text-[#707070] mt-5 leading-[28px]">
             It looks like you haven&apos;t added any completed books to your
             list yet.
-            <span className="font-bold text-primary">&nbsp;Explore</span>
+            <a href="/" className="font-bold text-primary">
+              &nbsp;&nbsp;Explore
+            </a>
           </p>
         </section>
         <section className="py-[56px]">
