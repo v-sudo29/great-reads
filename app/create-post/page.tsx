@@ -2,6 +2,7 @@
 import { Button } from '@components/common/Button'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { formatTime } from '@utils/formatTime'
 
 const CreatePost = () => {
   const [caption, setCaption] = useState('')
@@ -51,9 +52,7 @@ const CreatePost = () => {
 
   if (session?.user) {
     userPosts = session.user.posts.map((post, i) => {
-      const d = new Date(post.timestamp)
-      const formattedDate =
-        d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear()
+      const formattedTime = formatTime(Number(post.timestamp))
 
       return (
         <div
@@ -64,7 +63,7 @@ const CreatePost = () => {
         >
           <div>
             <p>{post.caption}</p>
-            <p>{formattedDate}</p>
+            <p>{formattedTime}</p>
           </div>
           <div className="mt-4">
             <button
