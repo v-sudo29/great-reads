@@ -24,12 +24,12 @@ export const Post = () => {
           <p>Sasuke Uchiha</p>
         </div>
         {/* Timestamp */}
-        <span className="font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px]">
+        <span className="font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px] xl:hidden">
           2 minutes ago
         </span>
         {/* Post caption */}
         <div className="mt-[6px]">
-          <p className="font-montserrat font-medium text-primary text-[14px] leading-[20px] xl:text-[18px]">
+          <p className="font-montserrat font-medium text-primary text-[14px] leading-[20px] xl:text-[18px] xl:leading-[24px]">
             This book delves into the darker side of human nature, the shadows
             we carry. It&apos;s a reflection of the path I&apos;ve walked...
             <span className="text-[#8D8D8D] pl-2 cursor-pointer xl:hidden">
@@ -37,6 +37,11 @@ export const Post = () => {
             </span>
           </p>
         </div>
+
+        {/* Timestamp */}
+        <span className="hidden font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px] pt-2 xl:block">
+          2 minutes ago
+        </span>
 
         {/* Post image */}
         <div className="w-full mt-4 xl:mt-8">
