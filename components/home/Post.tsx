@@ -24,7 +24,7 @@ export const Post = () => {
           <p>Sasuke Uchiha</p>
         </div>
         {/* Timestamp */}
-        <span className="font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px] xl:hidden">
+        <span className="block font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px] xl:hidden">
           2 minutes ago
         </span>
         {/* Post caption */}
