@@ -1,6 +1,5 @@
 import { Button } from '@components/common/Button'
 import Image from 'next/image'
-import GreenDotIcon from '@components/common/icons/GreenDotIcon'
 import HeartIcon from '@components/common/icons/HeartIcon'
 import CommentsIcon from '@components/common/icons/CommentsIcon'
 import ShareIcon from '@components/common/icons/ShareIcon'
@@ -103,7 +102,10 @@ export const TempUpdatePost = () => {
           <p>Naruto Uzumaki</p>
           <span className="font-medium">just completed:</span>
         </div>
-
+        {/* Timestamp */}
+        <span className="block font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px]">
+          2 minutes ago
+        </span>
         {/* Book Image + Book Details */}
         <div className="flex gap-4 mt-4">
           {/* Book */}
@@ -135,6 +137,35 @@ export const TempUpdatePost = () => {
             </div>
           </div>
         </div>
+
+        {/* Buttons Container */}
+        <div className="flex mt-3 gap-2 xl:mt-8 xl:gap-4">
+          <Button
+            type="tertiary"
+            bordersRounded={true}
+            icon={<HeartIcon />}
+            clickHandler={() => {}}
+          >
+            12k
+          </Button>
+          <Button
+            type="tertiary"
+            bordersRounded={true}
+            icon={<CommentsIcon />}
+            clickHandler={() => {}}
+          >
+            562
+          </Button>
+          <Button
+            type="tertiary"
+            bordersRounded={true}
+            icon={<ShareIcon />}
+            clickHandler={() => {}}
+            className="ml-auto"
+          >
+            Share
+          </Button>
+        </div>
       </div>
     </div>
   )
@@ -151,7 +182,6 @@ export const TempUpdatePost2 = () => {
           <span className="font-medium ml-2">wants to read:</span>
         </p>
       </div>
-
       {/* Post Content */}
       <div className="w-full">
         {/* User's name + timestamp */}
@@ -159,6 +189,11 @@ export const TempUpdatePost2 = () => {
           <p>Sakura Haruno</p>
           <span className="font-medium">wants to read:</span>
         </div>
+
+        {/* Timestamp */}
+        <span className="block font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px]">
+          2 minutes ago
+        </span>
 
         {/* Book Image + Book Details */}
         <div className="flex gap-4 mt-4">
@@ -190,6 +225,35 @@ export const TempUpdatePost2 = () => {
               <UnfilledStar />
             </div>
           </div>
+        </div>
+
+        {/* Buttons Container */}
+        <div className="flex mt-3 gap-2 xl:mt-8 xl:gap-4">
+          <Button
+            type="tertiary"
+            bordersRounded={true}
+            icon={<HeartIcon />}
+            clickHandler={() => {}}
+          >
+            12k
+          </Button>
+          <Button
+            type="tertiary"
+            bordersRounded={true}
+            icon={<CommentsIcon />}
+            clickHandler={() => {}}
+          >
+            562
+          </Button>
+          <Button
+            type="tertiary"
+            bordersRounded={true}
+            icon={<ShareIcon />}
+            clickHandler={() => {}}
+            className="ml-auto"
+          >
+            Share
+          </Button>
         </div>
       </div>
     </div>
