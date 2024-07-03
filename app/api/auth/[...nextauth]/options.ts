@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import startDb from '@lib/db'
 import User from '@models/userModel'
 import GoogleUser from '@models/googleUserModel'
+import Post from '@models/postModel'
 import { AuthOptions } from 'next-auth'
 import { GoogleProfile } from 'next-auth/providers/google'
 import { IBook } from '@customTypes/bookType'
@@ -66,13 +67,6 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, session, trigger }) {
-      // Check if session property exists in token
-      // if (trigger === 'update' && !token.hasOwnProperty(Object.keys(session)[0])) {
-      //   return {
-      //     ...token,
-      //   }
-      // }
-
       // If user updates FIRST NAME, update token and database
       if (trigger === 'update' && session?.firstName) {
         token.firstName = session.firstName
@@ -190,17 +184,28 @@ const authOptions: AuthOptions = {
           // Newest post
           const newestPost = session.posts[session.posts.length - 1]
 
-          // Update user in database
+          // Update user in users collection
           const credentialsUser = await User.findOne({ email: token.email })
 
-          if (credentialsUser && newestPost)
+          // Add post to posts collection and user's posts field
+          if (credentialsUser && newestPost) {
+            const newPost = {
+              userId: credentialsUser?._id,
+              ...newestPost,
+            }
+            const postCreated = await Post.create(newPost)
+            console.log('new post: ', postCreated)
+            console.log('new post saved!')
+
             await User.findOneAndUpdate(
               { email: token.email },
-              { $push: { posts: newestPost } }
+              { $push: { posts: postCreated } }
             )
+            console.log('new post saved to user!')
+          }
         }
 
-        // Remove post or update post
+        // TODO: Remove post or update post
         if (isPostRemoved || isPostUpdated) {
           token.posts = session.posts
 
