@@ -9,9 +9,12 @@ declare module 'next-auth' {
     user: {
       posts:
         | {
+            _id?: string
             caption: string
             imageName?: string | null
             timestamp: string
+            likes: number
+            comments: string[]
           }[]
         | []
       lists:
@@ -46,9 +49,12 @@ declare module 'next-auth' {
       | {}
     posts:
       | {
+          _id?: string
           caption: string
           imageName?: string | null
           timestamp: string
+          likes: number
+          comments: string[]
         }[]
       | []
     friends: SchemaDefinitionProperty[] | []
@@ -73,9 +79,12 @@ declare module 'next-auth/jwt' {
       | {}
     posts:
       | {
+          _id?: string
           caption: string
           imageName?: string | null
           timestamp: string
+          likes: number
+          comments: string[]
         }[]
       | []
     friends: SchemaDefinitionProperty[] | []
