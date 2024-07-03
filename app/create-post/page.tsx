@@ -45,13 +45,22 @@ const CreatePost = () => {
     if (e.target) {
       const buttonElement = e.target as HTMLButtonElement
       const timestamp = buttonElement.getAttribute('data-timestamp')
+      const postId = buttonElement.getAttribute('data-post-id')
 
       try {
         const oldPostsCopy = session?.user.posts
         const updatedPosts = oldPostsCopy?.filter(
           (post) => post.timestamp.toString() !== timestamp
         )
+        // Update session
         update({ posts: updatedPosts })
+
+        // Delete all instances of post in database
+        const response = await fetch(`/api/posts/post/delete/${postId}`, {
+          method: 'DELETE',
+        })
+        const data = await response.json()
+        console.log(data)
       } catch (err) {
         console.log(err)
       }
@@ -68,6 +77,7 @@ const CreatePost = () => {
           className="border border-black p-4 rounded-md"
           data-timestamp={post.timestamp}
           data-caption={post.caption}
+          data-post-id={post._id}
         >
           <div>
             <p>{post.caption}</p>
@@ -84,6 +94,7 @@ const CreatePost = () => {
               onClick={(e) => handleDeletePost(e)}
               data-timestamp={post.timestamp}
               data-caption={post.caption}
+              data-post-id={post._id}
             >
               Delete
             </button>

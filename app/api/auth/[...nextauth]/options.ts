@@ -179,8 +179,6 @@ const authOptions: AuthOptions = {
 
         // Create new post
         if (isPostCreated) {
-          token.posts = session.posts
-
           // Newest post
           const newestPost = session.posts[session.posts.length - 1]
 
@@ -194,14 +192,15 @@ const authOptions: AuthOptions = {
               ...newestPost,
             }
             const postCreated = await Post.create(newPost)
-            console.log('new post: ', postCreated)
-            console.log('new post saved!')
 
             await User.findOneAndUpdate(
               { email: token.email },
               { $push: { posts: postCreated } }
             )
-            console.log('new post saved to user!')
+
+            // Update session and token
+            session.posts[session.posts.length - 1] = postCreated
+            token.posts = session.posts
           }
         }
 
@@ -260,9 +259,12 @@ const authOptions: AuthOptions = {
         defaultImage?: string
         posts:
           | {
+              _id?: string
               caption: string
               imageName?: string | null
               timestamp: string
+              likes: number
+              comments: string[]
             }[]
           | []
       }
