@@ -29,6 +29,7 @@ const CreatePost = () => {
         imageName: uploadResponse ? uploadResponse.imageName : null,
         likes: 0,
         comments: [],
+        likesByUsers: [],
       }
 
       await update({
