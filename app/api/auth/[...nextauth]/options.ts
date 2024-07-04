@@ -263,7 +263,7 @@ const authOptions: AuthOptions = {
               caption: string
               imageName?: string | null
               timestamp: string
-              likes: number
+              likesCount: number
               comments: string[]
             }[]
           | []

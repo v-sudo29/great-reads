@@ -13,7 +13,7 @@ declare module 'next-auth' {
             caption: string
             imageName?: string | null
             timestamp: string
-            likes: number
+            likesCount: number
             comments: string[]
           }[]
         | []
@@ -53,7 +53,7 @@ declare module 'next-auth' {
           caption: string
           imageName?: string | null
           timestamp: string
-          likes: number
+          likesCount: number
           comments: string[]
         }[]
       | []
@@ -83,7 +83,7 @@ declare module 'next-auth/jwt' {
           caption: string
           imageName?: string | null
           timestamp: string
-          likes: number
+          likesCount: number
           comments: string[]
         }[]
       | []

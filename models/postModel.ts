@@ -7,7 +7,7 @@ interface PostDocument extends Document {
   caption: string
   timestamp: number
   imageName: string | null
-  likes: number
+  likesCount: number
   comments: string[]
 }
 
@@ -27,7 +27,7 @@ const postSchema = new Schema<PostDocument, {}>(
       type: Schema.Types.Mixed,
       default: null,
     },
-    likes: {
+    likesCount: {
       type: Number,
       default: 0,
     },
