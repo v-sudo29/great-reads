@@ -1,9 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server'
 import crypto from 'crypto'
-import User from '@models/userModel'
-import startDb from '@lib/db'
 import { uploadFile, deleteFile, getObjectSignedUrl } from '@lib/s3'
-import GoogleUser from '@models/googleUserModel'
 
 type NewResponse = NextResponse<{
   error?: string

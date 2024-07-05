@@ -1,4 +1,4 @@
-import { Model, models, model, SchemaDefinitionProperty } from 'mongoose'
+import { Model, models, model } from 'mongoose'
 import { Document, Schema } from 'mongoose'
 
 interface PostDocument extends Document {
@@ -7,8 +7,9 @@ interface PostDocument extends Document {
   caption: string
   timestamp: number
   imageName: string | null
-  likes: number
+  likesCount: number
   comments: string[]
+  likesByUsers: Schema.Types.ObjectId[]
 }
 
 const postSchema = new Schema<PostDocument, {}>(
@@ -27,11 +28,15 @@ const postSchema = new Schema<PostDocument, {}>(
       type: Schema.Types.Mixed,
       default: null,
     },
-    likes: {
+    likesCount: {
       type: Number,
       default: 0,
     },
     comments: {
+      type: Schema.Types.Mixed,
+      default: [],
+    },
+    likesByUsers: {
       type: Schema.Types.Mixed,
       default: [],
     },

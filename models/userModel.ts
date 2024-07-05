@@ -23,6 +23,7 @@ interface UserDocument extends Document {
   imageName: string | null
   error?: string
   posts: Record<string, any>[] | []
+  likedPosts: Schema.Types.ObjectId[]
 }
 
 interface Methods {
@@ -79,6 +80,9 @@ const userSchema = new Schema<UserDocument, {}, Methods>(
     posts: {
       type: Schema.Types.Mixed,
       required: false,
+    },
+    likedPosts: {
+      type: [Schema.ObjectId],
     },
   },
   { minimize: false, strict: false }

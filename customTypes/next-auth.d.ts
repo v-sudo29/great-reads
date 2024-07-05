@@ -13,8 +13,9 @@ declare module 'next-auth' {
             caption: string
             imageName?: string | null
             timestamp: string
-            likes: number
+            likesCount: number
             comments: string[]
+            likesByUsers: string[]
           }[]
         | []
       lists:
@@ -32,6 +33,7 @@ declare module 'next-auth' {
       defaultImage?: string
       firstName: string
       lastName: string
+      likedPosts: string[]
     } & DefaultSession['user']
   }
 
@@ -53,8 +55,9 @@ declare module 'next-auth' {
           caption: string
           imageName?: string | null
           timestamp: string
-          likes: number
+          likesCount: number
           comments: string[]
+          likesByUsers: string[]
         }[]
       | []
     friends: SchemaDefinitionProperty[] | []
@@ -62,6 +65,7 @@ declare module 'next-auth' {
     defaultImage?: string
     firstName: string
     lastName: string
+    likedPosts: string[]
   }
 }
 
@@ -83,8 +87,9 @@ declare module 'next-auth/jwt' {
           caption: string
           imageName?: string | null
           timestamp: string
-          likes: number
+          likesCount: number
           comments: string[]
+          likesByUsers: string[]
         }[]
       | []
     friends: SchemaDefinitionProperty[] | []
@@ -92,5 +97,6 @@ declare module 'next-auth/jwt' {
     defaultImage?: string
     firstName: string
     lastName: string
+    likedPosts: string[]
   }
 }
