@@ -77,13 +77,63 @@ const CreatePost = () => {
     // Check if authenticated user has liked the post in likedPosts array
     if (session?.user.likedPosts.find((currentId) => currentId === postId)) {
       console.log('User has liked post before!')
+      // UPDATE SESSION TOKEN - update API
+      // 1. Decrement post's "likesCount" and remove userId from likesByUsers array in session token
+      // 2. Remove postId from "likedPosts" array of User
+
+      // UPDATE POST IN DATABASE - fetch API
+      // 1. Update likesCount in Post - decrement likesCount in Post
+      // 2. Remove userId from Post likesByUsers array
+      const updatedPosts = session.user.posts.map((post) => {
+        if (post._id === postId) {
+          const updatedPost = {
+            ...post,
+          }
+          updatedPost.likesCount = post.likesCount -= 1
+          updatedPost.likesByUsers = updatedPost.likesByUsers.filter(
+            (userId) => userId !== session.user.id
+          )
+          return updatedPost
+        } else return post
+      })
+
+      const updatedLikedPosts = [
+        ...session.user.likedPosts.filter(
+          (likedPostId) => likedPostId !== postId
+        ),
+      ]
+
+      // Update session token
+      await update({ posts: updatedPosts })
+      await update({ likedPosts: updatedLikedPosts })
+
+      // Update Post in database
+      const response = await fetch(`/api/posts/post/likesCount/${postId}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'decrement',
+        }),
+      })
+      const data = await response.json()
+
+      if (data) {
+        const response = await fetch(`/api/posts/post/likesByUsers/${postId}`, {
+          method: 'POST',
+          body: JSON.stringify({
+            userId: session.user.id,
+            action: 'remove',
+          }),
+        })
+        const data = await response.json()
+        console.log(data)
+      }
     } else {
       console.log('user has not liked post before!')
 
       if (session && session.user) {
         const postMatch = session.user.posts.find((post) => post._id === postId)
         // UPDATE SESSION TOKEN - update API
-        // 1. Increment post's "likesCount" in session token
+        // 1. Increment post's "likesCount" and add userId to likesByUsers array in session token
         // 2. Add postId to "likedPosts" array of User
 
         // UPDATE POST IN DATABASE - fetch API
@@ -102,17 +152,32 @@ const CreatePost = () => {
             } else return post
           })
           // Update session token
-          // update({ posts: updatedPosts })
-          // update({ likedPosts: [...session.user.likedPosts, postId] })
+          await update({ posts: updatedPosts })
+          await update({ likedPosts: [...session.user.likedPosts, postId] })
 
           // Update post in database
-          // - increment likesCount
-          // - add userId to Post likesByUsers
           const response = await fetch(`/api/posts/post/likesCount/${postId}`, {
             method: 'POST',
+            body: JSON.stringify({
+              action: 'increment',
+            }),
           })
           const data = await response.json()
-          console.log(data)
+
+          if (data) {
+            const response = await fetch(
+              `/api/posts/post/likesByUsers/${postId}`,
+              {
+                method: 'POST',
+                body: JSON.stringify({
+                  userId: session.user.id,
+                  action: 'add',
+                }),
+              }
+            )
+            const data = await response.json()
+            console.log(data)
+          }
         }
       }
     }
@@ -121,6 +186,9 @@ const CreatePost = () => {
   if (session?.user && allPosts) {
     userPosts = allPosts.map((post: any, i: number) => {
       const formattedTime = formatTime(Number(post.timestamp))
+      const isLikedByUser = session?.user.likedPosts.find(
+        (currentId) => currentId === post._id
+      )
 
       return (
         <div
@@ -152,7 +220,11 @@ const CreatePost = () => {
           </div>
           <div className=" mt-4">
             <button
-              className="bg-primary text-white font-montserrat font-semibold rounded-[4px] px-5 py-1"
+              className={
+                isLikedByUser
+                  ? 'bg-primary text-white font-montserrat font-semibold rounded-[4px] px-5 py-1'
+                  : 'bg-gray-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1'
+              }
               onClick={(e) => handleUpdateLikes(e)}
               data-post-id={post._id}
             >

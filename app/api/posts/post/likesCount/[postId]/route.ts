@@ -11,13 +11,14 @@ export const POST = async (req: Request): Promise<NewResponse> => {
   try {
     const splitUrl = req.url.split('/')
     const postId = splitUrl[splitUrl.length - 1]
+    const body = await req.json()
 
     // Find post and increment likesCount
-    const retrievedPost = await Post.find({ _id: postId })
-    if (retrievedPost) {
+    if (body.action === 'increment') {
       await Post.findOneAndUpdate({ _id: postId }, { $inc: { likesCount: 1 } })
-    } else {
-      throw new Error('Post does not exist')
+    }
+    if (body.action === 'decrement') {
+      await Post.findOneAndUpdate({ _id: postId }, { $inc: { likesCount: -1 } })
     }
 
     return NextResponse.json({
