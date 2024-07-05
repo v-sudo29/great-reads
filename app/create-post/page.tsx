@@ -68,6 +68,56 @@ const CreatePost = () => {
     }
   }
 
+  const handleUpdateLikes = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const likeButton = e.target as HTMLButtonElement
+    const postId = likeButton.getAttribute('data-post-id')
+
+    // Check if authenticated user has liked the post in likedPosts array
+    if (session?.user.likedPosts.find((currentId) => currentId === postId)) {
+      console.log('User has liked post before!')
+    } else {
+      console.log('user has not liked post before!')
+
+      if (session && session.user) {
+        const postMatch = session.user.posts.find((post) => post._id === postId)
+        // UPDATE SESSION TOKEN - update API
+        // 1. Increment post's "likesCount" in session token
+        // 2. Add postId to "likedPosts" array of User
+
+        // UPDATE POST IN DATABASE - fetch API
+        // 1. Update likesCount in Post
+        // 2. Update userId of Post likesByUsers
+
+        if (postMatch) {
+          const updatedPosts = session.user.posts.map((post) => {
+            if (post._id === postId) {
+              const newPost = {
+                ...post,
+              }
+              newPost.likesCount = post.likesCount += 1
+              newPost.likesByUsers = [...post.likesByUsers, session.user.id]
+              return newPost
+            } else return post
+          })
+          // Update session token
+          // update({ posts: updatedPosts })
+          // update({ likedPosts: [...session.user.likedPosts, postId] })
+
+          // Update post in database
+          // - increment likesCount
+          // - add userId to Post likesByUsers
+          const response = await fetch(`/api/posts/post/likesCount/${postId}`, {
+            method: 'POST',
+          })
+          const data = await response.json()
+          console.log(data)
+        }
+      }
+    }
+  }
+
   if (session?.user && allPosts) {
     userPosts = allPosts.map((post: any, i: number) => {
       const formattedTime = formatTime(Number(post.timestamp))
@@ -98,6 +148,15 @@ const CreatePost = () => {
               data-post-id={post._id}
             >
               Delete
+            </button>
+          </div>
+          <div className=" mt-4">
+            <button
+              className="bg-primary text-white font-montserrat font-semibold rounded-[4px] px-5 py-1"
+              onClick={(e) => handleUpdateLikes(e)}
+              data-post-id={post._id}
+            >
+              {post.likesCount} Likes
             </button>
           </div>
         </div>
