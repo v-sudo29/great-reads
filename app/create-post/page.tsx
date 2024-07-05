@@ -43,7 +43,7 @@ const CreatePost = () => {
   const handleDeletePost = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (e.target) {
+    if (e.target && session && session.user.id) {
       const buttonElement = e.target as HTMLButtonElement
       const timestamp = buttonElement.getAttribute('data-timestamp')
       const postId = buttonElement.getAttribute('data-post-id')
@@ -53,8 +53,15 @@ const CreatePost = () => {
         const updatedPosts = oldPostsCopy?.filter(
           (post) => post.timestamp.toString() !== timestamp
         )
-        // Update session
-        update({ posts: updatedPosts })
+        const updatedLikedPosts = [
+          ...session?.user.likedPosts.filter(
+            (currentPostId) => currentPostId !== postId
+          ),
+        ]
+
+        // Update session: posts and likedPosts
+        await update({ posts: updatedPosts })
+        await update({ likedPosts: updatedLikedPosts })
 
         // Delete all instances of post in database
         const response = await fetch(`/api/posts/post/delete/${postId}`, {
