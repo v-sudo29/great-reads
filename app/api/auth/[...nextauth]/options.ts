@@ -260,11 +260,18 @@ const authOptions: AuthOptions = {
         }
         // Feature to CREATE comment
         if (isCommentCreated) {
-          const commentCreated = await User.findOneAndUpdate(
+          // Create new Comment for Comments collection
+          const recentComment = session.comments[session.comments.length - 1]
+          const newCommentCreated = await Comment.create(recentComment)
+
+          // Update "comments" field in User
+          await User.findOneAndUpdate(
             { email: token.email },
-            { comments: session.comments }
+            { $push: { comments: newCommentCreated } }
           )
-          if (commentCreated) console.log('COMMENT CREATED: ', commentCreated)
+
+          session.comments[session.comments.length - 1] = newCommentCreated
+          token.session = session.comments
         }
         // TODO: Feature to DELETE comment
         if (isCommentDeleted) {

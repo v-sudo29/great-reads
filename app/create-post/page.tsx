@@ -256,6 +256,12 @@ const CreatePost = () => {
     }
   }
 
+  const handleDeleteComment = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    console.log(e.target)
+  }
+
   if (session?.user && allPosts) {
     userPosts = allPosts.map((post: any, i: number) => {
       const formattedTime = formatTime(Number(post.timestamp))
@@ -344,14 +350,33 @@ const CreatePost = () => {
 
                 {/* Past Comments */}
                 <div>
-                  {post.comments.length > 0 &&
+                  {post.comments.length > 0 ? (
                     post.comments.map((comment: any, i: number) => {
                       return (
-                        <div key={`${post._id}-${i}-comment`}>
-                          {comment.userComment}
+                        <div
+                          key={`${post._id}-${i}-comment`}
+                          className="border mt-4 px-4 py-3"
+                          data-user-id={comment.userId}
+                        >
+                          <p className="font-bold">
+                            {comment.firstName} {comment.lastName}
+                          </p>
+                          <p>{comment.userComment}</p>
+                          {comment.userId === session.user.id && (
+                            <button
+                              className="bg-red-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1 mt-5"
+                              onClick={(e) => handleDeleteComment(e)}
+                              data-post-id={post._id}
+                            >
+                              Delete
+                            </button>
+                          )}
                         </div>
                       )
-                    })}
+                    })
+                  ) : (
+                    <>No comments</>
+                  )}
                 </div>
               </div>
             </div>

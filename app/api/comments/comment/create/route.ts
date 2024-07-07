@@ -29,16 +29,16 @@ export const POST = async (req: NewRequest): Promise<NewResponse> => {
     if (body.newComment) {
       const comment = body.newComment
 
-      // Create new Comment in "comments" collection -- CHECK
-      const commentedCreated = await Comment.create(comment)
+      // Create new Comment in "comments" collection
+      // const commentedCreated = await Comment.create(comment)
 
-      // Add comment to correct Post -- CHECK
+      // Add comment to correct Post in Post collection
       const postAppended = await Post.findOneAndUpdate(
         { _id: comment.postId },
         { $push: { comments: comment } }
       )
 
-      // Add comment to correct post in Users -- CHECK
+      // Add comment to correct post in Users in Users collection
       const updatedUser = await User.findOneAndUpdate(
         {
           _id: comment.userId,
