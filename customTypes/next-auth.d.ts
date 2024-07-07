@@ -14,7 +14,16 @@ declare module 'next-auth' {
             imageName?: string | null
             timestamp: string
             likesCount: number
-            comments: string[]
+            comments: {
+              _id?: string
+              postId: string
+              userId: string
+              userComment: string
+              firstName: string
+              lastName: string
+              imageName?: string | null
+              timestamp: number
+            }[]
             likesByUsers: string[]
           }[]
         | []
@@ -56,7 +65,16 @@ declare module 'next-auth' {
           imageName?: string | null
           timestamp: string
           likesCount: number
-          comments: string[]
+          comments: {
+            _id?: string
+            postId: string
+            userId: string
+            userComment: string
+            firstName: string
+            lastName: string
+            imageName?: string | null
+            timestamp: number
+          }[]
           likesByUsers: string[]
         }[]
       | []
@@ -88,7 +106,16 @@ declare module 'next-auth/jwt' {
           imageName?: string | null
           timestamp: string
           likesCount: number
-          comments: string[]
+          comments: {
+            _id?: string
+            postId: string
+            userId: string
+            userComment: string
+            firstName: string
+            lastName: string
+            imageName?: string | null
+            timestamp: number
+          }[]
           likesByUsers: string[]
         }[]
       | []

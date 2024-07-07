@@ -222,7 +222,7 @@ const authOptions: AuthOptions = {
         }
       }
 
-      // If user updates POST -- update token and database
+      // If user updates LIKEDPOSTS -- update token and database
       if (trigger === 'update' && session?.likedPosts) {
         token.likedPosts = session.likedPosts
 
@@ -273,31 +273,9 @@ const authOptions: AuthOptions = {
       return token
     },
     async session({ session, token }) {
-      // Define the expected shape of the session.user object
-      interface SessionUser {
-        id: string
-        firstName: string
-        lastName: string
-        lists?: Record<string, Record<string, string | IBook[]>>
-        friends?: SchemaDefinitionProperty[]
-        imageName?: string | null
-        defaultImage?: string
-        posts:
-          | {
-              _id?: string
-              caption: string
-              imageName?: string | null
-              timestamp: string
-              likesCount: number
-              comments: string[]
-              likesByUsers: string[]
-            }[]
-          | []
-        likedPosts: string[]
-      }
       // Pass in user id and lists from token to session
       if (session.user) {
-        const user: SessionUser = {
+        const user = {
           id: token.id ?? '',
           firstName: (token.firstName ?? '') as string,
           lastName: (token.lastName ?? '') as string,

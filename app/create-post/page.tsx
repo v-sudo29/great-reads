@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { formatTime } from '@utils/formatTime'
 import Image from 'next/image'
 import React from 'react'
+import getCurrentTimestamp from '@utils/getCurrentTimestamp'
 
 const CreatePost = () => {
   const [caption, setCaption] = useState('')
@@ -211,6 +212,56 @@ const CreatePost = () => {
     }
   }
 
+  const handleEnterKeyPressedCreateComment = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    const inputElement = e.target as HTMLInputElement
+    const userInput = inputElement.value
+    const currentPostId = inputElement.getAttribute('data-post-id')
+
+    if (
+      e.key === 'Enter' &&
+      userInput !== '' &&
+      session &&
+      session.user.id &&
+      currentPostId
+    ) {
+      // Create new comment
+      const newComment = {
+        postId: currentPostId,
+        userId: session.user.id,
+        userComment: userInput,
+        timestamp: getCurrentTimestamp(),
+        firstName: session.user.firstName,
+        lastName: session.user.lastName,
+        imageName: session.user.imageName ?? null,
+      }
+
+      // Append comment to specific post
+      // const updatedPosts = session.user.posts.map((post) => {
+      //   if (post._id === currentPostId) {
+      //     post.comments.push(newComment)
+      //     return post
+      //   }
+      //   return post
+      // })
+
+      // Call API to:
+      // - create new Comment
+      // - $push comment to specific post
+      const response = await fetch(`/api/comments/comment/create`, {
+        method: 'POST',
+        body: JSON.stringify({ newComment }),
+      })
+      const data = await response.json()
+      console.log(data)
+    }
+
+    if (e.key === 'Enter' && inputElement.value === '') {
+      alert('Input is empty! Please try again')
+    }
+  }
+
   if (session?.user && allPosts) {
     userPosts = allPosts.map((post: any, i: number) => {
       const formattedTime = formatTime(Number(post.timestamp))
@@ -292,7 +343,8 @@ const CreatePost = () => {
                     className="flex w-full border border-black p-1"
                     type="text"
                     placeholder="Type your comment..."
-                    onKeyDown={(e) => console.log(e.key)}
+                    onKeyDown={(e) => handleEnterKeyPressedCreateComment(e)}
+                    data-post-id={post._id}
                   />
                 </div>
 
