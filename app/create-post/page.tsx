@@ -237,14 +237,8 @@ const CreatePost = () => {
         imageName: session.user.imageName ?? null,
       }
 
-      // Append comment to specific post
-      // const updatedPosts = session.user.posts.map((post) => {
-      //   if (post._id === currentPostId) {
-      //     post.comments.push(newComment)
-      //     return post
-      //   }
-      //   return post
-      // })
+      // Update session token
+      await update({ comments: [...session.user.comments, newComment] })
 
       // Call API to:
       // - create new Comment
