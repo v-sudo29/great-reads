@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { formatTime } from '@utils/formatTime'
 import Image from 'next/image'
+import React from 'react'
 
 const CreatePost = () => {
   const [caption, setCaption] = useState('')
@@ -218,9 +219,8 @@ const CreatePost = () => {
       )
 
       return (
-        <>
+        <React.Fragment key={`${session.user.id}-post-${i}`}>
           <div
-            key={`${session.user.id}-post-${i}`}
             className="border border-black p-4 rounded-md"
             data-timestamp={post.timestamp}
             data-caption={post.caption}
@@ -287,11 +287,14 @@ const CreatePost = () => {
                 </div>
 
                 {/* Input */}
-                <input
-                  className="flex w-full border border-black p-1"
-                  type="text"
-                  placeholder="Type your comment..."
-                />
+                <div>
+                  <input
+                    className="flex w-full border border-black p-1"
+                    type="text"
+                    placeholder="Type your comment..."
+                    onKeyDown={(e) => console.log(e.key)}
+                  />
+                </div>
 
                 {/* Past Comments */}
                 <div>
@@ -307,7 +310,7 @@ const CreatePost = () => {
               </div>
             </div>
           )}
-        </>
+        </React.Fragment>
       )
     })
   }
