@@ -7,6 +7,7 @@ import FilledStar from '@components/common/icons/FilledStar'
 import UnfilledStar from '@components/common/icons/UnfilledStar'
 import { useEffect, useState } from 'react'
 import { IPost } from '@customTypes/postType'
+import { formatTime } from '@utils/formatTime'
 
 export const Post = ({ post }: { post: IPost }) => {
   const [firstName, setFirstName] = useState<string | null>(null)
@@ -21,7 +22,7 @@ export const Post = ({ post }: { post: IPost }) => {
         try {
           const response = await fetch(`/api/users/user/${post.userId}`)
           const data = await response.json()
-          console.log('DATA from fetching user info: ', data)
+
           setFirstName(data.data.firstName)
           setLastName(data.data.lastName)
           setImageName(data.data.imageName)
@@ -82,13 +83,12 @@ export const Post = ({ post }: { post: IPost }) => {
         </div>
         {/* Timestamp */}
         <span className="block font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px] xl:hidden">
-          2 minutes ago
+          {formatTime(Number(post.timestamp))}
         </span>
         {/* Post caption */}
         <div className="mt-[6px]">
           <p className="font-montserrat font-medium text-primary text-[14px] leading-[20px] xl:text-[18px] xl:leading-[24px]">
-            This book delves into the darker side of human nature, the shadows
-            we carry. It&apos;s a reflection of the path I&apos;ve walked...
+            {post.caption}
             <span className="text-[#8D8D8D] pl-2 cursor-pointer xl:hidden">
               more
             </span>
@@ -97,7 +97,7 @@ export const Post = ({ post }: { post: IPost }) => {
 
         {/* Timestamp */}
         <span className="hidden font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px] pt-2 xl:block">
-          2 minutes ago
+          {formatTime(Number(post.timestamp))}
         </span>
 
         {/* Post image */}

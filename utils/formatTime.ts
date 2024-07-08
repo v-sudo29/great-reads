@@ -17,11 +17,19 @@ export function formatTime(timeCreated: number) {
   } else if (diff > periods.week) {
     return Math.floor(diff / periods.week) + 'w'
   } else if (diff > periods.day) {
-    return Math.floor(diff / periods.day) + ' day ago'
+    const numberOfDays = Math.floor(diff / periods.day)
+    const endingString = numberOfDays > 1 ? ' days ago' : ' day ago'
+
+    return numberOfDays + endingString
   } else if (diff > periods.hour) {
-    return Math.floor(diff / periods.hour) + ' hours ago'
+    const numberOfHours = Math.floor(diff / periods.hour)
+    const endingString = numberOfHours > 1 ? ' hours ago' : ' hour ago'
+
+    return numberOfHours + endingString
   } else if (diff > periods.minute) {
-    return Math.floor(diff / periods.minute) + ' minutes ago'
+    const numberOfMinutes = Math.floor(diff / periods.minute)
+    const endingString = numberOfMinutes > 1 ? ' minutes ago' : ' minute ago'
+    return numberOfMinutes + endingString
   }
   return 'Just now'
 }
