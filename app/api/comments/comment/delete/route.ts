@@ -22,12 +22,12 @@ export const DELETE = async (req: Request): Promise<NewResponse> => {
       { _id: body.postId },
       {
         $pull: {
-          comments: { _id: body.commentId },
+          comments: { _id: new mongoose.Types.ObjectId(body.commentId) },
         },
       }
     )
 
-    // Find and remove comment in post in User -- need userId
+    // 3. Find and remove comment in post in User -- need userId
     const user = await User.findOneAndUpdate(
       {
         _id: body.userId,

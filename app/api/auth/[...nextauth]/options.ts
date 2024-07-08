@@ -306,11 +306,17 @@ const authOptions: AuthOptions = {
             .catch((err) => console.log(err))
 
           session.comments[session.comments.length - 1] = newCommentCreated
-          token.session = session.comments
+          token.comments = session.comments
         }
         // TODO: Feature to DELETE comment
         if (isCommentDeleted) {
-          console.log('A comment has been deleted!')
+          token.comments = session.comments
+
+          await User.findOneAndUpdate(
+            { email: token.email },
+            { comments: session.comments }
+          )
+          console.log('UPDATED COMMENTS!!!')
         }
       }
 

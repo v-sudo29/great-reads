@@ -264,9 +264,16 @@ const CreatePost = () => {
           commentId,
         }),
       })
-
       const data = await response.json()
-      if (data) update({ comments: data.comments, posts: data.posts })
+
+      const updatedComments = session.user.comments.filter(
+        (comment) => comment._id !== commentId
+      )
+      console.log(updatedComments)
+      if (data) {
+        await update({ comments: updatedComments })
+        await update({ posts: data.posts })
+      }
     }
   }
 
