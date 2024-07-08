@@ -24,6 +24,18 @@ interface UserDocument extends Document {
   error?: string
   posts: Record<string, any>[] | []
   likedPosts: Schema.Types.ObjectId[]
+  comments:
+    | {
+        _id?: string
+        postId: string
+        userId: string
+        userComment: string
+        firstName: string
+        lastName: string
+        imageName?: string
+        timestamp: number
+      }[]
+    | []
 }
 
 interface Methods {

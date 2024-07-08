@@ -14,7 +14,18 @@ declare module 'next-auth' {
             imageName?: string | null
             timestamp: string
             likesCount: number
-            comments: string[]
+            comments:
+              | {
+                  _id?: string
+                  postId: string
+                  userId: string
+                  userComment: string
+                  firstName: string
+                  lastName: string
+                  imageName?: string | null
+                  timestamp: number
+                }[]
+              | []
             likesByUsers: string[]
           }[]
         | []
@@ -33,7 +44,19 @@ declare module 'next-auth' {
       defaultImage?: string
       firstName: string
       lastName: string
-      likedPosts: string[]
+      likedPosts: string[] | []
+      comments:
+        | {
+            _id?: string
+            postId: string
+            userId: string
+            userComment: string
+            firstName: string
+            lastName: string
+            imageName?: string | null
+            timestamp: number
+          }[]
+        | []
     } & DefaultSession['user']
   }
 
@@ -56,8 +79,19 @@ declare module 'next-auth' {
           imageName?: string | null
           timestamp: string
           likesCount: number
-          comments: string[]
-          likesByUsers: string[]
+          comments:
+            | {
+                _id?: string
+                postId: string
+                userId: string
+                userComment: string
+                firstName: string
+                lastName: string
+                imageName?: string | null
+                timestamp: number
+              }[]
+            | []
+          likesByUsers: string[] | []
         }[]
       | []
     friends: SchemaDefinitionProperty[] | []
@@ -65,7 +99,19 @@ declare module 'next-auth' {
     defaultImage?: string
     firstName: string
     lastName: string
-    likedPosts: string[]
+    likedPosts: string[] | []
+    comments:
+      | {
+          _id?: string
+          postId: string
+          userId: string
+          userComment: string
+          firstName: string
+          lastName: string
+          imageName?: string | null
+          timestamp: number
+        }[]
+      | []
   }
 }
 
@@ -88,8 +134,19 @@ declare module 'next-auth/jwt' {
           imageName?: string | null
           timestamp: string
           likesCount: number
-          comments: string[]
-          likesByUsers: string[]
+          comments:
+            | {
+                _id?: string
+                postId: string
+                userId: string
+                userComment: string
+                firstName: string
+                lastName: string
+                imageName?: string | null
+                timestamp: number
+              }[]
+            | []
+          likesByUsers: string[] | []
         }[]
       | []
     friends: SchemaDefinitionProperty[] | []
@@ -97,6 +154,18 @@ declare module 'next-auth/jwt' {
     defaultImage?: string
     firstName: string
     lastName: string
-    likedPosts: string[]
+    likedPosts: string[] | []
+    comments:
+      | {
+          _id?: string
+          postId: string
+          userId: string
+          userComment: string
+          firstName: string
+          lastName: string
+          imageName?: string | null
+          timestamp: number
+        }[]
+      | []
   }
 }

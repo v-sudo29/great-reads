@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { formatTime } from '@utils/formatTime'
 import Image from 'next/image'
+import React from 'react'
+import getCurrentTimestamp from '@utils/getCurrentTimestamp'
 
 const CreatePost = () => {
   const [caption, setCaption] = useState('')
@@ -11,6 +13,10 @@ const CreatePost = () => {
   const [loading, setLoading] = useState(false) // TODO: create loading UI
   const { data: session, update } = useSession()
   const [allPosts, setAllPosts] = useState<any>(null)
+  const [commentsVisibilities, setCommentsVisibilities] = useState<
+    boolean[] | null
+  >(null)
+
   let userPosts: JSX.Element[] | null = null
 
   const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -27,7 +33,7 @@ const CreatePost = () => {
         caption: caption,
         timestamp: currentTimestamp,
         imageName: uploadResponse ? uploadResponse.imageName : null,
-        likes: 0,
+        likesCount: 0,
         comments: [],
         likesByUsers: [],
       }
@@ -190,6 +196,87 @@ const CreatePost = () => {
     }
   }
 
+  const handleOpenComments = (index: number) => {
+    if (commentsVisibilities) {
+      const newCommentsVisibilities = [...commentsVisibilities]
+      newCommentsVisibilities[index] = true
+      setCommentsVisibilities(newCommentsVisibilities)
+    }
+  }
+
+  const handleCloseComments = (index: number) => {
+    if (commentsVisibilities) {
+      const newCommentsVisibilities = [...commentsVisibilities]
+      newCommentsVisibilities[index] = false
+      setCommentsVisibilities(newCommentsVisibilities)
+    }
+  }
+
+  const handleEnterKeyPressedCreateComment = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    const inputElement = e.target as HTMLInputElement
+    const userInput = inputElement.value
+    const currentPostId = inputElement.getAttribute('data-post-id')
+
+    if (
+      e.key === 'Enter' &&
+      userInput !== '' &&
+      session &&
+      session.user.id &&
+      currentPostId
+    ) {
+      // Create new comment
+      const newComment = {
+        postId: currentPostId,
+        userId: session.user.id,
+        userComment: userInput,
+        timestamp: getCurrentTimestamp(),
+        firstName: session.user.firstName,
+        lastName: session.user.lastName,
+        imageName: session.user.imageName ?? null,
+      }
+
+      // Update session token
+      await update({ comments: [...session.user.comments, newComment] })
+    }
+
+    if (e.key === 'Enter' && inputElement.value === '') {
+      alert('Input is empty! Please try again')
+    }
+  }
+
+  const handleDeleteComment = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const buttonElement = e.target as HTMLButtonElement
+
+    if (buttonElement && session && session.user.id) {
+      const postId = buttonElement.getAttribute('data-post-id')
+      const userId = session.user.id
+      const commentId = buttonElement.getAttribute('data-comment-id')
+
+      const response = await fetch(`/api/comments/comment/delete`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          postId,
+          userId,
+          commentId,
+        }),
+      })
+      const data = await response.json()
+
+      const updatedComments = session.user.comments.filter(
+        (comment) => comment._id !== commentId
+      )
+      console.log(updatedComments)
+      if (data) {
+        await update({ comments: updatedComments })
+        await update({ posts: data.posts })
+      }
+    }
+  }
+
   if (session?.user && allPosts) {
     userPosts = allPosts.map((post: any, i: number) => {
       const formattedTime = formatTime(Number(post.timestamp))
@@ -198,47 +285,119 @@ const CreatePost = () => {
       )
 
       return (
-        <div
-          key={`${session.user.id}-post-${i}`}
-          className="border border-black p-4 rounded-md"
-          data-timestamp={post.timestamp}
-          data-caption={post.caption}
-          data-post-id={post._id}
-        >
-          <div>
-            <p>{post.caption}</p>
-            <p>{formattedTime}</p>
-          </div>
-          {post.imageUrl && (
+        <React.Fragment key={`${session.user.id}-post-${i}`}>
+          <div
+            className="border border-black p-4 rounded-md"
+            data-timestamp={post.timestamp}
+            data-caption={post.caption}
+            data-post-id={post._id}
+          >
             <div>
-              <Image src={post.imageUrl} alt="" width="400" height="100" />
+              <p>{post.caption}</p>
+              <p>{formattedTime}</p>
+            </div>
+            {post.imageUrl && (
+              <div>
+                <Image src={post.imageUrl} alt="" width="400" height="100" />
+              </div>
+            )}
+            <div className="mt-4">
+              <button
+                className="bg-red-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1"
+                onClick={(e) => handleDeletePost(e)}
+                data-timestamp={post.timestamp}
+                data-caption={post.caption}
+                data-post-id={post._id}
+              >
+                Delete
+              </button>
+            </div>
+            <div className="mt-4">
+              <button
+                className={
+                  isLikedByUser
+                    ? 'bg-primary text-white font-montserrat font-semibold rounded-[4px] px-5 py-1'
+                    : 'bg-gray-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1'
+                }
+                onClick={(e) => handleUpdateLikes(e)}
+                data-post-id={post._id}
+              >
+                {post.likesCount} Likes
+              </button>
+            </div>
+            <div className="mt-4">
+              <button
+                className="bg-gray-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1"
+                data-post-id={post._id}
+                onClick={() => handleOpenComments(i)}
+              >
+                {post.comments.length}&nbsp;Comments
+              </button>
+            </div>
+          </div>
+          {commentsVisibilities && commentsVisibilities[i] && (
+            <div className="fixed flex justify-center top-0 left-0 w-full h-full">
+              {/* Overlay */}
+              <div
+                className="fixed w-full h-full bg-black opacity-20"
+                onClick={() => handleCloseComments(i)}
+              ></div>
+
+              {/* Modal */}
+              <div className="relative flex flex-col bg-white max-w-[500px] w-full p-4">
+                <div className="flex w-full justify-between">
+                  <p>Comments</p>
+                  <div>
+                    <button onClick={() => handleCloseComments(i)}>X</button>
+                  </div>
+                </div>
+
+                {/* Input */}
+                <div>
+                  <input
+                    className="flex w-full border border-black p-1"
+                    type="text"
+                    placeholder="Type your comment..."
+                    onKeyDown={(e) => handleEnterKeyPressedCreateComment(e)}
+                    data-post-id={post._id}
+                  />
+                </div>
+
+                {/* Past Comments */}
+                <div>
+                  {post.comments.length > 0 ? (
+                    post.comments.map((comment: any, i: number) => {
+                      return (
+                        <div
+                          key={`${post._id}-${i}-comment`}
+                          className="border mt-4 px-4 py-3"
+                          data-user-id={comment.userId}
+                        >
+                          <p className="font-bold">
+                            {comment.firstName} {comment.lastName}
+                          </p>
+                          <p>{comment.userComment}</p>
+                          {comment.userId === session.user.id && (
+                            <button
+                              className="bg-red-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1 mt-5"
+                              onClick={(e) => handleDeleteComment(e)}
+                              data-post-id={post._id}
+                              data-comment-id={comment._id}
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
+                      )
+                    })
+                  ) : (
+                    <>No comments</>
+                  )}
+                </div>
+              </div>
             </div>
           )}
-          <div className="mt-4">
-            <button
-              className="bg-red-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1"
-              onClick={(e) => handleDeletePost(e)}
-              data-timestamp={post.timestamp}
-              data-caption={post.caption}
-              data-post-id={post._id}
-            >
-              Delete
-            </button>
-          </div>
-          <div className=" mt-4">
-            <button
-              className={
-                isLikedByUser
-                  ? 'bg-primary text-white font-montserrat font-semibold rounded-[4px] px-5 py-1'
-                  : 'bg-gray-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1'
-              }
-              onClick={(e) => handleUpdateLikes(e)}
-              data-post-id={post._id}
-            >
-              {post.likesCount} Likes
-            </button>
-          </div>
-        </div>
+        </React.Fragment>
       )
     })
   }
@@ -250,7 +409,10 @@ const CreatePost = () => {
         try {
           const res = await fetch(`/api/posts/userPosts/${session.user.id}`)
           const data = await res.json()
-          if (data.success) setAllPosts(data.posts)
+          if (data.success) {
+            setAllPosts(data.posts)
+            setCommentsVisibilities(() => data.posts.map((x: any) => false))
+          }
         } catch (err) {
           console.log(err)
         }
