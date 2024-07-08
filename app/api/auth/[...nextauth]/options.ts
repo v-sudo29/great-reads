@@ -265,10 +265,45 @@ const authOptions: AuthOptions = {
           const newCommentCreated = await Comment.create(recentComment)
 
           // Update "comments" field in User
-          await User.findOneAndUpdate(
-            { email: token.email },
-            { $push: { comments: newCommentCreated } }
-          )
+          const updateUserComments = () => {
+            return User.findOneAndUpdate(
+              { email: token.email },
+              { $push: { comments: newCommentCreated } }
+            )
+          }
+
+          // Add comment to correct Post in Post collection
+          const updatePostComments = () => {
+            return Post.findOneAndUpdate(
+              { _id: newCommentCreated.postId },
+              { $push: { comments: newCommentCreated } }
+            )
+          }
+
+          // Add comment to correct post in Users in Users collection
+          const updateUserPostComments = () => {
+            return User.findOneAndUpdate(
+              {
+                _id: newCommentCreated.userId,
+                'posts._id': newCommentCreated.postId,
+              },
+              {
+                $push: {
+                  'posts.$.comments': newCommentCreated,
+                },
+              }
+            )
+          }
+
+          const completed = await Promise.all([
+            updateUserComments(),
+            updatePostComments(),
+            updateUserPostComments(),
+          ])
+            .then(() => {
+              console.log('All comment updates have been completed')
+            })
+            .catch((err) => console.log(err))
 
           session.comments[session.comments.length - 1] = newCommentCreated
           token.session = session.comments

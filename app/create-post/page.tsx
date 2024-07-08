@@ -239,16 +239,6 @@ const CreatePost = () => {
 
       // Update session token
       await update({ comments: [...session.user.comments, newComment] })
-
-      // Call API to:
-      // - create new Comment
-      // - $push comment to specific post
-      const response = await fetch(`/api/comments/comment/create`, {
-        method: 'POST',
-        body: JSON.stringify({ newComment }),
-      })
-      const data = await response.json()
-      console.log(data)
     }
 
     if (e.key === 'Enter' && inputElement.value === '') {
@@ -259,7 +249,25 @@ const CreatePost = () => {
   const handleDeleteComment = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    console.log(e.target)
+    const buttonElement = e.target as HTMLButtonElement
+
+    if (buttonElement && session && session.user.id) {
+      const postId = buttonElement.getAttribute('data-post-id')
+      const userId = session.user.id
+      const commentId = buttonElement.getAttribute('data-comment-id')
+
+      const response = await fetch(`/api/comments/comment/delete`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          postId,
+          userId,
+          commentId,
+        }),
+      })
+
+      const data = await response.json()
+      if (data) update({ comments: data.comments, posts: data.posts })
+    }
   }
 
   if (session?.user && allPosts) {
@@ -367,6 +375,7 @@ const CreatePost = () => {
                               className="bg-red-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1 mt-5"
                               onClick={(e) => handleDeleteComment(e)}
                               data-post-id={post._id}
+                              data-comment-id={comment._id}
                             >
                               Delete
                             </button>
