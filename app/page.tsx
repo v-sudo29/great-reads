@@ -4,9 +4,29 @@ import { ButtonLink } from '@components/common/Button'
 import { useSession } from 'next-auth/react'
 import { Post, TempUpdatePost, TempUpdatePost2 } from '@components/home/Post'
 import RecommendationCard from '@components/home/RecommendationCard'
+import { useEffect, useState } from 'react'
+import { IPost } from '@customTypes/postType'
 
 export default function Home() {
   const { data: session } = useSession()
+  const [recentPosts, setRecentPosts] = useState<IPost[] | []>([])
+
+  // Fetch all posts on first render
+  useEffect(() => {
+    if (session) {
+      const fetchRecentPosts = async () => {
+        try {
+          const response = await fetch(`/api/posts`)
+          const data = await response.json()
+          setRecentPosts(data.data)
+          console.log(data.data)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      fetchRecentPosts()
+    }
+  }, [session])
 
   if (session === undefined) return <></>
   return (
@@ -19,9 +39,15 @@ export default function Home() {
               Latest Updates
             </h1>
             <div className="xl:flex xl:flex-col xl:gap-8">
-              <Post />
+              {recentPosts.length > 0 &&
+                recentPosts.map((post, i) => {
+                  return (
+                    <Post key={`${i}-${post._id}latest-post`} post={post} />
+                  )
+                })}
+              {/* <Post />
               <TempUpdatePost />
-              <TempUpdatePost2 />
+              <TempUpdatePost2 /> */}
             </div>
           </div>
           <div className="hidden border-l border-l-[#DFE7EB] min-w-[390px] pl-10 xl:block">

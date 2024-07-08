@@ -5,15 +5,72 @@ import CommentsIcon from '@components/common/icons/CommentsIcon'
 import ShareIcon from '@components/common/icons/ShareIcon'
 import FilledStar from '@components/common/icons/FilledStar'
 import UnfilledStar from '@components/common/icons/UnfilledStar'
+import { useEffect, useState } from 'react'
+import { IPost } from '@customTypes/postType'
 
-export const Post = () => {
+export const Post = ({ post }: { post: IPost }) => {
+  const [firstName, setFirstName] = useState<string | null>(null)
+  const [lastName, setLastName] = useState<string | null>(null)
+  const [imageName, setImageName] = useState<string | null>(null)
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
+
+  // Fetch user's firstName and lastName
+  useEffect(() => {
+    if (post) {
+      const fetchUserInfo = async () => {
+        try {
+          const response = await fetch(`/api/users/user/${post.userId}`)
+          const data = await response.json()
+          console.log('DATA from fetching user info: ', data)
+          setFirstName(data.data.firstName)
+          setLastName(data.data.lastName)
+          setImageName(data.data.imageName)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      fetchUserInfo()
+    }
+  }, [post])
+
+  // Fetch userProfileImage
+  useEffect(() => {
+    if (imageName) {
+      const fetchUserProfileImage = async () => {
+        try {
+          const response = await fetch(`/api/users/user/imageUrl`, {
+            method: 'POST',
+            body: JSON.stringify({
+              imageName: imageName,
+            }),
+          })
+          const data = await response.json()
+          setImageUrl(data.imageUrl)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      fetchUserProfileImage()
+    }
+  }, [imageName])
+
+  // TODO: skeleton component
+  if (!post || !firstName || !lastName) return <></>
   return (
     <div className="grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white">
       {/* Profile Icon */}
       <div className="xl:flex xl:items-center xl:gap-3 xl:rounded-[4px]">
-        <Image src="/tempPostIcon1.png" alt="" width="40" height="40" />
+        <div className="max-w-[40px] max-h-[40px] rounded-full overflow-hidden border">
+          <Image
+            src={imageUrl ? imageUrl : '/tempPostIcon1.png'}
+            alt=""
+            width="40"
+            height="40"
+            className="scale-150"
+          />
+        </div>
         <p className="font-lora font-bold text-primary text-xl hidden xl:block">
-          Sasuke Uchiha
+          {`${firstName} ${lastName}`}
         </p>
       </div>
 
@@ -21,7 +78,7 @@ export const Post = () => {
       <div className="w-full">
         {/* User's name */}
         <div className="flex items-center gap-2 font-lora font-bold text-primary xl:hidden">
-          <p>Sasuke Uchiha</p>
+          <p> {`${firstName} ${lastName}`}</p>
         </div>
         {/* Timestamp */}
         <span className="block font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px] xl:hidden">
