@@ -10,20 +10,23 @@ import { useEffect, useState } from 'react'
 import { IPost } from '@customTypes/postType'
 import { formatTime } from '@utils/formatTime'
 import { useSession } from 'next-auth/react'
+import usePostImageUrl from '@hooks/usePostImageUrl'
 
 export const Post = ({ post }: { post: IPost }) => {
   const [firstName, setFirstName] = useState<string | null>(null)
   const [lastName, setLastName] = useState<string | null>(null)
-  const [imageName, setImageName] = useState<string | null>(null)
+  const [userImageName, setUserImageName] = useState<string | null>(null)
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null)
-  const [postImageUrl, setPostImageUrl] = useState<string | null>(null)
+  const {
+    postImageUrl,
+    loading: postImageUrlLoading,
+    error: postImageUrlError,
+  } = usePostImageUrl(post.imageName)
   const { data: session } = useSession()
-
   const userHasLikedPost =
     post.likesByUsers.filter((user) => user === session?.user.id).length > 0
 
   // Fetch user's firstName and lastName.
-  // If post imageName exists, fetch post's imageUrl
   useEffect(() => {
     if (post) {
       const fetchUserInfo = async () => {
@@ -33,41 +36,24 @@ export const Post = ({ post }: { post: IPost }) => {
 
           setFirstName(data.data.firstName)
           setLastName(data.data.lastName)
-          setImageName(data.data.imageName)
+          setUserImageName(data.data.imageName)
         } catch (err) {
           console.log(err)
         }
       }
       fetchUserInfo()
     }
-    if (post && post.imageName) {
-      const fetchPostImageUrl = async () => {
-        try {
-          const response = await fetch(`/api/posts/post/imageUrl`, {
-            method: 'POST',
-            body: JSON.stringify({
-              imageName: post.imageName,
-            }),
-          })
-          const data = await response.json()
-          setPostImageUrl(data.imageUrl)
-        } catch (err) {
-          console.log(err)
-        }
-      }
-      fetchPostImageUrl()
-    }
   }, [post])
 
   // Fetch userProfileImage
   useEffect(() => {
-    if (imageName) {
+    if (userImageName) {
       const fetchUserProfileImage = async () => {
         try {
           const response = await fetch(`/api/users/user/imageUrl`, {
             method: 'POST',
             body: JSON.stringify({
-              imageName: imageName,
+              imageName: userImageName,
             }),
           })
           const data = await response.json()
@@ -78,7 +64,7 @@ export const Post = ({ post }: { post: IPost }) => {
       }
       fetchUserProfileImage()
     }
-  }, [imageName])
+  }, [userImageName])
 
   // TODO: skeleton component
   if (!post || !firstName || !lastName || !session) return <></>
@@ -173,6 +159,7 @@ export const Post = ({ post }: { post: IPost }) => {
   )
 }
 
+// TEMPORARY
 export const TempUpdatePost = () => {
   return (
     <div className="grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white">
@@ -260,6 +247,7 @@ export const TempUpdatePost = () => {
   )
 }
 
+// TEMPORARY
 export const TempUpdatePost2 = () => {
   return (
     <div className="grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white">

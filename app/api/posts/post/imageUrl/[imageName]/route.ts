@@ -1,21 +1,17 @@
 import { NextResponse } from 'next/server'
 import { getObjectSignedUrl } from '@lib/s3'
 
-interface NewRequest {
-  imageName: string
-}
-
 type NewResponse = NextResponse<{
   success?: boolean
   imageUrl?: string
   error?: string
 }>
 
-// POST request to get temporary signed url from s3
-export const POST = async (req: Request): Promise<NewResponse> => {
+// GET request to get temporary signed url from s3
+export const GET = async (req: Request): Promise<NewResponse> => {
   try {
-    const body = (await req.json()) as NewRequest
-    const imageName = body.imageName
+    const splitUrl = req.url.split('/')
+    const imageName = splitUrl[splitUrl.length - 1]
 
     // Retrieve url from s3
     const url = await getObjectSignedUrl(imageName)
