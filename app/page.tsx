@@ -33,21 +33,16 @@ export default function Home() {
     <>
       {/* Authenticated UI */}
       {session && (
-        <section className="px-3 xl:py-10 xl:px-12 xl:flex">
+        <section className="px-3 w-full xl:py-10 xl:px-12 xl:flex">
           <div className="xl:pr-[104px]">
             <h1 className="hidden font-lora font-bold text-[24px] text-primary leading-[60px] mb-4 xl:block">
               Latest Updates
             </h1>
             <div className="xl:flex xl:flex-col xl:gap-8">
               {recentPosts.length > 0 &&
-                recentPosts.map((post, i) => {
-                  return (
-                    <Post key={`${i}-${post._id}latest-post`} post={post} />
-                  )
-                })}
-              {/* <Post />
-              <TempUpdatePost />
-              <TempUpdatePost2 /> */}
+                recentPosts.map((post, i) => (
+                  <Post key={`${i}-${post._id}latest-post`} post={post} />
+                ))}
             </div>
           </div>
           <div className="hidden border-l border-l-[#DFE7EB] min-w-[390px] pl-10 xl:block">

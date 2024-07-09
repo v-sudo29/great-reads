@@ -16,7 +16,7 @@ export const POST = async (req: Request): Promise<NewResponse> => {
   try {
     const body = (await req.json()) as NewRequest
     const imageName = body.imageName
-    console.log('BODY>>>>>>', body)
+
     // Retrieve url from s3
     const url = await getObjectSignedUrl(imageName)
 

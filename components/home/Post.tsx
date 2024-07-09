@@ -13,9 +13,11 @@ export const Post = ({ post }: { post: IPost }) => {
   const [firstName, setFirstName] = useState<string | null>(null)
   const [lastName, setLastName] = useState<string | null>(null)
   const [imageName, setImageName] = useState<string | null>(null)
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null)
+  const [postImageUrl, setPostImageUrl] = useState<string | null>(null)
 
-  // Fetch user's firstName and lastName
+  // Fetch user's firstName and lastName.
+  // If post imageName exists, fetch post's imageUrl
   useEffect(() => {
     if (post) {
       const fetchUserInfo = async () => {
@@ -32,6 +34,23 @@ export const Post = ({ post }: { post: IPost }) => {
       }
       fetchUserInfo()
     }
+    if (post && post.imageName) {
+      const fetchPostImageUrl = async () => {
+        try {
+          const response = await fetch(`/api/posts/post/imageUrl`, {
+            method: 'POST',
+            body: JSON.stringify({
+              imageName: post.imageName,
+            }),
+          })
+          const data = await response.json()
+          setPostImageUrl(data.imageUrl)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      fetchPostImageUrl()
+    }
   }, [post])
 
   // Fetch userProfileImage
@@ -46,7 +65,7 @@ export const Post = ({ post }: { post: IPost }) => {
             }),
           })
           const data = await response.json()
-          setImageUrl(data.imageUrl)
+          setProfileImageUrl(data.imageUrl)
         } catch (err) {
           console.log(err)
         }
@@ -63,7 +82,7 @@ export const Post = ({ post }: { post: IPost }) => {
       <div className="xl:flex xl:items-center xl:gap-3 xl:rounded-[4px]">
         <div className="max-w-[40px] max-h-[40px] rounded-full overflow-hidden border">
           <Image
-            src={imageUrl ? imageUrl : '/tempPostIcon1.png'}
+            src={profileImageUrl ? profileImageUrl : '/tempPostIcon1.png'}
             alt=""
             width="40"
             height="40"
@@ -102,14 +121,15 @@ export const Post = ({ post }: { post: IPost }) => {
 
         {/* Post image */}
         <div className="w-full mt-4 xl:mt-8">
-          <Image
-            className="w-full"
-            src="/tempPostImage1.png"
-            alt="Temporary alt description here"
-            width="314"
-            height="176"
-            objectFit="cover"
-          />
+          {postImageUrl && (
+            <Image
+              className="w-full"
+              src={postImageUrl}
+              alt="Temporary alt description here"
+              width="314"
+              height="176"
+            />
+          )}
         </div>
 
         {/* Buttons Container */}
@@ -178,7 +198,6 @@ export const TempUpdatePost = () => {
               width="75"
               height="116"
               className="xl:w-[90px] xl:h-[140px]"
-              objectFit="cover"
             />
           </div>
 
@@ -267,7 +286,6 @@ export const TempUpdatePost2 = () => {
               width="75"
               height="116"
               className="xl:w-[90px] xl:h-[140px]"
-              objectFit="cover"
             />
           </div>
 
