@@ -6,75 +6,39 @@ import CommentsIcon from '@components/common/icons/CommentsIcon'
 import ShareIcon from '@components/common/icons/ShareIcon'
 import FilledStar from '@components/common/icons/FilledStar'
 import UnfilledStar from '@components/common/icons/UnfilledStar'
-import { useEffect, useState } from 'react'
 import { IPost } from '@customTypes/postType'
 import { formatTime } from '@utils/formatTime'
 import { useSession } from 'next-auth/react'
 import usePostImageUrl from '@hooks/usePostImageUrl'
+import useUserInfo from '@hooks/useUserInfo'
 
 export const Post = ({ post }: { post: IPost }) => {
-  const [firstName, setFirstName] = useState<string | null>(null)
-  const [lastName, setLastName] = useState<string | null>(null)
-  const [userImageName, setUserImageName] = useState<string | null>(null)
-  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null)
+  const { userInfo } = useUserInfo(post.userId)
   const {
     postImageUrl,
     loading: postImageUrlLoading,
     error: postImageUrlError,
   } = usePostImageUrl(post.imageName)
   const { data: session } = useSession()
+
   const userHasLikedPost =
     post.likesByUsers.filter((user) => user === session?.user.id).length > 0
 
-  // Fetch user's firstName and lastName.
-  useEffect(() => {
-    if (post) {
-      const fetchUserInfo = async () => {
-        try {
-          const response = await fetch(`/api/users/user/${post.userId}`)
-          const data = await response.json()
-
-          setFirstName(data.data.firstName)
-          setLastName(data.data.lastName)
-          setUserImageName(data.data.imageName)
-        } catch (err) {
-          console.log(err)
-        }
-      }
-      fetchUserInfo()
-    }
-  }, [post])
-
-  // Fetch userProfileImage
-  useEffect(() => {
-    if (userImageName) {
-      const fetchUserProfileImage = async () => {
-        try {
-          const response = await fetch(`/api/users/user/imageUrl`, {
-            method: 'POST',
-            body: JSON.stringify({
-              imageName: userImageName,
-            }),
-          })
-          const data = await response.json()
-          setProfileImageUrl(data.imageUrl)
-        } catch (err) {
-          console.log(err)
-        }
-      }
-      fetchUserProfileImage()
-    }
-  }, [userImageName])
-
   // TODO: skeleton component
-  if (!post || !firstName || !lastName || !session) return <></>
+  if (!post || !userInfo.firstName || !userInfo.lastName || !session)
+    return <></>
+
   return (
     <div className="grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white">
       {/* Profile Icon */}
       <div className="xl:flex xl:items-center xl:gap-3 xl:rounded-[4px]">
         <div className="max-w-[40px] max-h-[40px] rounded-full overflow-hidden border">
           <Image
-            src={profileImageUrl ? profileImageUrl : '/tempPostIcon1.png'}
+            src={
+              userInfo.profileImageUrl
+                ? userInfo.profileImageUrl
+                : '/tempPostIcon1.png'
+            }
             alt=""
             width="40"
             height="40"
@@ -82,7 +46,7 @@ export const Post = ({ post }: { post: IPost }) => {
           />
         </div>
         <p className="font-lora font-bold text-primary text-xl hidden xl:block">
-          {`${firstName} ${lastName}`}
+          {`${userInfo.firstName} ${userInfo.lastName}`}
         </p>
       </div>
 
@@ -90,7 +54,7 @@ export const Post = ({ post }: { post: IPost }) => {
       <div className="w-full">
         {/* User's name */}
         <div className="flex items-center gap-2 font-lora font-bold text-primary xl:hidden">
-          <p> {`${firstName} ${lastName}`}</p>
+          <p> {`${userInfo.firstName} ${userInfo.lastName}`}</p>
         </div>
         {/* Timestamp */}
         <span className="block font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px] xl:hidden">
@@ -160,178 +124,178 @@ export const Post = ({ post }: { post: IPost }) => {
 }
 
 // TEMPORARY
-export const TempUpdatePost = () => {
-  return (
-    <div className="grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white">
-      {/* Profile Icon */}
-      <div className="xl:flex xl:gap-3 xl:items-center">
-        <Image src="/tempPostIcon2.png" alt="" width="40" height="40" />
-        <p className="hidden font-lora font-bold text-xl text-primary xl:block">
-          Naruto Uzumaki
-          <span className="font-medium ml-2">just completed:</span>
-        </p>
-      </div>
+// export const TempUpdatePost = () => {
+//   return (
+//     <div className="grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white">
+//       {/* Profile Icon */}
+//       <div className="xl:flex xl:gap-3 xl:items-center">
+//         <Image src="/tempPostIcon2.png" alt="" width="40" height="40" />
+//         <p className="hidden font-lora font-bold text-xl text-primary xl:block">
+//           Naruto Uzumaki
+//           <span className="font-medium ml-2">just completed:</span>
+//         </p>
+//       </div>
 
-      {/* Post Content */}
-      <div className="w-full">
-        {/* User's name + timestamp */}
-        <div className="flex items-center gap-1 font-lora font-bold text-primary flex-wrap xl:hidden">
-          <p>Naruto Uzumaki</p>
-          <span className="font-medium">just completed:</span>
-        </div>
-        {/* Timestamp */}
-        <span className="block font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px]">
-          2 minutes ago
-        </span>
-        {/* Book Image + Book Details */}
-        <div className="flex gap-4 mt-4">
-          {/* Book */}
-          <div className="w-[75px] h-[116px] xl:w-[90px] xl:h-[140px]">
-            <Image
-              src="/tempUpdateImage1.png"
-              alt=""
-              width="75"
-              height="116"
-              className="xl:w-[90px] xl:h-[140px]"
-            />
-          </div>
+//       {/* Post Content */}
+//       <div className="w-full">
+//         {/* User's name + timestamp */}
+//         <div className="flex items-center gap-1 font-lora font-bold text-primary flex-wrap xl:hidden">
+//           <p>Naruto Uzumaki</p>
+//           <span className="font-medium">just completed:</span>
+//         </div>
+//         {/* Timestamp */}
+//         <span className="block font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px]">
+//           2 minutes ago
+//         </span>
+//         {/* Book Image + Book Details */}
+//         <div className="flex gap-4 mt-4">
+//           {/* Book */}
+//           <div className="w-[75px] h-[116px] xl:w-[90px] xl:h-[140px]">
+//             <Image
+//               src="/tempUpdateImage1.png"
+//               alt=""
+//               width="75"
+//               height="116"
+//               className="xl:w-[90px] xl:h-[140px]"
+//             />
+//           </div>
 
-          {/* Book Details */}
-          <div className="font-montserrat text-primary leading-[20px]">
-            <p className="font-bold text-[15px] leading-[20px] mb-1 xl:font-montserrat xl:text-xl xl:leading-[28px]">
-              Seals and Symbols: A Guide to Fuinjutsu
-            </p>
-            <p className="font-medium text-[14px] leading-[24px] xl:font-montserrat xl:text-base xl:font-semibold">
-              by Minato Uzumaki
-            </p>
-            <div className="flex gap-1 mt-[6px]">
-              <FilledStar />
-              <FilledStar />
-              <FilledStar />
-              <FilledStar />
-              <UnfilledStar />
-            </div>
-          </div>
-        </div>
+//           {/* Book Details */}
+//           <div className="font-montserrat text-primary leading-[20px]">
+//             <p className="font-bold text-[15px] leading-[20px] mb-1 xl:font-montserrat xl:text-xl xl:leading-[28px]">
+//               Seals and Symbols: A Guide to Fuinjutsu
+//             </p>
+//             <p className="font-medium text-[14px] leading-[24px] xl:font-montserrat xl:text-base xl:font-semibold">
+//               by Minato Uzumaki
+//             </p>
+//             <div className="flex gap-1 mt-[6px]">
+//               <FilledStar />
+//               <FilledStar />
+//               <FilledStar />
+//               <FilledStar />
+//               <UnfilledStar />
+//             </div>
+//           </div>
+//         </div>
 
-        {/* Buttons Container */}
-        <div className="flex mt-3 gap-2 xl:mt-8 xl:gap-4">
-          <Button
-            type="tertiary"
-            bordersRounded={true}
-            icon={<UnfilledHeartIcon />}
-            clickHandler={() => {}}
-          >
-            12k
-          </Button>
-          <Button
-            type="tertiary"
-            bordersRounded={true}
-            icon={<CommentsIcon />}
-            clickHandler={() => {}}
-          >
-            562
-          </Button>
-          <Button
-            type="tertiary"
-            bordersRounded={true}
-            icon={<ShareIcon />}
-            clickHandler={() => {}}
-            className="ml-auto"
-          >
-            Share
-          </Button>
-        </div>
-      </div>
-    </div>
-  )
-}
+//         {/* Buttons Container */}
+//         <div className="flex mt-3 gap-2 xl:mt-8 xl:gap-4">
+//           <Button
+//             type="tertiary"
+//             bordersRounded={true}
+//             icon={<UnfilledHeartIcon />}
+//             clickHandler={() => {}}
+//           >
+//             12k
+//           </Button>
+//           <Button
+//             type="tertiary"
+//             bordersRounded={true}
+//             icon={<CommentsIcon />}
+//             clickHandler={() => {}}
+//           >
+//             562
+//           </Button>
+//           <Button
+//             type="tertiary"
+//             bordersRounded={true}
+//             icon={<ShareIcon />}
+//             clickHandler={() => {}}
+//             className="ml-auto"
+//           >
+//             Share
+//           </Button>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
 
 // TEMPORARY
-export const TempUpdatePost2 = () => {
-  return (
-    <div className="grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white">
-      {/* Profile Icon */}
-      <div className="xl:flex xl:gap-3 xl:items-center">
-        <Image src="/tempPostIcon3.png" alt="" width="40" height="40" />
-        <p className="hidden font-lora font-bold text-xl text-primary xl:block">
-          Sakura Haruno
-          <span className="font-medium ml-2">wants to read:</span>
-        </p>
-      </div>
-      {/* Post Content */}
-      <div className="w-full">
-        {/* User's name + timestamp */}
-        <div className="flex items-center gap-1 font-lora font-bold text-primary flex-wrap xl:hidden">
-          <p>Sakura Haruno</p>
-          <span className="font-medium">wants to read:</span>
-        </div>
+// export const TempUpdatePost2 = () => {
+//   return (
+//     <div className="grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white">
+//       {/* Profile Icon */}
+//       <div className="xl:flex xl:gap-3 xl:items-center">
+//         <Image src="/tempPostIcon3.png" alt="" width="40" height="40" />
+//         <p className="hidden font-lora font-bold text-xl text-primary xl:block">
+//           Sakura Haruno
+//           <span className="font-medium ml-2">wants to read:</span>
+//         </p>
+//       </div>
+//       {/* Post Content */}
+//       <div className="w-full">
+//         {/* User's name + timestamp */}
+//         <div className="flex items-center gap-1 font-lora font-bold text-primary flex-wrap xl:hidden">
+//           <p>Sakura Haruno</p>
+//           <span className="font-medium">wants to read:</span>
+//         </div>
 
-        {/* Timestamp */}
-        <span className="block font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px]">
-          2 minutes ago
-        </span>
+//         {/* Timestamp */}
+//         <span className="block font-montserrat font-semibold text-[13px] text-[#707070] leading-[20px]">
+//           2 minutes ago
+//         </span>
 
-        {/* Book Image + Book Details */}
-        <div className="flex gap-4 mt-4">
-          {/* Book */}
-          <div className="w-[75px] h-[116px] xl:w-[90px] xl:h-[140px]">
-            <Image
-              src="/tempUpdateImage2.png"
-              alt=""
-              width="75"
-              height="116"
-              className="xl:w-[90px] xl:h-[140px]"
-            />
-          </div>
+//         {/* Book Image + Book Details */}
+//         <div className="flex gap-4 mt-4">
+//           {/* Book */}
+//           <div className="w-[75px] h-[116px] xl:w-[90px] xl:h-[140px]">
+//             <Image
+//               src="/tempUpdateImage2.png"
+//               alt=""
+//               width="75"
+//               height="116"
+//               className="xl:w-[90px] xl:h-[140px]"
+//             />
+//           </div>
 
-          {/* Book Details */}
-          <div className="font-montserrat text-primary leading-[20px]">
-            <p className="font-bold text-[15px] leading-[20px] mb-1 xl:font-montserrat xl:text-xl xl:leading-[28px]">
-              The Uchiha Clan: A History of Power and Tragedy
-            </p>
-            <p className="font-medium text-[14px] leading-[24px] xl:font-montserrat xl:text-base xl:font-semibold">
-              by Itachi Uchiha
-            </p>
-            <div className="flex gap-1 mt-[6px]">
-              <FilledStar />
-              <FilledStar />
-              <FilledStar />
-              <FilledStar />
-              <UnfilledStar />
-            </div>
-          </div>
-        </div>
+//           {/* Book Details */}
+//           <div className="font-montserrat text-primary leading-[20px]">
+//             <p className="font-bold text-[15px] leading-[20px] mb-1 xl:font-montserrat xl:text-xl xl:leading-[28px]">
+//               The Uchiha Clan: A History of Power and Tragedy
+//             </p>
+//             <p className="font-medium text-[14px] leading-[24px] xl:font-montserrat xl:text-base xl:font-semibold">
+//               by Itachi Uchiha
+//             </p>
+//             <div className="flex gap-1 mt-[6px]">
+//               <FilledStar />
+//               <FilledStar />
+//               <FilledStar />
+//               <FilledStar />
+//               <UnfilledStar />
+//             </div>
+//           </div>
+//         </div>
 
-        {/* Buttons Container */}
-        <div className="flex mt-3 gap-2 xl:mt-8 xl:gap-4">
-          <Button
-            type="tertiary"
-            bordersRounded={true}
-            icon={<UnfilledHeartIcon />}
-            clickHandler={() => {}}
-          >
-            12k
-          </Button>
-          <Button
-            type="tertiary"
-            bordersRounded={true}
-            icon={<CommentsIcon />}
-            clickHandler={() => {}}
-          >
-            562
-          </Button>
-          <Button
-            type="tertiary"
-            bordersRounded={true}
-            icon={<ShareIcon />}
-            clickHandler={() => {}}
-            className="ml-auto"
-          >
-            Share
-          </Button>
-        </div>
-      </div>
-    </div>
-  )
-}
+//         {/* Buttons Container */}
+//         <div className="flex mt-3 gap-2 xl:mt-8 xl:gap-4">
+//           <Button
+//             type="tertiary"
+//             bordersRounded={true}
+//             icon={<UnfilledHeartIcon />}
+//             clickHandler={() => {}}
+//           >
+//             12k
+//           </Button>
+//           <Button
+//             type="tertiary"
+//             bordersRounded={true}
+//             icon={<CommentsIcon />}
+//             clickHandler={() => {}}
+//           >
+//             562
+//           </Button>
+//           <Button
+//             type="tertiary"
+//             bordersRounded={true}
+//             icon={<ShareIcon />}
+//             clickHandler={() => {}}
+//             className="ml-auto"
+//           >
+//             Share
+//           </Button>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
