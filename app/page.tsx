@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { ButtonLink } from '@components/common/Button'
 import { useSession } from 'next-auth/react'
-import { Post, TempUpdatePost, TempUpdatePost2 } from '@components/home/Post'
+import { Post } from '@components/home/Post'
 import RecommendationCard from '@components/home/RecommendationCard'
 import { useEffect, useState } from 'react'
 import { IPost } from '@customTypes/postType'
@@ -45,7 +45,8 @@ export default function Home() {
                 ))}
             </div>
           </div>
-          <div className="hidden border-l border-l-[#DFE7EB] min-w-[390px] pl-10 xl:block">
+          {/* FUTURE FEATURE */}
+          {/* <div className="hidden border-l border-l-[#DFE7EB] min-w-[390px] pl-10 xl:block">
             <h1 className="font-lora font-bold text-[24px] text-primary leading-[60px]">
               Recommendations For You
             </h1>
@@ -54,7 +55,7 @@ export default function Home() {
               <RecommendationCard />
               <RecommendationCard />
             </div>
-          </div>
+          </div> */}
         </section>
       )}
 
