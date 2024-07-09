@@ -11,6 +11,14 @@ import { formatTime } from '@utils/formatTime'
 import { useSession } from 'next-auth/react'
 import usePostImageUrl from '@hooks/usePostImageUrl'
 import useUserInfo from '@hooks/useUserInfo'
+import {
+  incrementLikesCount,
+  decrementLikesCount,
+} from '@utils/api/posts/updateLikesCount'
+import {
+  addUserToLikesByUsersField,
+  removeUserFromLikesByUsersField,
+} from '@utils/api/posts/updateLikesByUsers'
 
 export const Post = ({ post }: { post: IPost }) => {
   const { userInfo } = useUserInfo(post.userId)
@@ -19,10 +27,100 @@ export const Post = ({ post }: { post: IPost }) => {
     loading: postImageUrlLoading,
     error: postImageUrlError,
   } = usePostImageUrl(post.imageName)
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
 
-  const userHasLikedPost =
-    post.likesByUsers.filter((user) => user === session?.user.id).length > 0
+  const isLikedByUser = session?.user.likedPosts.find(
+    (currentId) => currentId === post._id
+  )
+
+  const handleUpdateLikes = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    try {
+      const likeButton = e.target as HTMLButtonElement
+      const postId = likeButton.getAttribute('data-post-id')
+
+      // Check if authenticated user has liked the post in likedPosts array
+      if (
+        session &&
+        session?.user.likedPosts.find((currentId) => currentId === postId)
+      ) {
+        console.log('User has liked post before!')
+        // UPDATE POST IN DATABASE - fetch API
+        // 1. Update likesCount in Post - decrement likesCount in Post
+        // 2. Remove userId from Post likesByUsers array
+
+        // UPDATE SESSION TOKEN - update API
+        // 1. Decrement post's "likesCount" and remove userId from likesByUsers array in session token
+        // 2. Remove postId from "likedPosts" array of User
+
+        const updatedPosts = session.user.posts.map((post) => {
+          if (post._id === postId) {
+            const updatedPost = {
+              ...post,
+            }
+            updatedPost.likesCount = post.likesCount -= 1
+            updatedPost.likesByUsers = updatedPost.likesByUsers.filter(
+              (userId) => userId !== session.user.id
+            )
+            return updatedPost
+          } else return post
+        })
+
+        const updatedLikedPosts = [
+          ...session.user.likedPosts.filter(
+            (likedPostId) => likedPostId !== postId
+          ),
+        ]
+
+        // Update Post in database
+        await decrementLikesCount(postId)
+        await removeUserFromLikesByUsersField(postId, session.user.id)
+
+        // Update session token
+        await update({ posts: updatedPosts })
+        await update({ likedPosts: updatedLikedPosts })
+      } else {
+        console.log('user has not liked post before!')
+
+        if (session && session.user) {
+          const postMatch = session.user.posts.find(
+            (post) => post._id === postId
+          )
+          // UPDATE POST IN DATABASE - fetch API
+          // 1. Update likesCount in Post
+          // 2. Update userId of Post likesByUsers
+
+          // UPDATE SESSION TOKEN - update API
+          // 1. Increment post's "likesCount" and add userId to likesByUsers array in session token
+          // 2. Add postId to "likedPosts" array of User
+
+          if (postMatch) {
+            const updatedPosts = session.user.posts.map((post) => {
+              if (post._id === postId) {
+                const newPost = {
+                  ...post,
+                }
+                newPost.likesCount = post.likesCount += 1
+                newPost.likesByUsers = [...post.likesByUsers, session.user.id]
+                return newPost
+              } else return post
+            })
+
+            // Update post in database
+            await incrementLikesCount(postId)
+            await addUserToLikesByUsersField(postId, session.user.id)
+
+            // Update session token
+            await update({ posts: updatedPosts })
+            await update({ likedPosts: [...session.user.likedPosts, postId] })
+          }
+        }
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   // TODO: skeleton component
   if (!post || !userInfo.firstName || !userInfo.lastName || !session)
@@ -91,17 +189,16 @@ export const Post = ({ post }: { post: IPost }) => {
         {/* Buttons Container */}
         <div className="flex mt-3 gap-2 xl:mt-8 xl:gap-4">
           <Button
-            type="tertiary"
+            variant="tertiary"
             bordersRounded={true}
-            icon={
-              userHasLikedPost ? <FilledHeartIcon /> : <UnfilledHeartIcon />
-            }
-            clickHandler={() => {}}
+            icon={isLikedByUser ? <FilledHeartIcon /> : <UnfilledHeartIcon />}
+            clickHandler={(e) => handleUpdateLikes(e)}
+            dataPostId={post._id}
           >
             {post.likesCount}
           </Button>
           <Button
-            type="tertiary"
+            variant="tertiary"
             bordersRounded={true}
             icon={<CommentsIcon />}
             clickHandler={() => {}}
@@ -109,7 +206,7 @@ export const Post = ({ post }: { post: IPost }) => {
             {post.comments.length}
           </Button>
           <Button
-            type="tertiary"
+            variant="tertiary"
             bordersRounded={true}
             icon={<ShareIcon />}
             clickHandler={() => {}}
@@ -181,7 +278,7 @@ export const Post = ({ post }: { post: IPost }) => {
 //         {/* Buttons Container */}
 //         <div className="flex mt-3 gap-2 xl:mt-8 xl:gap-4">
 //           <Button
-//             type="tertiary"
+//             variant="tertiary"
 //             bordersRounded={true}
 //             icon={<UnfilledHeartIcon />}
 //             clickHandler={() => {}}
@@ -189,7 +286,7 @@ export const Post = ({ post }: { post: IPost }) => {
 //             12k
 //           </Button>
 //           <Button
-//             type="tertiary"
+//             variant="tertiary"
 //             bordersRounded={true}
 //             icon={<CommentsIcon />}
 //             clickHandler={() => {}}
@@ -197,7 +294,7 @@ export const Post = ({ post }: { post: IPost }) => {
 //             562
 //           </Button>
 //           <Button
-//             type="tertiary"
+//             variant="tertiary"
 //             bordersRounded={true}
 //             icon={<ShareIcon />}
 //             clickHandler={() => {}}
@@ -270,7 +367,7 @@ export const Post = ({ post }: { post: IPost }) => {
 //         {/* Buttons Container */}
 //         <div className="flex mt-3 gap-2 xl:mt-8 xl:gap-4">
 //           <Button
-//             type="tertiary"
+//             variant="tertiary"
 //             bordersRounded={true}
 //             icon={<UnfilledHeartIcon />}
 //             clickHandler={() => {}}
@@ -278,7 +375,7 @@ export const Post = ({ post }: { post: IPost }) => {
 //             12k
 //           </Button>
 //           <Button
-//             type="tertiary"
+//             variant="tertiary"
 //             bordersRounded={true}
 //             icon={<CommentsIcon />}
 //             clickHandler={() => {}}
@@ -286,7 +383,7 @@ export const Post = ({ post }: { post: IPost }) => {
 //             562
 //           </Button>
 //           <Button
-//             type="tertiary"
+//             variant="tertiary"
 //             bordersRounded={true}
 //             icon={<ShareIcon />}
 //             clickHandler={() => {}}

@@ -7,7 +7,7 @@ const useUserInfo = (userId: string | null) => {
     profileImageUrl: null,
   })
 
-  // Fetches firstName, lastName, profileImageUrl
+  // Fetches firstName, lastName, and profileImageUrl
   useEffect(() => {
     if (
       userId &&

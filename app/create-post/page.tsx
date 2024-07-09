@@ -473,7 +473,7 @@ const CreatePost = () => {
 
       {/* Create post */}
       <Button
-        type="primary"
+        variant="primary"
         bordersRounded={false}
         clickHandler={handleCreatePost}
       >

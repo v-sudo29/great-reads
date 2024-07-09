@@ -40,9 +40,13 @@ export default function Home() {
             </h1>
             <div className="xl:flex xl:flex-col xl:gap-8 xl:w-full">
               {recentPosts.length > 0 &&
-                recentPosts.map((post, i) => (
-                  <Post key={`${i}-${post._id}latest-post`} post={post} />
-                ))}
+                recentPosts.map((post, i) => {
+                  if (i === 0) {
+                    return (
+                      <Post key={`${i}-${post._id}latest-post`} post={post} />
+                    )
+                  }
+                })}
             </div>
           </div>
           {/* FUTURE FEATURE */}
