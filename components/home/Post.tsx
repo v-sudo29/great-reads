@@ -1,6 +1,7 @@
 import { Button } from '@components/common/Button'
 import Image from 'next/image'
-import HeartIcon from '@components/common/icons/HeartIcon'
+import FilledHeartIcon from '@components/common/icons/FilledHeartIcon'
+import UnfilledHeartIcon from '@components/common/icons/UnfilledHeartIcon'
 import CommentsIcon from '@components/common/icons/CommentsIcon'
 import ShareIcon from '@components/common/icons/ShareIcon'
 import FilledStar from '@components/common/icons/FilledStar'
@@ -8,6 +9,7 @@ import UnfilledStar from '@components/common/icons/UnfilledStar'
 import { useEffect, useState } from 'react'
 import { IPost } from '@customTypes/postType'
 import { formatTime } from '@utils/formatTime'
+import { useSession } from 'next-auth/react'
 
 export const Post = ({ post }: { post: IPost }) => {
   const [firstName, setFirstName] = useState<string | null>(null)
@@ -15,6 +17,10 @@ export const Post = ({ post }: { post: IPost }) => {
   const [imageName, setImageName] = useState<string | null>(null)
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null)
   const [postImageUrl, setPostImageUrl] = useState<string | null>(null)
+  const { data: session } = useSession()
+
+  const userHasLikedPost =
+    post.likesByUsers.filter((user) => user === session?.user.id).length > 0
 
   // Fetch user's firstName and lastName.
   // If post imageName exists, fetch post's imageUrl
@@ -75,7 +81,7 @@ export const Post = ({ post }: { post: IPost }) => {
   }, [imageName])
 
   // TODO: skeleton component
-  if (!post || !firstName || !lastName) return <></>
+  if (!post || !firstName || !lastName || !session) return <></>
   return (
     <div className="grid grid-cols-[40px_1fr] gap-3 w-full py-6 border-b border-b-[#D9D9D9] xl:border xl:border-[#DFE7EB] xl:rounded-[8px] xl:py-8 xl:px-10 xl:flex xl:flex-col xl:bg-white">
       {/* Profile Icon */}
@@ -123,7 +129,7 @@ export const Post = ({ post }: { post: IPost }) => {
         <div className="w-full mt-4 xl:mt-8">
           {postImageUrl && (
             <Image
-              className="w-full"
+              className="xl:w-auto xl:max-h-[400px]"
               src={postImageUrl}
               alt="Temporary alt description here"
               width="314"
@@ -137,10 +143,12 @@ export const Post = ({ post }: { post: IPost }) => {
           <Button
             type="tertiary"
             bordersRounded={true}
-            icon={<HeartIcon />}
+            icon={
+              userHasLikedPost ? <FilledHeartIcon /> : <UnfilledHeartIcon />
+            }
             clickHandler={() => {}}
           >
-            12k
+            {post.likesCount}
           </Button>
           <Button
             type="tertiary"
@@ -148,7 +156,7 @@ export const Post = ({ post }: { post: IPost }) => {
             icon={<CommentsIcon />}
             clickHandler={() => {}}
           >
-            562
+            {post.comments.length}
           </Button>
           <Button
             type="tertiary"
@@ -224,7 +232,7 @@ export const TempUpdatePost = () => {
           <Button
             type="tertiary"
             bordersRounded={true}
-            icon={<HeartIcon />}
+            icon={<UnfilledHeartIcon />}
             clickHandler={() => {}}
           >
             12k
@@ -312,7 +320,7 @@ export const TempUpdatePost2 = () => {
           <Button
             type="tertiary"
             bordersRounded={true}
-            icon={<HeartIcon />}
+            icon={<UnfilledHeartIcon />}
             clickHandler={() => {}}
           >
             12k

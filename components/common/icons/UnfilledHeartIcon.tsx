@@ -1,21 +1,6 @@
-const HeartIcon = () => {
+const UnfilledHeartIcon = () => {
   return (
     <>
-      {/* Mobile */}
-      <svg
-        className="xl:hidden"
-        width="12"
-        height="12"
-        viewBox="0 0 12 12"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M10.2 7.22222C11.094 6.33 12 5.26056 12 3.86111C12 2.96969 11.6523 2.11478 11.0335 1.48445C10.4146 0.854116 9.57521 0.5 8.7 0.5C7.95724 0.5 7.36883 0.651169 6.77193 1.05983C6.31029 1.37589 5.68971 1.37589 5.22807 1.05984C4.63117 0.651169 4.04276 0.5 3.3 0.5C2.42479 0.5 1.58542 0.854116 0.966548 1.48445C0.347678 2.11478 0 2.96969 0 3.86111C0 5.26667 0.9 6.33611 1.8 7.22222L5.28644 10.7732C5.67839 11.1724 6.32161 11.1724 6.71356 10.7732L10.2 7.22222Z"
-          fill="#53675D"
-        />
-      </svg>
-
       {/* Desktop */}
       <svg
         className="hidden xl:block"
@@ -37,4 +22,4 @@ const HeartIcon = () => {
   )
 }
 
-export default HeartIcon
+export default UnfilledHeartIcon
