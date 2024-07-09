@@ -84,9 +84,6 @@ export const Post = ({ post }: { post: IPost }) => {
         console.log('user has not liked post before!')
 
         if (session && session.user) {
-          const postMatch = session.user.posts.find(
-            (post) => post._id === postId
-          )
           // UPDATE POST IN DATABASE - fetch API
           // 1. Update likesCount in Post
           // 2. Update userId of Post likesByUsers
@@ -95,26 +92,24 @@ export const Post = ({ post }: { post: IPost }) => {
           // 1. Increment post's "likesCount" and add userId to likesByUsers array in session token
           // 2. Add postId to "likedPosts" array of User
 
-          if (postMatch) {
-            const updatedPosts = session.user.posts.map((post) => {
-              if (post._id === postId) {
-                const newPost = {
-                  ...post,
-                }
-                newPost.likesCount = post.likesCount += 1
-                newPost.likesByUsers = [...post.likesByUsers, session.user.id]
-                return newPost
-              } else return post
-            })
+          const updatedPosts = session.user.posts.map((post) => {
+            if (post._id === postId) {
+              const newPost = {
+                ...post,
+              }
+              newPost.likesCount = post.likesCount += 1
+              newPost.likesByUsers = [...post.likesByUsers, session.user.id]
+              return newPost
+            } else return post
+          })
 
-            // Update post in database
-            await incrementLikesCount(postId)
-            await addUserToLikesByUsersField(postId, session.user.id)
+          // Update post in database
+          await incrementLikesCount(postId)
+          await addUserToLikesByUsersField(postId, session.user.id)
 
-            // Update session token
-            await update({ posts: updatedPosts })
-            await update({ likedPosts: [...session.user.likedPosts, postId] })
-          }
+          // Update session token
+          await update({ posts: updatedPosts })
+          await update({ likedPosts: [...session.user.likedPosts, postId] })
         }
       }
     } catch (err) {
