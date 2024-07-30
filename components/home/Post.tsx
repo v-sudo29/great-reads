@@ -32,6 +32,8 @@ export const Post = ({ post }: { post: IPost }) => {
   const isLikedByUser = session?.user.likedPosts.find(
     (currentId) => currentId === post._id
   )
+    ? true
+    : false
 
   const handleUpdateLikes = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
