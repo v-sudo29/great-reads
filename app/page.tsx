@@ -1,10 +1,9 @@
 'use client'
 import Image from 'next/image'
-import { ButtonLink } from '@components/common/Button'
+import { Button, ButtonLink } from '@components/common/Button'
 import { useSession } from 'next-auth/react'
 import { Post } from '@components/home/Post'
-import PostInComments from '@components/home/PostInComments'
-import NestedCommentsSection from '@components/home/NestedCommentsSection'
+import CommentsModal from '@components/home/CommentsModal'
 import RecommendationCard from '@components/home/RecommendationCard'
 import { useEffect, useState } from 'react'
 import { IPost } from '@customTypes/postType'
@@ -16,6 +15,7 @@ export default function Home() {
     []
   )
   const [recentPosts, setRecentPosts] = useState<IPost[] | []>([])
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
 
   const handleOpenComments = (index: number) => {
     if (commentsVisibilities) {
@@ -53,6 +53,7 @@ export default function Home() {
   // Make body unscrollable if a comments modal is open
   useEffect(() => {
     const isCommentsOpen = commentsVisibilities.some((el) => el === true)
+
     if (isCommentsOpen) {
       const body = document.querySelector('body')
       if (body) body.style.overflow = 'hidden'
@@ -68,47 +69,39 @@ export default function Home() {
       {/* Authenticated UI */}
       {session && (
         <section className="px-3 w-full xl:py-10 xl:px-12 xl:flex">
-          <div className="xl:pr-[104px] xl:w-[820px]">
-            <h1 className="hidden font-lora font-bold text-[24px] text-primary leading-[60px] mb-4 xl:block">
-              Latest Updates
-            </h1>
+          <div className="xl:w-[820px]">
+            <div className="flex justify-between">
+              <h1 className="hidden font-lora font-bold text-[24px] text-primary leading-[60px] mb-4 xl:block">
+                Latest Updates
+              </h1>
+              <Button
+                variant="primary"
+                bordersRounded={true}
+                clickHandler={() => {}}
+                className="hidden h-max xl:block"
+              >
+                Create New Post
+              </Button>
+            </div>
             <div className="xl:flex xl:flex-col xl:gap-8 xl:w-full">
               {recentPosts.length > 0 &&
-                recentPosts.map((post, i) => {
+                recentPosts.map((post, index) => {
                   return (
-                    <React.Fragment key={`${i}-${post._id}-latest-post`}>
+                    <React.Fragment key={`${index}-${post._id}-latest-post`}>
                       {/* POST */}
                       <Post
                         post={post}
                         handleOpenComments={handleOpenComments}
-                        index={i}
+                        index={index}
                       />
 
                       {/* COMMENTS MODAL */}
-                      {commentsVisibilities && commentsVisibilities[i] && (
-                        <div className="fixed flex justify-center top-0 left-0 w-full h-full overflow-y-auto z-50">
-                          {/* Overlay */}
-                          <div
-                            className="fixed top-0 left-0 w-screen h-full bg-black opacity-20"
-                            onClick={() => handleCloseComments(i)}
-                            onScroll={() => console.log('scrolling!')}
-                          ></div>
-
-                          {/* Modal */}
-                          <div className="relative flex flex-col bg-white max-w-[820px] w-full h-full max-h-[1400px] py-8 px-10 mt-[116px] mb-[100px] mx-[40px] rounded-[8px] z-50">
-                            {/* Post section */}
-                            <div className="flex w-full justify-between">
-                              <PostInComments
-                                post={post}
-                                handleCloseComments={handleCloseComments}
-                                index={i}
-                              />
-                            </div>
-
-                            {/* Comments Section */}
-                            <NestedCommentsSection post={post} />
-                          </div>
-                        </div>
+                      {commentsVisibilities && commentsVisibilities[index] && (
+                        <CommentsModal
+                          post={post}
+                          index={index}
+                          handleCloseComments={handleCloseComments}
+                        />
                       )}
                     </React.Fragment>
                   )
