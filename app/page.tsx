@@ -4,10 +4,10 @@ import { ButtonLink } from '@components/common/Button'
 import { useSession } from 'next-auth/react'
 import { Post } from '@components/home/Post'
 import PostInComments from '@components/home/PostInComments'
+import NestedCommentsSection from '@components/home/NestedCommentsSection'
 import RecommendationCard from '@components/home/RecommendationCard'
 import { useEffect, useState } from 'react'
 import { IPost } from '@customTypes/postType'
-import ExitIcon from '@components/common/icons/ExitIcon'
 import React from 'react'
 
 export default function Home() {
@@ -50,6 +50,18 @@ export default function Home() {
     }
   }, [session])
 
+  // Make body unscrollable if a comments modal is open
+  useEffect(() => {
+    const isCommentsOpen = commentsVisibilities.some((el) => el === true)
+    if (isCommentsOpen) {
+      const body = document.querySelector('body')
+      if (body) body.style.overflow = 'hidden'
+    } else {
+      const body = document.querySelector('body')
+      if (body) body.style.overflow = 'visible'
+    }
+  }, [commentsVisibilities])
+
   if (session === undefined) return <></>
   return (
     <>
@@ -75,15 +87,17 @@ export default function Home() {
 
                         {/* COMMENTS MODAL */}
                         {commentsVisibilities && commentsVisibilities[i] && (
-                          <div className="fixed flex justify-center top-0 left-0 w-full h-full">
+                          <div className="fixed flex justify-center top-0 left-0 w-full h-full overflow-y-auto">
                             {/* Overlay */}
                             <div
-                              className="fixed w-full h-full bg-black opacity-20"
+                              className="fixed top-0 left-0 w-screen h-full bg-black opacity-20"
                               onClick={() => handleCloseComments(i)}
+                              onScroll={() => console.log('scrolling!')}
                             ></div>
 
                             {/* Modal */}
-                            <div className="relative flex flex-col bg-white max-w-[820px] w-full max-h-[1431px] py-8 px-10 mt-[116px] mx-[40px] rounded-[8px]">
+                            <div className="relative flex flex-col bg-white max-w-[820px] w-full h-full max-h-[1400px] py-8 px-10 mt-[116px] mb-[100px] mx-[40px] rounded-[8px] z-50">
+                              {/* Post section */}
                               <div className="flex w-full justify-between">
                                 <PostInComments
                                   post={post}
@@ -92,52 +106,8 @@ export default function Home() {
                                 />
                               </div>
 
-                              {/* Input */}
-                              <div>
-                                <input
-                                  className="flex w-full border border-black p-1"
-                                  type="text"
-                                  placeholder="Type your comment..."
-                                  // onKeyDown={(e) => handleEnterKeyPressedCreateComment(e)}
-                                  data-post-id={post._id}
-                                />
-                              </div>
-
-                              {/* Past Comments */}
-                              <div>
-                                {post.comments.length > 0 ? (
-                                  post.comments.map(
-                                    (comment: any, i: number) => {
-                                      return (
-                                        <div
-                                          key={`${post._id}-${i}-comment`}
-                                          className="border mt-4 px-4 py-3"
-                                          data-user-id={comment.userId}
-                                        >
-                                          <p className="font-bold">
-                                            {comment.firstName}{' '}
-                                            {comment.lastName}
-                                          </p>
-                                          <p>{comment.userComment}</p>
-                                          {comment.userId ===
-                                            session.user.id && (
-                                            <button
-                                              className="bg-red-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1 mt-5"
-                                              // onClick={(e) => handleDeleteComment(e)}
-                                              data-post-id={post._id}
-                                              data-comment-id={comment._id}
-                                            >
-                                              Delete
-                                            </button>
-                                          )}
-                                        </div>
-                                      )
-                                    }
-                                  )
-                                ) : (
-                                  <>No comments</>
-                                )}
-                              </div>
+                              {/* Comments Section */}
+                              <NestedCommentsSection post={post} />
                             </div>
                           </div>
                         )}
