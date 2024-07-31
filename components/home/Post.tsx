@@ -20,7 +20,15 @@ import {
   removeUserFromLikesByUsersField,
 } from '@utils/api/posts/updateLikesByUsers'
 
-export const Post = ({ post }: { post: IPost }) => {
+export const Post = ({
+  post,
+  handleOpenComments,
+  index,
+}: {
+  post: IPost
+  handleOpenComments: (index: number) => void
+  index: number
+}) => {
   const { userInfo } = useUserInfo(post.userId)
   const {
     postImageUrl,
@@ -198,7 +206,7 @@ export const Post = ({ post }: { post: IPost }) => {
             variant="tertiary"
             bordersRounded={true}
             icon={<CommentsIcon />}
-            clickHandler={() => {}}
+            clickHandler={() => handleOpenComments(index)}
           >
             {post.comments.length}
           </Button>
