@@ -1,8 +1,8 @@
 import { IPost } from '@customTypes/postType'
-import { Session } from '@node_modules/next-auth/core/types'
 import Image from 'next/image'
 import useUserInfo from '@hooks/useUserInfo'
 import { formatTime } from '@utils/formatTime'
+import { useSession } from 'next-auth/react'
 
 interface CommentProps {
   comment: {
@@ -15,13 +15,43 @@ interface CommentProps {
     userId: string
     _id: string
   }
-  session: Session
   post: IPost
 }
 
-const Comment = ({ comment, session, post }: CommentProps) => {
+const Comment = ({ comment, post }: CommentProps) => {
   const { userInfo } = useUserInfo(comment.userId)
+  const { data: session, update } = useSession()
 
+  const handleDeleteComment = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const buttonElement = e.target as HTMLButtonElement
+
+    if (buttonElement && session && session.user.id) {
+      const postId = buttonElement.getAttribute('data-post-id')
+      const userId = session.user.id
+      const commentId = buttonElement.getAttribute('data-comment-id')
+
+      const response = await fetch(`/api/comments/comment/delete`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          postId,
+          userId,
+          commentId,
+        }),
+      })
+      const data = await response.json()
+
+      const updatedComments = session.user.comments.filter(
+        (comment) => comment._id !== commentId
+      )
+      console.log(updatedComments)
+      if (data) {
+        await update({ comments: updatedComments })
+        await update({ posts: data.posts })
+      }
+    }
+  }
   if (!comment || !session || !post) return <></>
   return (
     <div className="flex gap-4" data-user-id={comment.userId}>
@@ -58,7 +88,7 @@ const Comment = ({ comment, session, post }: CommentProps) => {
         {comment.userId === session.user.id && (
           <button
             className="bg-red-400 text-white font-montserrat font-semibold rounded-[4px] px-5 py-1 mt-5"
-            // onClick={(e) => handleDeleteComment(e)}
+            onClick={(e) => handleDeleteComment(e)}
             data-post-id={post._id}
             data-comment-id={comment._id}
           >

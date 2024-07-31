@@ -167,9 +167,6 @@ export const Post = ({
         <div className="mt-[6px]">
           <p className="font-montserrat font-medium text-primary text-[14px] leading-[20px] xl:text-[18px] xl:leading-[24px]">
             {post.caption}
-            <span className="text-[#8D8D8D] pl-2 cursor-pointer xl:hidden">
-              more
-            </span>
           </p>
         </div>
 

@@ -75,45 +75,43 @@ export default function Home() {
             <div className="xl:flex xl:flex-col xl:gap-8 xl:w-full">
               {recentPosts.length > 0 &&
                 recentPosts.map((post, i) => {
-                  if (i === 0) {
-                    return (
-                      <React.Fragment key={`${i}-${post._id}-latest-post`}>
-                        {/* POST */}
-                        <Post
-                          post={post}
-                          handleOpenComments={handleOpenComments}
-                          index={i}
-                        />
+                  return (
+                    <React.Fragment key={`${i}-${post._id}-latest-post`}>
+                      {/* POST */}
+                      <Post
+                        post={post}
+                        handleOpenComments={handleOpenComments}
+                        index={i}
+                      />
 
-                        {/* COMMENTS MODAL */}
-                        {commentsVisibilities && commentsVisibilities[i] && (
-                          <div className="fixed flex justify-center top-0 left-0 w-full h-full overflow-y-auto">
-                            {/* Overlay */}
-                            <div
-                              className="fixed top-0 left-0 w-screen h-full bg-black opacity-20"
-                              onClick={() => handleCloseComments(i)}
-                              onScroll={() => console.log('scrolling!')}
-                            ></div>
+                      {/* COMMENTS MODAL */}
+                      {commentsVisibilities && commentsVisibilities[i] && (
+                        <div className="fixed flex justify-center top-0 left-0 w-full h-full overflow-y-auto z-50">
+                          {/* Overlay */}
+                          <div
+                            className="fixed top-0 left-0 w-screen h-full bg-black opacity-20"
+                            onClick={() => handleCloseComments(i)}
+                            onScroll={() => console.log('scrolling!')}
+                          ></div>
 
-                            {/* Modal */}
-                            <div className="relative flex flex-col bg-white max-w-[820px] w-full h-full max-h-[1400px] py-8 px-10 mt-[116px] mb-[100px] mx-[40px] rounded-[8px] z-50">
-                              {/* Post section */}
-                              <div className="flex w-full justify-between">
-                                <PostInComments
-                                  post={post}
-                                  handleCloseComments={handleCloseComments}
-                                  index={i}
-                                />
-                              </div>
-
-                              {/* Comments Section */}
-                              <NestedCommentsSection post={post} />
+                          {/* Modal */}
+                          <div className="relative flex flex-col bg-white max-w-[820px] w-full h-full max-h-[1400px] py-8 px-10 mt-[116px] mb-[100px] mx-[40px] rounded-[8px] z-50">
+                            {/* Post section */}
+                            <div className="flex w-full justify-between">
+                              <PostInComments
+                                post={post}
+                                handleCloseComments={handleCloseComments}
+                                index={i}
+                              />
                             </div>
+
+                            {/* Comments Section */}
+                            <NestedCommentsSection post={post} />
                           </div>
-                        )}
-                      </React.Fragment>
-                    )
-                  }
+                        </div>
+                      )}
+                    </React.Fragment>
+                  )
                 })}
             </div>
           </div>
