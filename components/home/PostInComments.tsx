@@ -203,15 +203,6 @@ const PostInComments = ({
         >
           {post.comments.length}
         </Button>
-        <Button
-          variant="tertiary"
-          bordersRounded={true}
-          icon={<ShareIcon />}
-          clickHandler={() => {}}
-          className="ml-auto"
-        >
-          Share
-        </Button>
       </div>
     </div>
   )

@@ -210,15 +210,6 @@ export const Post = ({
           >
             {post.comments.length}
           </Button>
-          <Button
-            variant="tertiary"
-            bordersRounded={true}
-            icon={<ShareIcon />}
-            clickHandler={() => {}}
-            className="ml-auto"
-          >
-            Share
-          </Button>
         </div>
       </div>
     </div>
