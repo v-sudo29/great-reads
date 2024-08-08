@@ -3,6 +3,7 @@ import useUserInfo from '@hooks/useUserInfo'
 import { useSession } from 'next-auth/react'
 import { Button } from '@components/common/Button'
 import ExitIconTwo from '@components/common/icons/ExitIconTwo'
+import FileUploadIcon from '@components/common/icons/FileUploadIcon'
 import { useState } from 'react'
 
 interface CreatePostModalProps {
@@ -17,6 +18,14 @@ const CreatePostModal = ({
   const [userInput, setUserInput] = useState('')
   const [isUserInputEmpty, setIsUserInputEmpty] = useState(true)
   const [file, setFile] = useState<File | null>(null)
+  const [previewImage, setPreviewImage] = useState<null | string>(null)
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setPreviewImage(URL.createObjectURL(e.target.files[0]))
+      setFile(e.target.files && e.target.files[0])
+    }
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const input = e.target.value
@@ -73,6 +82,7 @@ const CreatePostModal = ({
       await update({
         posts: [...session.user.posts, requestObject],
       })
+      handleCloseCreatePostModal()
     } catch (err) {
       console.error(err)
     }
@@ -126,15 +136,39 @@ const CreatePostModal = ({
           onChange={(e) => handleInputChange(e)}
         />
 
-        <div className="py-4 px-6 mt-auto border-t border-t-[#DFE7EB]">
+        {/* Optional Image Preview */}
+        {previewImage && (
+          <div className="px-6 pb-4">
+            <Image
+              src={previewImage}
+              alt="Preview image"
+              width={200}
+              height={200}
+            />
+          </div>
+        )}
+
+        {/* Buttons */}
+        <div className="flex items-center justify-between py-4 px-6 mt-auto border-t border-t-[#DFE7EB]">
+          <button className="relative cursor-pointer">
+            <div className="cursor-pointer">
+              <FileUploadIcon />
+            </div>
+            <input
+              type="file"
+              name="postImage"
+              className="absolute top-0 left-0 w-6 h-6 opacity-0 cursor-pointer pointer-events-auto z-50 text-[0px]"
+              onChange={(e) => handleImageChange(e)}
+            />
+          </button>
           <Button
             variant="primary"
             bordersRounded={true}
             clickHandler={handleCreatePost}
             className={
               isUserInputEmpty
-                ? 'h-11 text-base px-5 py-3 ml-auto opacity-40'
-                : 'h-11 text-base px-5 py-3 ml-auto'
+                ? 'h-11 text-base px-5 py-3 opacity-40'
+                : 'h-11 text-base px-5 py-3'
             }
             disabled={isUserInputEmpty}
           >
