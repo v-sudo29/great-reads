@@ -12,10 +12,11 @@ interface CreatePostModalProps {
 const CreatePostModal = ({
   handleCloseCreatePostModal,
 }: CreatePostModalProps) => {
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const { userInfo } = useUserInfo(session?.user.id ?? '')
   const [userInput, setUserInput] = useState('')
   const [isUserInputEmpty, setIsUserInputEmpty] = useState(true)
+  const [file, setFile] = useState<File | null>(null)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const input = e.target.value
@@ -26,6 +27,54 @@ const CreatePostModal = ({
     } else {
       setUserInput('')
       setIsUserInputEmpty(true)
+    }
+  }
+
+  const handleUpload = async () => {
+    if (file && session && session.user && session.user.email) {
+      const formData = new FormData()
+
+      formData.append('file', file)
+      formData.append('id', session.user.id)
+
+      // Send form data
+      // 1. Uploads file to s3
+      // 2. Gets returned db imageName and s3 signed imageUrl
+      // 3. Update imageName in db, sets imageUrl on client
+      try {
+        const res = await fetch('/api/posts/post/upload', {
+          method: 'POST',
+          body: formData,
+        })
+        const data = await res.json()
+        if (data.success && data.imageName) return data
+        else return null
+      } catch (error) {
+        console.log(error)
+      }
+    } else return null
+  }
+
+  const handleCreatePost = async () => {
+    if (userInput === '' || !session || !session.user.id) return
+    try {
+      const currentTimestamp = new Date().getTime()
+      const uploadResponse = await handleUpload()
+
+      const requestObject = {
+        caption: userInput,
+        timestamp: currentTimestamp,
+        imageName: uploadResponse ? uploadResponse.imageName : null,
+        likesCount: 0,
+        comments: [],
+        likesByUsers: [],
+      }
+
+      await update({
+        posts: [...session.user.posts, requestObject],
+      })
+    } catch (err) {
+      console.error(err)
     }
   }
 
@@ -81,7 +130,7 @@ const CreatePostModal = ({
           <Button
             variant="primary"
             bordersRounded={true}
-            clickHandler={() => {}}
+            clickHandler={handleCreatePost}
             className={
               isUserInputEmpty
                 ? 'h-11 text-base px-5 py-3 ml-auto opacity-40'
