@@ -144,16 +144,13 @@ const Profile = () => {
         {currentTab === TABS.POSTS && (
           <>
             <Button
-              type="primary"
+              variant="primary"
               bordersRounded={true}
               clickHandler={() => {}}
               className="w-full justify-center mt-8"
             >
               Create New Post
             </Button>
-            <Post />
-            <Post />
-            <Post />
           </>
         )}
       </div>
@@ -193,7 +190,7 @@ const Profile = () => {
           </p>
           <Button
             className="xl:text-base xl:py-3 xl:px-5 xl:font-bold xl:leading-[20px] xl:mt-6"
-            type="primary"
+            variant="primary"
             bordersRounded={true}
             clickHandler={() => {}}
           >

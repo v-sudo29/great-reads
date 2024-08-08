@@ -123,7 +123,7 @@ export default function Settings() {
                 autoFocus
               />
               <Button
-                type="primary"
+                variant="primary"
                 bordersRounded={true}
                 clickHandler={() => handleUpdate(UPDATE_TYPES.FIRST_NAME)}
                 className="mt-4"
@@ -156,7 +156,7 @@ export default function Settings() {
                 autoFocus
               />
               <Button
-                type="primary"
+                variant="primary"
                 bordersRounded={true}
                 clickHandler={() => handleUpdate(UPDATE_TYPES.LAST_NAME)}
                 className="mt-4"
@@ -177,7 +177,7 @@ export default function Settings() {
 
       {/* LOG OUT */}
       <Button
-        type="primary"
+        variant="primary"
         bordersRounded={true}
         icon={<LogoutIcon />}
         clickHandler={() => signOut()}

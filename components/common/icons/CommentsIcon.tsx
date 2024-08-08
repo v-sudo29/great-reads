@@ -1,4 +1,4 @@
-const CommentsIcon = () => {
+const CommentsIcon = ({ isCommentsOpen }: { isCommentsOpen?: boolean }) => {
   return (
     <>
       {/* MOBILE */}
@@ -7,7 +7,7 @@ const CommentsIcon = () => {
         width="14"
         height="14"
         viewBox="0 0 14 14"
-        fill="none"
+        fill={isCommentsOpen ? '#53675D' : 'none'}
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -25,7 +25,7 @@ const CommentsIcon = () => {
         width="22"
         height="20"
         viewBox="0 0 22 20"
-        fill="none"
+        fill={isCommentsOpen ? '#53675D' : 'none'}
         xmlns="http://www.w3.org/2000/svg"
       >
         <path

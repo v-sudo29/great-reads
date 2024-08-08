@@ -30,10 +30,9 @@ export const ProfileImageProvider = ({ children }: { children: ReactNode }) => {
   // GET request to get temporary signed image url from s3
   const fetchImage = async () => {
     try {
-      const res = await fetch('/api/users/user/imageUrl', {
-        method: 'POST',
-        body: JSON.stringify({ imageName: session && session.user.imageName }),
-      })
+      const res = await fetch(
+        `/api/users/user/imageUrl/${session?.user.imageName}`
+      )
       const data = await res.json()
       if (data.success && data.imageUrl) setImageUrl(data.imageUrl)
     } catch (error) {
