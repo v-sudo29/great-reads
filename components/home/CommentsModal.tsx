@@ -19,7 +19,6 @@ const CommentsModal = ({
       <div
         className="fixed top-0 left-0 w-screen h-full bg-black opacity-20"
         onClick={() => handleCloseComments(index)}
-        onScroll={() => console.log('scrolling!')}
       ></div>
 
       {/* Modal */}

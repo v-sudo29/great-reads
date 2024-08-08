@@ -4,6 +4,7 @@ import { Button, ButtonLink } from '@components/common/Button'
 import { useSession } from 'next-auth/react'
 import { Post } from '@components/home/Post'
 import CommentsModal from '@components/home/CommentsModal'
+import CreatePostModal from '@components/home/CreatePostModal'
 import RecommendationCard from '@components/home/RecommendationCard'
 import { useEffect, useState } from 'react'
 import { IPost } from '@customTypes/postType'
@@ -16,6 +17,9 @@ export default function Home() {
   )
   const [recentPosts, setRecentPosts] = useState<IPost[] | []>([])
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
+
+  const handleOpenCreatePostModal = () => setIsCreatePostModalOpen(true)
+  const handleCloseCreatePostModal = () => setIsCreatePostModalOpen(false)
 
   const handleOpenComments = (index: number) => {
     if (commentsVisibilities) {
@@ -54,14 +58,14 @@ export default function Home() {
   useEffect(() => {
     const isCommentsOpen = commentsVisibilities.some((el) => el === true)
 
-    if (isCommentsOpen) {
+    if (isCommentsOpen || isCreatePostModalOpen) {
       const body = document.querySelector('body')
       if (body) body.style.overflow = 'hidden'
     } else {
       const body = document.querySelector('body')
       if (body) body.style.overflow = 'visible'
     }
-  }, [commentsVisibilities])
+  }, [commentsVisibilities, isCreatePostModalOpen])
 
   if (session === undefined) return <></>
   return (
@@ -77,11 +81,16 @@ export default function Home() {
               <Button
                 variant="primary"
                 bordersRounded={true}
-                clickHandler={() => {}}
+                clickHandler={handleOpenCreatePostModal}
                 className="hidden h-max xl:block"
               >
                 Create New Post
               </Button>
+              {isCreatePostModalOpen && (
+                <CreatePostModal
+                  handleCloseCreatePostModal={handleCloseCreatePostModal}
+                />
+              )}
             </div>
             <div className="xl:flex xl:flex-col xl:gap-8 xl:w-full">
               {recentPosts.length > 0 &&
